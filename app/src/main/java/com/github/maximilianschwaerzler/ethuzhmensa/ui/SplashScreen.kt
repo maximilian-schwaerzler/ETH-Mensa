@@ -13,6 +13,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
@@ -21,11 +22,18 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.github.maximilianschwaerzler.ethuzhmensa.R
 import com.github.maximilianschwaerzler.ethuzhmensa.ui.theme.ETHUZHMensaTheme
+import kotlinx.coroutines.delay
+
+const val displayTime = 900
 
 @Composable
-fun SplashScreen(modifier: Modifier = Modifier) {
+fun SplashScreen(modifier: Modifier = Modifier, onFinishTimer: () -> Unit = {}) {
     val ethLogoPainter = painterResource(R.drawable.eth_logo)
     val uzhLogoPainter = painterResource(R.drawable.uzh_logo)
+    LaunchedEffect(true) {
+        delay(displayTime.toLong())
+        onFinishTimer()
+    }
 
     Scaffold(
         Modifier.fillMaxSize(),
@@ -39,7 +47,11 @@ fun SplashScreen(modifier: Modifier = Modifier) {
             verticalArrangement = Arrangement.Center
         ) {
             Text("ETH/UZH", style = MaterialTheme.typography.displayMedium)
-            Text("Mensa", style = MaterialTheme.typography.displayLarge, fontWeight = FontWeight.Bold)
+            Text(
+                "Mensa",
+                style = MaterialTheme.typography.displayLarge,
+                fontWeight = FontWeight.Bold
+            )
             Spacer(Modifier.height(32.dp))
             Image(ethLogoPainter, "ETH Zurich Logo", Modifier.width(350.dp))
             Image(uzhLogoPainter, "UZH Logo", Modifier.width(150.dp))
@@ -47,10 +59,16 @@ fun SplashScreen(modifier: Modifier = Modifier) {
     }
 }
 
-@Preview(showSystemUi = true, showBackground = true,
-    uiMode = Configuration.UI_MODE_NIGHT_NO or Configuration.UI_MODE_TYPE_NORMAL
+@Preview(
+    uiMode = Configuration.UI_MODE_NIGHT_NO or Configuration.UI_MODE_TYPE_NORMAL,
+    showSystemUi = true,
+    showBackground = true
 )
-@Preview(uiMode = Configuration.UI_MODE_NIGHT_YES or Configuration.UI_MODE_TYPE_NORMAL, showSystemUi = true, showBackground = true)
+@Preview(
+    uiMode = Configuration.UI_MODE_NIGHT_YES or Configuration.UI_MODE_TYPE_NORMAL,
+    showSystemUi = true,
+    showBackground = true
+)
 @Composable
 private fun SplashScreenPrev() {
     ETHUZHMensaTheme {

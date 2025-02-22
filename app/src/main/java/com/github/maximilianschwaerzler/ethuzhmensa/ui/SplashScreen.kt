@@ -29,7 +29,7 @@ import kotlinx.coroutines.delay
 fun SplashScreen(modifier: Modifier = Modifier, onFinishTimer: () -> Unit = {}) {
     val ethLogoPainter = painterResource(R.drawable.eth_logo)
     val uzhLogoPainter = painterResource(R.drawable.uzh_logo)
-    val timerDelay = integerResource(R.integer.splash_screen_delay).toLong()
+    val timerDelay = integerResource(R.integer.config_splash_screen_delay).toLong()
     LaunchedEffect(true) {
         delay(timerDelay)
         onFinishTimer()

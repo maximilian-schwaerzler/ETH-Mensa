@@ -1,4 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <integer name="splash_screen_delay">900</integer>
+    <integer name="config_compact_screen_max_width">600</integer>
+    <integer name="config_compact_screen_max_height">480</integer>
 </resources>

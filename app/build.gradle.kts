@@ -60,6 +60,8 @@ dependencies {
     // JSON Support
     implementation(libs.kotlinx.serialization.json)
     implementation(libs.gson)
+    implementation(libs.androidx.window)
+    implementation(libs.androidx.window.core)
 
     // Testing
     testImplementation(libs.junit)

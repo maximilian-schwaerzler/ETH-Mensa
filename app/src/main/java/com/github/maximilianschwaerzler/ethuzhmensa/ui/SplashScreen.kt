@@ -16,6 +16,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.integerResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
@@ -24,14 +25,13 @@ import com.github.maximilianschwaerzler.ethuzhmensa.R
 import com.github.maximilianschwaerzler.ethuzhmensa.ui.theme.ETHUZHMensaTheme
 import kotlinx.coroutines.delay
 
-const val displayTime = 900
-
 @Composable
 fun SplashScreen(modifier: Modifier = Modifier, onFinishTimer: () -> Unit = {}) {
     val ethLogoPainter = painterResource(R.drawable.eth_logo)
     val uzhLogoPainter = painterResource(R.drawable.uzh_logo)
+    val timerDelay = integerResource(R.integer.splash_screen_delay).toLong()
     LaunchedEffect(true) {
-        delay(displayTime.toLong())
+        delay(timerDelay)
         onFinishTimer()
     }
 

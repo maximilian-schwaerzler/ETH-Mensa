@@ -2,6 +2,7 @@ package com.github.maximilianschwaerzler.ethuzhmensa
 
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.navigation.NavOptions
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
@@ -13,15 +14,20 @@ import kotlinx.serialization.Serializable
 object SplashScreen
 
 @Serializable
-object Overview
+object OverviewScreen
 
 @Composable
 fun AppNavHost(modifier: Modifier = Modifier) {
     val navController = rememberNavController()
     NavHost(navController, SplashScreen) {
         composable<SplashScreen> {
-            SplashScreen { navController.navigate(Overview) }
+            SplashScreen {
+                navController.navigate(
+                    OverviewScreen,
+                    NavOptions.Builder().setPopUpTo(SplashScreen, true).build()
+                )
+            }
         }
-        composable<Overview> { OverviewScreen() }
+        composable<OverviewScreen> { OverviewScreen() }
     }
 }

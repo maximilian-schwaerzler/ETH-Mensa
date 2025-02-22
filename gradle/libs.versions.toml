@@ -10,6 +10,8 @@ activityCompose = "1.10.0"
 composeBom = "2025.02.00"
 navVersion = "2.8.7"
 kotlinxSerializationJson = "1.8.0"
+fuel = "2.3.1"
+gson = "2.12.1"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -28,6 +30,11 @@ androidx-ui-test-junit4 = { group = "androidx.compose.ui", name = "ui-test-junit
 androidx-material3 = { group = "androidx.compose.material3", name = "material3" }
 androidx-navigation-compose = { group = "androidx.navigation", name = "navigation-compose", version.ref = "navVersion" }
 kotlinx-serialization-json = { group = "org.jetbrains.kotlinx", name = "kotlinx-serialization-json", version.ref = "kotlinxSerializationJson" }
+fuel = { group = "com.github.kittinunf.fuel", name = "fuel", version.ref = "fuel" }
+fuel-android = { group = "com.github.kittinunf.fuel", name = "fuel-android", version.ref = "fuel" }
+fuel-coroutines = { group = "com.github.kittinunf.fuel", name = "fuel-coroutines", version.ref = "fuel" }
+fuel-gson = { group = "com.github.kittinunf.fuel", name = "fuel-gson", version.ref = "fuel" }
+gson = { group = "com.google.code.gson", name = "gson", version.ref = "gson" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }

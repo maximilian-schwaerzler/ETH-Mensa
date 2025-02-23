@@ -2,6 +2,7 @@ package com.github.maximilianschwaerzler.ethuzhmensa.ui
 
 import android.content.res.Configuration
 import android.util.Log
+import android.widget.Toast
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
@@ -16,6 +17,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.github.maximilianschwaerzler.ethuzhmensa.data.MensaMenuManager
 import com.github.maximilianschwaerzler.ethuzhmensa.ui.theme.ETHUZHMensaTheme
+import java.net.UnknownHostException
 
 @Composable
 fun OverviewScreen(modifier: Modifier = Modifier) {
@@ -30,10 +32,23 @@ fun OverviewScreen(modifier: Modifier = Modifier) {
                 .padding(16.dp)
         ) {
             Text("This is the Overview Screen")
+            val context = LocalContext.current
             LaunchedEffect(true) {
-                MensaMenuManager(9).fetchMenuJson()?.let {
-                    Log.d("OverviewView", it.toString().take(15))
-                }
+                val result = MensaMenuManager(9).fetchMenuJson()
+                result
+                    .onSuccess {
+                        Log.d("OverviewScreen", it.toString())
+                    }
+                    .onFailure {
+                        when (it) {
+                            is UnknownHostException -> {
+                                Toast.makeText(context, "No network connection", Toast.LENGTH_LONG)
+                                    .show()
+                            }
+
+                            else -> Log.e("OverviewScreen", null, it)
+                        }
+                    }
             }
         }
     }

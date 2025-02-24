@@ -1,8 +1,6 @@
 package com.github.maximilianschwaerzler.ethuzhmensa.ui
 
 import android.content.res.Configuration
-import android.util.Log
-import android.widget.Toast
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
@@ -15,9 +13,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.github.maximilianschwaerzler.ethuzhmensa.data.MensaMenuManager
 import com.github.maximilianschwaerzler.ethuzhmensa.ui.theme.ETHUZHMensaTheme
-import java.net.UnknownHostException
 
 @Composable
 fun OverviewScreen(modifier: Modifier = Modifier) {
@@ -34,21 +30,30 @@ fun OverviewScreen(modifier: Modifier = Modifier) {
             Text("This is the Overview Screen")
             val context = LocalContext.current
             LaunchedEffect(true) {
-                val result = MensaMenuManager(9).fetchMenuJson()
-                result
-                    .onSuccess {
-                        Log.d("OverviewScreen", it.toString())
-                    }
-                    .onFailure {
-                        when (it) {
-                            is UnknownHostException -> {
-                                Toast.makeText(context, "No network connection", Toast.LENGTH_LONG)
-                                    .show()
-                            }
-
-                            else -> Log.e("OverviewScreen", null, it)
-                        }
-                    }
+//                val result = MensaMenuManager(9).fetchMenuJson()
+//                result
+//                    .onSuccess {
+//                        Log.d("OverviewScreen", it.toString())
+//                    }
+//                    .onFailure {
+//                        when (it) {
+//                            is UnknownHostException -> {
+//                                Toast.makeText(context, "No network connection", Toast.LENGTH_LONG)
+//                                    .show()
+//                            }
+//
+//                            else -> Log.e("OverviewScreen", null, it)
+//                        }
+//                    }
+//                val facilities = List(14) {
+//                    val facility = Facility(it + 1)
+//                    facility.fetchFacilityInformation()
+//                    return@List facility
+//                }
+//
+//                for (facility in facilities) {
+//                    Log.d("OverviewScreen", facility.facilityInfo.toString())
+//                }
             }
         }
     }

@@ -8,6 +8,7 @@ import androidx.room.RoomDatabase
 @Database(entities = [Facility::class, CustomerGroup::class], version = 1, exportSchema = false)
 abstract class MensaDatabase : RoomDatabase() {
     abstract fun facilityDao(): FacilityDao
+    abstract fun customerGroupDao(): CustomerGroupDao
 
     companion object {
         private const val DATABASE_NAME = "mensas.db"

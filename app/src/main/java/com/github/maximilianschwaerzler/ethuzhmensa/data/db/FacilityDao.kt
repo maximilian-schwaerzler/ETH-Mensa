@@ -17,8 +17,9 @@ interface FacilityDao {
     @Query("SELECT * FROM Facility WHERE facilityId IN (:facilityIds)")
     suspend fun loadAllByIds(facilityIds: IntArray): List<FacilityWithCustomerGroups>
 
+    @Transaction
     @Query("SELECT * FROM Facility WHERE location LIKE :location LIMIT 1")
-    suspend fun findByLocation(location: String): Facility
+    suspend fun findByLocation(location: String): FacilityWithCustomerGroups
 
     @Insert
     suspend fun insertAll(vararg facilities: Facility)

@@ -16,7 +16,7 @@ import java.time.format.DateTimeFormatter
 import java.time.temporal.TemporalAdjusters
 
 class Facility(private val facilityId: Int) {
-    var facilityInfo: FacilityInformation? = null
+    private var facilityInfo: FacilityInformation? = null
 
     /**
      * @return Returns a Result<JsonObject>. If failure is indicated, an IOError is to be treated as a network exception (e.g. no internet connection)
@@ -105,7 +105,6 @@ class Facility(private val facilityId: Int) {
             val groupDesc = customerGroup.asJsonObject.get("desc-short").asJsonPrimitive.asString
             facilityCustomerGroupsMap[groupId] = groupDesc
         }
-
 
         facilityInfo = FacilityInformation(
             facilityId,

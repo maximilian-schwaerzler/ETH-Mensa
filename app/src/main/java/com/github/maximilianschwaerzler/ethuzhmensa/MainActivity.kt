@@ -5,7 +5,7 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import com.github.maximilianschwaerzler.ethuzhmensa.ui.theme.ETHUZHMensaTheme
-import com.github.maximilianschwaerzler.ethuzhmensa.utils.ScreenOrientationLocker
+import com.github.maximilianschwaerzler.ethuzhmensa.ui.utils.ScreenOrientationLocker
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {

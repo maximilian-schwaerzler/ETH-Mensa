@@ -2,15 +2,15 @@ package com.github.maximilianschwaerzler.ethuzhmensa.data.db
 
 import androidx.room.Dao
 import androidx.room.Delete
-import androidx.room.Insert
 import androidx.room.Query
+import androidx.room.Upsert
 
 @Dao
 interface CustomerGroupDao {
     @Query("SELECT * FROM CustomerGroup WHERE groupId = :groupId")
     suspend fun getById(groupId: Int): CustomerGroup
 
-    @Insert
+    @Upsert
     suspend fun insertAll(vararg customerGroups: CustomerGroup)
 
     @Delete

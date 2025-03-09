@@ -2,16 +2,20 @@ package com.github.maximilianschwaerzler.ethuzhmensa.data.db
 
 import androidx.room.Dao
 import androidx.room.Delete
-import androidx.room.Insert
 import androidx.room.Query
 import androidx.room.Transaction
+import androidx.room.Upsert
 import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface FacilityDao {
     @Transaction
     @Query("SELECT * FROM Facility")
-    fun getAllWithCustomerGroups(): Flow<List<FacilityWithCustomerGroups>>
+    suspend fun getAllWithCustomerGroups(): List<FacilityWithCustomerGroups>
+
+    @Transaction
+    @Query("SELECT * FROM Facility")
+    fun observeAllWithCustomerGroups(): Flow<List<FacilityWithCustomerGroups>>
 
     @Transaction
     @Query("SELECT * FROM Facility WHERE facilityId IN (:facilityIds)")
@@ -21,7 +25,7 @@ interface FacilityDao {
     @Query("SELECT * FROM Facility WHERE location LIKE :location LIMIT 1")
     suspend fun findByLocation(location: String): FacilityWithCustomerGroups
 
-    @Insert
+    @Upsert
     suspend fun insertAll(vararg facilities: Facility)
 
     @Delete

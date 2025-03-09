@@ -1,4 +1,4 @@
-package com.github.maximilianschwaerzler.ethuzhmensa.utils
+package com.github.maximilianschwaerzler.ethuzhmensa.ui.utils
 
 import android.content.pm.ActivityInfo
 import android.util.Log

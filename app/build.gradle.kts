@@ -3,6 +3,7 @@ plugins {
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.compose)
     alias(libs.plugins.ksp)
+    alias(libs.plugins.hilt)
     kotlin("plugin.serialization") version "2.1.20-RC"
 }
 
@@ -30,6 +31,7 @@ android {
         }
     }
     compileOptions {
+        // Hilt actually needs Java 8. Lets try to use Java 11, if it doesn't work, we can always go back to Java 8
         sourceCompatibility = JavaVersion.VERSION_11
         targetCompatibility = JavaVersion.VERSION_11
     }
@@ -63,6 +65,8 @@ dependencies {
     implementation(libs.gson)
     implementation(libs.androidx.window)
     implementation(libs.androidx.window.core)
+    implementation(libs.androidx.lifecycle.viewmodel.compose)
+    implementation(libs.androidx.hilt.navigation.compose)
 
     // Testing
     testImplementation(libs.junit)
@@ -77,4 +81,8 @@ dependencies {
     implementation(libs.room.runtime)
     ksp(libs.room.compiler)
     implementation(libs.room.ktx)
+
+    // Hilt
+    implementation(libs.hilt.android)
+    ksp(libs.hilt.android.compiler)
 }

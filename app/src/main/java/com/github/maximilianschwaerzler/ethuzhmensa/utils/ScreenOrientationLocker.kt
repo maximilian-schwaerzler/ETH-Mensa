@@ -1,4 +1,4 @@
-package com.github.maximilianschwaerzler.ethuzhmensa
+package com.github.maximilianschwaerzler.ethuzhmensa.utils
 
 import android.content.pm.ActivityInfo
 import android.util.Log
@@ -9,6 +9,7 @@ import androidx.compose.ui.platform.LocalConfiguration
 import androidx.window.core.layout.WindowSizeClass
 import androidx.window.core.layout.computeWindowSizeClass
 import androidx.window.layout.WindowMetricsCalculator
+import com.github.maximilianschwaerzler.ethuzhmensa.R
 
 /**
  * Checks the screen size and prevents the activity from turning when the app is running on a "compact" device (i.e. width < 600 or height < 480)

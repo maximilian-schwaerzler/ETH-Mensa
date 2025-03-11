@@ -2,22 +2,22 @@ package com.github.maximilianschwaerzler.ethuzhmensa.ui
 
 import android.content.res.Configuration
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.Button
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import com.github.maximilianschwaerzler.ethuzhmensa.data.utils.updateFacilityInfoDB
 import com.github.maximilianschwaerzler.ethuzhmensa.ui.theme.ETHUZHMensaTheme
-import kotlinx.coroutines.launch
 
 @Composable
 fun OverviewScreen(
@@ -34,15 +34,19 @@ fun OverviewScreen(
                 .padding(innerPadding)
                 .padding(16.dp)
         ) {
-            Text("This is the Overview Screen")
-            val coroutineScope = rememberCoroutineScope()
-            val context = LocalContext.current
-            Button(onClick = {
-                coroutineScope.launch {
-                    updateFacilityInfoDB(context)
+            Column(Modifier.fillMaxSize()) {
+                Button(onClick = { viewModel.loadFacilityInfoDB() }) {
+                    Text("Fetch mensa infos from web")
                 }
-            }) {
-                Text("Fetch mensa informations")
+                Button(onClick = { viewModel.purgeDB() }) {
+                    Text("Purge DB")
+                }
+                val facilities = viewModel.facilities.collectAsState()
+                LazyColumn {
+                    items(facilities.value) {
+                        Text(it.toString() + "\n\n")
+                    }
+                }
             }
         }
     }

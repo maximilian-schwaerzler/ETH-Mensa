@@ -18,14 +18,17 @@ import java.time.temporal.TemporalAdjusters
 
 
 /**
+ * Fetches the menu for a given facility and week from the ETHZ Cookpit API
+ * @param facilityId The ID of the facility
+ * @param forWeek A date in a week for which the menu should be fetched. Defaults to the current week
  * @return Returns a Result<JsonObject>. If failure is indicated, an IOError is to be treated as a network exception (e.g. no internet connection)
  */
 suspend fun fetchMenuJson(
     facilityId: Int,
-    forDate: LocalDate = LocalDate.now()
+    forWeek: LocalDate = LocalDate.now()
 ): Result<JsonObject> {
-    val startOfWeek = forDate.with(TemporalAdjusters.previousOrSame(DayOfWeek.MONDAY))
-    val endOfWeek = forDate.with(TemporalAdjusters.nextOrSame(DayOfWeek.SUNDAY)).plusDays(1)
+    val startOfWeek = forWeek.with(TemporalAdjusters.previousOrSame(DayOfWeek.MONDAY))
+    val endOfWeek = forWeek.with(TemporalAdjusters.nextOrSame(DayOfWeek.SUNDAY)).plusDays(1)
     val dateFormatter = DateTimeFormatter.ISO_LOCAL_DATE
     val requestUri = Uri.Builder()
         .scheme("https")

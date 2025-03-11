@@ -5,6 +5,8 @@ import androidx.room.Delete
 import androidx.room.Query
 import androidx.room.Transaction
 import androidx.room.Upsert
+import com.github.maximilianschwaerzler.ethuzhmensa.data.db.entities.Facility
+import com.github.maximilianschwaerzler.ethuzhmensa.data.db.entities.FacilityWithCustomerGroups
 import kotlinx.coroutines.flow.Flow
 
 @Dao
@@ -18,7 +20,7 @@ interface FacilityDao {
     fun observeAllWithCustomerGroups(): Flow<List<FacilityWithCustomerGroups>>
 
     @Transaction
-    @Query("SELECT * FROM Facility WHERE facilityId IN (:facilityIds)")
+    @Query("SELECT * FROM Facility WHERE id IN (:facilityIds)")
     suspend fun loadAllByIds(facilityIds: IntArray): List<FacilityWithCustomerGroups>
 
     @Transaction
@@ -31,6 +33,6 @@ interface FacilityDao {
     @Delete
     suspend fun delete(facility: Facility)
 
-    @Query("DELETE FROM Facility WHERE facilityId = :facilityId")
+    @Query("DELETE FROM Facility WHERE id = :facilityId")
     suspend fun deleteById(facilityId: Int)
 }

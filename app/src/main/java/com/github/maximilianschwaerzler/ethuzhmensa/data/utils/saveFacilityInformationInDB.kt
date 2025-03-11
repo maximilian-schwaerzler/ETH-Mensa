@@ -6,9 +6,14 @@ import com.github.maximilianschwaerzler.ethuzhmensa.R
 import com.github.maximilianschwaerzler.ethuzhmensa.data.db.MensaDatabase
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
-import com.github.maximilianschwaerzler.ethuzhmensa.data.db.CustomerGroup as DBCustomerGroup
-import com.github.maximilianschwaerzler.ethuzhmensa.data.db.Facility as DBFacility
+import com.github.maximilianschwaerzler.ethuzhmensa.data.db.entities.CustomerGroup as DBCustomerGroup
+import com.github.maximilianschwaerzler.ethuzhmensa.data.db.entities.Facility as DBFacility
 
+/**
+ * Fetches the facility information from the API and saves it in the database
+ *
+ * @param context Application context
+ */
 suspend fun updateFacilityInfoDB(context: Context) = withContext(Dispatchers.IO) {
     val db = MensaDatabase.getInstance(context)
     val facilityDao = db.facilityDao()
@@ -30,7 +35,7 @@ suspend fun updateFacilityInfoDB(context: Context) = withContext(Dispatchers.IO)
         // Save the facility information in the database
         facilityDao.insertAll(
             DBFacility(
-                facilityId = localFacilityInfo.facilityId,
+                id = localFacilityInfo.facilityId,
                 name = localFacilityInfo.name,
                 location = localFacilityInfo.locationByBuilding
             )
@@ -49,6 +54,9 @@ suspend fun updateFacilityInfoDB(context: Context) = withContext(Dispatchers.IO)
             )
         }
 
-        Log.d("updateFacilityInfoDB", "Customer groups for facility with ID=$facilityId saved in the database")
+        Log.d(
+            "updateFacilityInfoDB",
+            "Customer groups for facility with ID=$facilityId saved in the database"
+        )
     }
 }

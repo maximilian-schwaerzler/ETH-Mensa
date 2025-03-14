@@ -17,6 +17,7 @@ import com.github.maximilianschwaerzler.ethuzhmensa.data.db.entities.Facility
 @TypeConverters(Converters::class)
 abstract class MensaDatabase : RoomDatabase() {
     abstract fun facilityDao(): FacilityDao
+    abstract fun menuDao(): MenuDao
 
     companion object {
         private const val DATABASE_NAME = "mensas.db"

@@ -9,8 +9,8 @@ import java.time.LocalDate
 
 @Entity
 data class DailyOffer(
-    val facilityId: Int,
     @PrimaryKey(autoGenerate = true) val id: Long,
+    val facilityId: Int,
     val date: LocalDate
 ) {
     @Entity(

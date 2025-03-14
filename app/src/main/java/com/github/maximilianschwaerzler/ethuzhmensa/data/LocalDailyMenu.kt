@@ -4,22 +4,22 @@ import com.github.maximilianschwaerzler.ethuzhmensa.data.utils.Price
 import java.time.LocalDate
 
 data class LocalDailyMenu(
-    val facilityId: Int,
-    val date: LocalDate,
-    val menuOptions: List<LocalMenuOption>
+    val facilityId: Int? = null,
+    val date: LocalDate? = null,
+    var menuOptions: List<LocalMenuOption> = emptyList()
 ) {
     data class LocalMenuOption(
-        val name: String,
-        val mealName: String,
-        val mealDescription: String,
-        val pricing: List<LocalMenuPrice>,
+        val name: String? = null,
+        val mealName: String? = null,
+        val mealDescription: String? = null,
+        var pricing: List<LocalMenuPrice> = emptyList(),
         val imageUrl: String? = null
     ) {
         data class LocalMenuPrice(
-            val price: Price,
-            val customerGroupId: Int,
-            val customerGroupDesc: String,
-            val customerGroupDescShort: String,
+            val price: Price? = null,
+            val customerGroupId: Int? = null,
+            val customerGroupDesc: String? = null,
+            val customerGroupDescShort: String? = null,
         )
     }
 }

@@ -8,15 +8,17 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.github.maximilianschwaerzler.ethuzhmensa.data.OverviewScreenViewModel
 import com.github.maximilianschwaerzler.ethuzhmensa.ui.theme.ETHUZHMensaTheme
 
 @Composable
@@ -35,16 +37,35 @@ fun OverviewScreen(
                 .padding(16.dp)
         ) {
             Column(Modifier.fillMaxSize()) {
-                Button(onClick = { viewModel.loadFacilityInfoDB() }) {
+                Button(onClick = { viewModel.updateFacilityInfoDBNet() }) {
                     Text("Fetch mensa infos from web")
                 }
-                Button(onClick = { viewModel.purgeDB() }) {
+                Button(onClick = { viewModel.updateMenusDBNet() }) {
+                    Text("Load all menus from the web for today")
+                }
+                Button(onClick = { viewModel.loadAllMenusForToday() }) {
+                    Text("Reload all menus from the DB for today")
+                }
+                Button(
+                    onClick = { viewModel.purgeDB() },
+                    colors = ButtonDefaults.buttonColors(
+                        containerColor = MaterialTheme.colorScheme.errorContainer,
+                        contentColor = MaterialTheme.colorScheme.error
+                    )
+                ) {
                     Text("Purge DB")
                 }
-                val facilities = viewModel.facilities.collectAsState()
+                val facilities = viewModel.facilities.collectAsStateWithLifecycle()
+                val menus = viewModel.offers.collectAsStateWithLifecycle()
+//                LazyColumn {
+//                    items(facilities.value) {
+//                        Text(it.toString() + "\n")
+//                    }
+//                }
+
                 LazyColumn {
-                    items(facilities.value) {
-                        Text(it.toString() + "\n\n")
+                    items(menus.value) {
+                        Text(it.toString() + "\n")
                     }
                 }
             }

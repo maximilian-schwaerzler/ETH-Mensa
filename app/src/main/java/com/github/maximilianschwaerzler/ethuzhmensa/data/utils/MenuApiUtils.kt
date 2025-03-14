@@ -97,7 +97,7 @@ private suspend fun parseMenuJson(facilityId: Int, forWeek: LocalDate): List<Loc
                 0
             ).asJsonObject.get("line-array").asJsonArray
         } catch (e: NullPointerException) {
-            Log.d("MenuApiUtils", "No menu for $date in facility $facilityId")
+            Log.w("MenuApiUtils", "No menu for $date in facility $facilityId")
             continue
         }
         for (menuItem in menus) {

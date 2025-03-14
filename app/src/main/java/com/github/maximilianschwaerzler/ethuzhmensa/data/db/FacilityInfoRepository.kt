@@ -1,7 +1,5 @@
 package com.github.maximilianschwaerzler.ethuzhmensa.data.db
 
-import android.content.Context
-import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import javax.inject.Inject

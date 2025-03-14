@@ -44,7 +44,9 @@ data class DailyOffer(
             @PrimaryKey(autoGenerate = true) val id: Long,
             @ColumnInfo(index = true) val menuId: Long,
             val price: Double,
-            val customerGroupId: Int
+            val customerGroupId: Int,
+            val customerGroupDesc: String,
+            val customerGroupDescShort: String,
         )
     }
 }

@@ -6,26 +6,21 @@ import androidx.room.Query
 import androidx.room.Transaction
 import androidx.room.Upsert
 import com.github.maximilianschwaerzler.ethuzhmensa.data.db.entities.Facility
-import com.github.maximilianschwaerzler.ethuzhmensa.data.db.entities.FacilityWithCustomerGroups
 import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface FacilityDao {
-    @Transaction
     @Query("SELECT * FROM Facility")
-    suspend fun getAllWithCustomerGroups(): List<FacilityWithCustomerGroups>
+    suspend fun getAllWithCustomerGroups(): List<Facility>
 
-    @Transaction
     @Query("SELECT * FROM Facility")
-    fun observeAllWithCustomerGroups(): Flow<List<FacilityWithCustomerGroups>>
+    fun observeAllWithCustomerGroups(): Flow<List<Facility>>
 
-    @Transaction
     @Query("SELECT * FROM Facility WHERE id IN (:facilityIds)")
-    suspend fun loadAllByIds(facilityIds: IntArray): List<FacilityWithCustomerGroups>
+    suspend fun loadAllByIds(facilityIds: IntArray): List<Facility>
 
-    @Transaction
     @Query("SELECT * FROM Facility WHERE location LIKE :location LIMIT 1")
-    suspend fun findByLocation(location: String): FacilityWithCustomerGroups
+    suspend fun findByLocation(location: String): Facility
 
     @Upsert
     suspend fun insertAll(vararg facilities: Facility)

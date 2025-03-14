@@ -101,18 +101,9 @@ suspend fun fetchFacilityInformation(facilityId: Int): LocalFacilityInfo? {
         .append(jsonObject.get("room-nr")?.asJsonPrimitive?.asString.orEmpty())
         .toString()
 
-    val facilityCustomerGroupsArray = jsonObject.get("customer-group-array").asJsonArray
-    val facilityCustomerGroupsMap = HashMap<Int, String>()
-    for (customerGroup in facilityCustomerGroupsArray) {
-        val groupId = customerGroup.asJsonObject.get("code").asJsonPrimitive.asInt
-        val groupDesc = customerGroup.asJsonObject.get("desc-short").asJsonPrimitive.asString
-        facilityCustomerGroupsMap[groupId] = groupDesc
-    }
-
     return LocalFacilityInfo(
         facilityId,
         facilityName,
-        facilityLocationByBuilding,
-        facilityCustomerGroupsMap
+        facilityLocationByBuilding
     )
 }

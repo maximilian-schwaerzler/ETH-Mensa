@@ -4,6 +4,7 @@ import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.ForeignKey
 import androidx.room.PrimaryKey
+import com.github.maximilianschwaerzler.ethuzhmensa.data.utils.Price
 import java.time.LocalDate
 
 @Entity
@@ -43,7 +44,7 @@ data class DailyOffer(
         data class MenuPrice(
             @PrimaryKey(autoGenerate = true) val id: Long,
             @ColumnInfo(index = true) val menuId: Long,
-            val price: Double,
+            val price: Price,
             val customerGroupId: Int,
             val customerGroupDesc: String,
             val customerGroupDescShort: String,

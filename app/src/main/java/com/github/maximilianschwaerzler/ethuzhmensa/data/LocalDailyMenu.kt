@@ -1,5 +1,6 @@
 package com.github.maximilianschwaerzler.ethuzhmensa.data
 
+import com.github.maximilianschwaerzler.ethuzhmensa.data.utils.Price
 import java.time.LocalDate
 
 data class LocalDailyMenu(
@@ -15,8 +16,10 @@ data class LocalDailyMenu(
         val imageUrl: String? = null
     ) {
         data class LocalMenuPrice(
-            val price: Double,
-            val customerGroupID: Int
+            val price: Price,
+            val customerGroupId: Int,
+            val customerGroupDesc: String,
+            val customerGroupDescShort: String,
         )
     }
 }

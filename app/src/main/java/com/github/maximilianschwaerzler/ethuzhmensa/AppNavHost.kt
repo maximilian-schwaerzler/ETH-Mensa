@@ -16,10 +16,8 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 object SplashScreen
-
 @Serializable
 object DebugScreen
-
 @Serializable
 object OverviewScreen
 
@@ -35,7 +33,6 @@ fun AppNavHost(modifier: Modifier = Modifier) {
                 )
             }
         }
-        composable<DebugScreen> { DebugScreen() }
         composable<OverviewScreen> {
             val viewModel: OverviewScreenViewModel = hiltViewModel()
             val isRefreshing = viewModel.isRefreshing.collectAsStateWithLifecycle()
@@ -47,5 +44,6 @@ fun AppNavHost(modifier: Modifier = Modifier) {
                 onRefresh = viewModel::onRefresh
             )
         }
+        composable<DebugScreen> { DebugScreen() }
     }
 }

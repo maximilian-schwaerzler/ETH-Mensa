@@ -14,10 +14,8 @@ import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.first
-import kotlinx.coroutines.flow.last
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import java.time.LocalDate
@@ -29,17 +27,14 @@ class OverviewScreenViewModel @Inject constructor(
     private val menuRepository: MenuRepository,
     @ApplicationContext val context: Context
 ) : ViewModel() {
-    private val offersToday = menuRepository.observeAllOffersForDate(LocalDate.of(2025, 3, 12))
-//        .stateIn(viewModelScope, started = SharingStarted.WhileSubscribed(1000), listOf())
-
+    private val offersToday = menuRepository.observeAllOffersForDate(LocalDate.now())
     private val facilities = facilityInfoRepo.observeAllFacilities()
-//        .stateIn(viewModelScope, started = SharingStarted.WhileSubscribed(1000), listOf())
 
     val facilitiesWithOffers = facilities.combine(offersToday) { facilities, offers ->
         facilities.map { facility ->
             facility to offers.find { it.dailyOffer.facilityId == facility.id }
         }
-    }.stateIn(viewModelScope, started = SharingStarted.WhileSubscribed(1000), listOf())
+    }.stateIn(viewModelScope, started = SharingStarted.Lazily, listOf())
 
     private val _isRefreshing = MutableStateFlow(false)
     val isRefreshing = _isRefreshing.asStateFlow()
@@ -55,6 +50,11 @@ class OverviewScreenViewModel @Inject constructor(
             if (facilities.first().isEmpty()) {
                 Log.d("OverviewScreenViewModel", "Facilities are empty, fetching them from the net")
                 launch { saveFacilityInfoToDB(context) }
+            } else {
+                Log.d(
+                    "OverviewScreenViewModel",
+                    "Facilities are cached, not fetching them from the net"
+                )
             }
         }
         _isRefreshing.emit(false)

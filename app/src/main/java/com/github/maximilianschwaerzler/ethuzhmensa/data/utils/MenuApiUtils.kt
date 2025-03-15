@@ -6,6 +6,7 @@ import com.github.kittinunf.fuel.Fuel
 import com.github.kittinunf.fuel.core.FuelError
 import com.github.kittinunf.fuel.core.ResponseDeserializable
 import com.github.kittinunf.fuel.coroutines.awaitObject
+import com.github.maximilianschwaerzler.ethuzhmensa.R
 import com.github.maximilianschwaerzler.ethuzhmensa.data.LocalDailyMenu
 import com.github.maximilianschwaerzler.ethuzhmensa.data.db.MensaDatabase
 import com.github.maximilianschwaerzler.ethuzhmensa.data.db.entities.DailyOffer
@@ -156,29 +157,29 @@ suspend fun saveDailyMenusForFacilityDateToDB(
     val localDailyMenus = parseMenuJson(facilityId, forWeek)
     for (localDailyMenu in localDailyMenus) {
         val dailyOffer = DailyOffer(
+            id = 0,
             facilityId = localDailyMenu.facilityId!!,
-            date = localDailyMenu.date!!,
-            id = 0
+            date = localDailyMenu.date!!
         )
         val dailyOfferId = dailyMenuDao.insertOffer(dailyOffer)
         for (localMenuOption in localDailyMenu.menuOptions) {
             val menu = DailyOffer.Menu(
+                id = 0,
                 offerId = dailyOfferId,
                 name = localMenuOption.name!!,
                 mealName = localMenuOption.mealName!!,
                 mealDescription = localMenuOption.mealDescription!!,
-                imageUrl = localMenuOption.imageUrl,
-                id = 0
+                imageUrl = localMenuOption.imageUrl
             )
             val menuId = dailyMenuDao.insertMenu(menu)
             for (localMenuPrice in localMenuOption.pricing) {
                 val price = DailyOffer.Menu.MenuPrice(
+                    id = 0,
                     menuId = menuId,
                     price = localMenuPrice.price!!,
                     customerGroupId = localMenuPrice.customerGroupId!!,
                     customerGroupDesc = localMenuPrice.customerGroupDesc!!,
-                    customerGroupDescShort = localMenuPrice.customerGroupDescShort!!,
-                    id = 0
+                    customerGroupDescShort = localMenuPrice.customerGroupDescShort!!
                 )
                 dailyMenuDao.insertPrice(price)
             }
@@ -191,7 +192,7 @@ suspend fun saveDailyMenusForFacilityDateToDB(
 suspend fun saveAllDailyMenusToDBConcurrent(context: Context, forWeek: LocalDate) =
     withContext(Dispatchers.IO) {
         val mensaIds =
-            context.resources.getIntArray(com.github.maximilianschwaerzler.ethuzhmensa.R.array.id_mensas_with_customer_groups)
+            context.resources.getIntArray(R.array.id_mensas_with_customer_groups)
         coroutineScope {
             for (facilityId in mensaIds) {
                 launch { saveDailyMenusForFacilityDateToDB(context, facilityId, forWeek) }
@@ -206,7 +207,7 @@ suspend fun saveAllDailyMenusToDBConcurrent(context: Context, forWeek: LocalDate
 suspend fun saveAllDailyMenusToDBSerial(context: Context, forWeek: LocalDate) =
     withContext(Dispatchers.IO) {
         val mensaIds =
-            context.resources.getIntArray(com.github.maximilianschwaerzler.ethuzhmensa.R.array.id_mensas_with_customer_groups)
+            context.resources.getIntArray(R.array.id_mensas_with_customer_groups)
         for (facilityId in mensaIds) {
             saveDailyMenusForFacilityDateToDB(context, facilityId, forWeek)
         }

@@ -30,9 +30,7 @@ fun MensaOverviewCard(
     modifier: Modifier = Modifier,
 ) {
     ElevatedCard(
-        modifier
-            .padding(horizontal = 8.dp)
-            .fillMaxWidth()
+        modifier.fillMaxWidth()
     ) {
         Column(Modifier.fillMaxWidth()) {
             Row(
@@ -95,6 +93,7 @@ fun MensaOverviewCardPreview() {
                 Modifier
                     .padding(it)
                     .consumeWindowInsets(it)
+                    .padding(horizontal = 8.dp)
                     .fillMaxSize()
             ) {
                 MensaOverviewCard(

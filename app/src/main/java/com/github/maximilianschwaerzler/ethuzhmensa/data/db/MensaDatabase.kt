@@ -11,8 +11,7 @@ import com.github.maximilianschwaerzler.ethuzhmensa.data.db.entities.Facility
 
 @Database(
     entities = [Facility::class, DailyOffer::class, Menu::class, Menu.MenuPrice::class],
-    version = 1,
-    exportSchema = false
+    version = 1
 )
 @TypeConverters(Converters::class)
 abstract class MensaDatabase : RoomDatabase() {

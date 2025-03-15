@@ -7,8 +7,6 @@ import androidx.compose.foundation.layout.consumeWindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.ElevatedCard
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.MaterialTheme
@@ -27,9 +25,9 @@ import com.github.maximilianschwaerzler.ethuzhmensa.ui.theme.ETHUZHMensaTheme
 
 @Composable
 fun MensaOverviewCard(
-    modifier: Modifier = Modifier,
     facility: Facility,
-    offer: DailyOfferWithPrices
+    offer: DailyOfferWithPrices?,
+    modifier: Modifier = Modifier,
 ) {
     ElevatedCard(
         modifier
@@ -65,14 +63,23 @@ fun MensaOverviewCard(
                     .padding(horizontal = 8.dp)
                     .padding(bottom = 8.dp)
             ) {
-                LazyColumn(verticalArrangement = Arrangement.spacedBy(8.dp)) {
-                    items(offer.menus) { menu ->
-                        Text(menu.menu.mealName, style = MaterialTheme.typography.bodyLarge)
-                        Text(
-                            menu.prices.joinToString(" / ") { "${it.price} CHF" },
-                            style = MaterialTheme.typography.bodySmall
-                        )
+                if (offer != null) {
+                    Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
+                        offer.menus.forEach { menu ->
+                            Column {
+                                Text(menu.menu.mealName, style = MaterialTheme.typography.bodyLarge)
+                                Text(
+                                    menu.prices.joinToString(" / ") { "${it.price} CHF" },
+                                    style = MaterialTheme.typography.bodySmall
+                                )
+                            }
+                        }
                     }
+                } else {
+                    Text(
+                        "No offer available for today",
+                        style = MaterialTheme.typography.bodyMedium
+                    )
                 }
             }
         }

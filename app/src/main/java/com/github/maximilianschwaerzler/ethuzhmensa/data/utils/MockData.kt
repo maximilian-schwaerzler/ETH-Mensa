@@ -240,4 +240,9 @@ object MockData {
             location = "HIL D57.2"
         ),
     )
+
+    val facilitiesWithOffers =
+        facilities.map { facility ->
+            facility to offers.find { it.dailyOffer.facilityId == facility.id }
+        }
 }

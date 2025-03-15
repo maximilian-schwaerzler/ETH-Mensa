@@ -8,6 +8,7 @@ class MenuRepository @Inject constructor(
 ) {
     private val menuDao = db.menuDao()
 
+    fun observeAllOffersForDate(date: LocalDate) = menuDao.observeAllOffersForDate(date)
     suspend fun getOfferForFacilityDate(facilityId: Int, date: LocalDate) = menuDao.getOfferForFacilityDate(facilityId, date)
     suspend fun getAllOffersForDate(date: LocalDate) = menuDao.getAllOffersForDate(date)
     suspend fun deleteOlderThan(date: LocalDate) = menuDao.deleteOlderThan(date)

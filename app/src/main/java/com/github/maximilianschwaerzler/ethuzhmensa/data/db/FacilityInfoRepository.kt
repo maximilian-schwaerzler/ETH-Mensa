@@ -9,9 +9,9 @@ class FacilityInfoRepository @Inject constructor(
 ) {
     private val facilityDao = db.facilityDao()
 
-    fun observeAllFacilities() = facilityDao.observeAllWithCustomerGroups()
+    fun observeAllFacilities() = facilityDao.observeAll()
     suspend fun getAllFacilities() =
-        withContext(Dispatchers.IO) { facilityDao.getAllWithCustomerGroups() }
+        withContext(Dispatchers.IO) { facilityDao.getAll() }
 
     suspend fun purgeDB() = withContext(Dispatchers.IO) { db.clearAllTables() }
 }

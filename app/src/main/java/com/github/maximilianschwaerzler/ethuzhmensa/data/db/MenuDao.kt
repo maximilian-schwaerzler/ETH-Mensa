@@ -6,6 +6,7 @@ import androidx.room.Query
 import androidx.room.Transaction
 import com.github.maximilianschwaerzler.ethuzhmensa.data.db.entities.DailyOffer
 import com.github.maximilianschwaerzler.ethuzhmensa.data.db.entities.DailyOfferWithPrices
+import kotlinx.coroutines.flow.Flow
 import java.time.LocalDate
 
 @Dao
@@ -17,6 +18,10 @@ interface MenuDao {
     @Transaction
     @Query("SELECT * FROM DailyOffer WHERE date = :date")
     suspend fun getAllOffersForDate(date: LocalDate): List<DailyOfferWithPrices>
+
+    @Transaction
+    @Query("SELECT * FROM DailyOffer WHERE date = :date")
+    fun observeAllOffersForDate(date: LocalDate): Flow<List<DailyOfferWithPrices>>
 
     @Insert
     suspend fun insertOffer(dailyOffer: DailyOffer): Long

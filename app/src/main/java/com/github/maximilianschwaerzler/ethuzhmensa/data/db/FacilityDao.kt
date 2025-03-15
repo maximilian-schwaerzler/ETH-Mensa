@@ -10,10 +10,10 @@ import kotlinx.coroutines.flow.Flow
 @Dao
 interface FacilityDao {
     @Query("SELECT * FROM Facility")
-    suspend fun getAllWithCustomerGroups(): List<Facility>
+    suspend fun getAll(): List<Facility>
 
     @Query("SELECT * FROM Facility")
-    fun observeAllWithCustomerGroups(): Flow<List<Facility>>
+    fun observeAll(): Flow<List<Facility>>
 
     @Query("SELECT * FROM Facility WHERE id IN (:facilityIds)")
     suspend fun loadAllByIds(facilityIds: IntArray): List<Facility>

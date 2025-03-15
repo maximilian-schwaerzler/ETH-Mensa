@@ -6,7 +6,7 @@ import androidx.navigation.NavOptions
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import com.github.maximilianschwaerzler.ethuzhmensa.ui.OverviewScreen
+import com.github.maximilianschwaerzler.ethuzhmensa.ui.DebugScreen
 import com.github.maximilianschwaerzler.ethuzhmensa.ui.SplashScreen
 import kotlinx.serialization.Serializable
 
@@ -14,7 +14,7 @@ import kotlinx.serialization.Serializable
 object SplashScreen
 
 @Serializable
-object OverviewScreen
+object DebugScreen
 
 @Composable
 fun AppNavHost(modifier: Modifier = Modifier) {
@@ -23,11 +23,11 @@ fun AppNavHost(modifier: Modifier = Modifier) {
         composable<SplashScreen> {
             SplashScreen {
                 navController.navigate(
-                    OverviewScreen,
+                    DebugScreen,
                     NavOptions.Builder().setPopUpTo(SplashScreen, true).build()
                 )
             }
         }
-        composable<OverviewScreen> { OverviewScreen() }
+        composable<DebugScreen> { DebugScreen() }
     }
 }

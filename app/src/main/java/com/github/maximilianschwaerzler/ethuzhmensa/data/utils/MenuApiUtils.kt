@@ -2,7 +2,6 @@ package com.github.maximilianschwaerzler.ethuzhmensa.data.utils
 
 import android.content.Context
 import android.net.Uri
-import android.util.Log
 import com.github.kittinunf.fuel.Fuel
 import com.github.kittinunf.fuel.core.FuelError
 import com.github.kittinunf.fuel.core.ResponseDeserializable
@@ -13,6 +12,8 @@ import com.github.maximilianschwaerzler.ethuzhmensa.data.db.entities.DailyOffer
 import com.google.gson.JsonObject
 import com.google.gson.JsonParser
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.coroutineScope
+import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import java.io.IOException
 import java.net.UnknownHostException
@@ -82,7 +83,6 @@ private suspend fun parseMenuJson(facilityId: Int, forWeek: LocalDate): List<Loc
     val returnList = mutableListOf<LocalDailyMenu>()
     val facilityId =
         menuJson.get("weekly-rota-array").asJsonArray.get(0).asJsonObject.get("facility-id").asJsonPrimitive.asInt
-//    Log.d("MenuApiUtils", "Parsing menu for facility $facilityId")
     val weekStart =
         menuJson.get("weekly-rota-array").asJsonArray.get(0).asJsonObject.get("valid-from").asJsonPrimitive.asString.toString()
             .let { LocalDate.parse(it) }
@@ -97,7 +97,8 @@ private suspend fun parseMenuJson(facilityId: Int, forWeek: LocalDate): List<Loc
                 0
             ).asJsonObject.get("line-array").asJsonArray
         } catch (e: NullPointerException) {
-            Log.w("MenuApiUtils", "No menu for $date in facility $facilityId")
+            // TODO: Only for debugging
+            // Log.w("MenuApiUtils", "No menu for $date in facility $facilityId")
             continue
         }
         for (menuItem in menus) {
@@ -187,7 +188,22 @@ suspend fun saveDailyMenusForFacilityDateToDB(
     //dailyMenuDao.deleteOlderThan(LocalDate.now())
 }
 
-suspend fun saveAllDailyMenusToDB(context: Context, forWeek: LocalDate) =
+suspend fun saveAllDailyMenusToDBConcurrent(context: Context, forWeek: LocalDate) =
+    withContext(Dispatchers.IO) {
+        val mensaIds =
+            context.resources.getIntArray(com.github.maximilianschwaerzler.ethuzhmensa.R.array.id_mensas_with_customer_groups)
+        coroutineScope {
+            for (facilityId in mensaIds) {
+                launch { saveDailyMenusForFacilityDateToDB(context, facilityId, forWeek) }
+            }
+        }
+    }
+
+@Deprecated(
+    "Use saveAllDailyMenusToDBConcurrent instead",
+    replaceWith = ReplaceWith("saveAllDailyMenusToDBConcurrent(context, forWeek)")
+)
+suspend fun saveAllDailyMenusToDBSerial(context: Context, forWeek: LocalDate) =
     withContext(Dispatchers.IO) {
         val mensaIds =
             context.resources.getIntArray(com.github.maximilianschwaerzler.ethuzhmensa.R.array.id_mensas_with_customer_groups)

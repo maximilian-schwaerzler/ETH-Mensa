@@ -23,6 +23,7 @@ value class Price(private val amount: BigDecimal) : Comparable<Price> {
 //    operator fun div(divisor: BigDecimal): Price = Price(amount.divide(divisor, 2, RoundingMode.HALF_UP))
 
     override fun compareTo(other: Price): Int = amount.compareTo(other.amount)
+    override fun toString(): String = amount.toString()
 
     fun toBigDecimal(): BigDecimal = amount
 }

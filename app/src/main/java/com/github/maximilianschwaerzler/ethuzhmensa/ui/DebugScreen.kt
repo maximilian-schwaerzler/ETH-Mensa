@@ -28,14 +28,15 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.github.maximilianschwaerzler.ethuzhmensa.data.OverviewScreenViewModel
+import com.github.maximilianschwaerzler.ethuzhmensa.data.DebugScreenViewModel
 import com.github.maximilianschwaerzler.ethuzhmensa.ui.theme.ETHUZHMensaTheme
+import java.time.LocalDate
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun OverviewScreen(
+fun DebugScreen(
     modifier: Modifier = Modifier,
-    viewModel: OverviewScreenViewModel = hiltViewModel(),
+    viewModel: DebugScreenViewModel = hiltViewModel(),
 ) {
     Scaffold(
         Modifier.fillMaxSize(),
@@ -55,14 +56,14 @@ fun OverviewScreen(
 //                    Text("Load all menus from the web for today")
 //                }
                 Spacer(Modifier.height(8.dp))
-                Button(onClick = { viewModel.loadAllMenusForToday() }) {
-                    Text("Reload all menus from the DB for today")
+                Button(onClick = { viewModel.reloadAllMenusForDate(LocalDate.of(2025, 3, 12)) }) {
+                    Text("Reload all menus from the DB for 2025-03-12")
                 }
                 Spacer(Modifier.height(8.dp))
                 Button(
                     onClick = {
                         viewModel.purgeDB()
-                        viewModel.loadAllMenusForToday()
+                        viewModel.reloadAllMenusForToday()
                     },
                     colors = ButtonDefaults.buttonColors(
                         containerColor = MaterialTheme.colorScheme.errorContainer,
@@ -115,8 +116,8 @@ fun OverviewScreen(
     showBackground = true
 )
 @Composable
-private fun OverviewScreenPreview() {
+private fun DebugScreenPreview() {
     ETHUZHMensaTheme {
-        OverviewScreen()
+        DebugScreen()
     }
 }

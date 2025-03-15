@@ -11,15 +11,21 @@ import androidx.navigation.compose.rememberNavController
 import com.github.maximilianschwaerzler.ethuzhmensa.data.OverviewScreenViewModel
 import com.github.maximilianschwaerzler.ethuzhmensa.ui.DebugScreen
 import com.github.maximilianschwaerzler.ethuzhmensa.ui.OverviewScreen
+import com.github.maximilianschwaerzler.ethuzhmensa.ui.SettingsScreen
 import com.github.maximilianschwaerzler.ethuzhmensa.ui.SplashScreen
 import kotlinx.serialization.Serializable
 
 @Serializable
 object SplashScreen
+
 @Serializable
 object DebugScreen
+
 @Serializable
 object OverviewScreen
+
+@Serializable
+object SettingsScreen
 
 @Composable
 fun AppNavHost(modifier: Modifier = Modifier) {
@@ -41,9 +47,14 @@ fun AppNavHost(modifier: Modifier = Modifier) {
             OverviewScreen(
                 isRefreshing = isRefreshing.value,
                 facilitiesWithOffers = facilitiesWithOffers.value,
-                onRefresh = viewModel::onRefresh
+                onRefresh = viewModel::onRefresh,
+                onSettingsNavigate = { navController.navigate(SettingsScreen) }
             )
         }
+        composable<SettingsScreen> {
+            SettingsScreen { navController.popBackStack() }
+        }
+
         composable<DebugScreen> { DebugScreen() }
     }
 }

@@ -46,11 +46,14 @@ fun OverviewScreen(
     isRefreshing: Boolean,
     facilitiesWithOffers: List<Pair<Facility, DailyOfferWithPrices?>>,
     onRefresh: () -> Unit,
+    onSettingsNavigate: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
     val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior(rememberTopAppBarState())
     Scaffold(
         modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
+        containerColor = MaterialTheme.colorScheme.surface,
+        contentColor = MaterialTheme.colorScheme.onSurface,
         topBar = {
             TopAppBar(
                 title = { Text("ETH/UZH Mensa", maxLines = 1, overflow = TextOverflow.Ellipsis) },
@@ -60,7 +63,7 @@ fun OverviewScreen(
                 ),
                 scrollBehavior = scrollBehavior,
                 actions = {
-                    IconButton(onClick = {/* TODO */ }) {
+                    IconButton(onClick = { onSettingsNavigate() }) {
                         Icon(
                             Icons.Default.Settings,
                             contentDescription = "Settings",
@@ -69,9 +72,7 @@ fun OverviewScreen(
                     }
                 }
             )
-        },
-        containerColor = MaterialTheme.colorScheme.surface,
-        contentColor = MaterialTheme.colorScheme.onSurface
+        }
     ) { paddingValues ->
         PullToRefreshBox(
             isRefreshing,
@@ -140,7 +141,8 @@ private fun OverviewScreenPreview() {
         OverviewScreen(
             isRefreshing = false,
             facilitiesWithOffers = MockData.facilitiesWithOffers,
-            onRefresh = {}
+            onRefresh = {},
+            onSettingsNavigate = {}
         )
     }
 }

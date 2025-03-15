@@ -2,14 +2,21 @@ package com.github.maximilianschwaerzler.ethuzhmensa.ui
 
 import android.content.res.Configuration
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.consumeWindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Info
 import androidx.compose.material.icons.filled.Settings
+import androidx.compose.material3.Button
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -21,6 +28,7 @@ import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.pulltorefresh.PullToRefreshBox
 import androidx.compose.material3.rememberTopAppBarState
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.text.style.TextOverflow
@@ -47,20 +55,23 @@ fun OverviewScreen(
             TopAppBar(
                 title = { Text("ETH/UZH Mensa", maxLines = 1, overflow = TextOverflow.Ellipsis) },
                 colors = TopAppBarDefaults.centerAlignedTopAppBarColors(
-                    containerColor = MaterialTheme.colorScheme.primaryContainer,
-                    titleContentColor = MaterialTheme.colorScheme.primary,
+                    containerColor = MaterialTheme.colorScheme.surfaceContainer,
+                    titleContentColor = MaterialTheme.colorScheme.onSurface,
                 ),
                 scrollBehavior = scrollBehavior,
                 actions = {
                     IconButton(onClick = {/* TODO */ }) {
                         Icon(
                             Icons.Default.Settings,
-                            contentDescription = "Settings"
+                            contentDescription = "Settings",
+                            tint = MaterialTheme.colorScheme.onSurface
                         )
                     }
                 }
             )
-        }
+        },
+        containerColor = MaterialTheme.colorScheme.surface,
+        contentColor = MaterialTheme.colorScheme.onSurface
     ) { paddingValues ->
         PullToRefreshBox(
             isRefreshing,
@@ -69,17 +80,45 @@ fun OverviewScreen(
                 .padding(paddingValues)
                 .consumeWindowInsets(paddingValues)
         ) {
-            LazyColumn(
-                Modifier.fillMaxSize(),
-                contentPadding = PaddingValues(8.dp),
-                verticalArrangement = Arrangement.spacedBy(8.dp)
-            ) {
-                items(
-                    facilitiesWithOffers.filterNot { it.second == null }.sortedBy { it.first.id },
-                    key = { it.first.id }
+            val filteredSortedFacilities =
+                facilitiesWithOffers.filterNot { it.second == null }.sortedBy { it.first.id }
+            if (filteredSortedFacilities.isNotEmpty()) {
+                LazyColumn(
+                    Modifier.fillMaxSize(),
+                    contentPadding = PaddingValues(8.dp),
+                    verticalArrangement = Arrangement.spacedBy(8.dp)
                 ) {
-                    MensaOverviewCard(it.first, it.second)
+                    items(
+                        filteredSortedFacilities,
+                        key = { it.first.id }
+                    ) {
+                        MensaOverviewCard(it.first, it.second)
+                    }
                 }
+            } else {
+                NoOffersInfoPanel { onRefresh() }
+            }
+        }
+    }
+}
+
+@Composable
+fun NoOffersInfoPanel(modifier: Modifier = Modifier, onRefresh: () -> Unit) {
+    Box(modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+        Column(horizontalAlignment = Alignment.CenterHorizontally) {
+            Icon(
+                Icons.Default.Info,
+                contentDescription = "Info",
+//                tint = MaterialTheme.colorScheme.onSurface,
+                modifier = Modifier.size(48.dp)
+            )
+            Spacer(Modifier.height(32.dp))
+            Text(
+                "No offers available for today", style = MaterialTheme.typography.headlineSmall
+            )
+            Spacer(Modifier.height(8.dp))
+            Button(onClick = { onRefresh() }) {
+                Text("Refresh", style = MaterialTheme.typography.bodyLarge)
             }
         }
     }
@@ -105,3 +144,24 @@ private fun OverviewScreenPreview() {
         )
     }
 }
+
+//@Preview(
+//    uiMode = Configuration.UI_MODE_NIGHT_NO or Configuration.UI_MODE_TYPE_NORMAL,
+//    showSystemUi = true,
+//    showBackground = true
+//)
+//@Preview(
+//    uiMode = Configuration.UI_MODE_NIGHT_YES or Configuration.UI_MODE_TYPE_NORMAL,
+//    showSystemUi = true,
+//    showBackground = true
+//)
+//@Composable
+//private fun OverviewScreenPreviewNoMenus() {
+//    ETHUZHMensaTheme {
+//        OverviewScreen(
+//            isRefreshing = false,
+//            facilitiesWithOffers = emptyList(),
+//            onRefresh = {}
+//        )
+//    }
+//}

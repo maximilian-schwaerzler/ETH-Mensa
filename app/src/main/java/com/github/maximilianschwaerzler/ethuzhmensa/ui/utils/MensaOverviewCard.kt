@@ -3,14 +3,12 @@ package com.github.maximilianschwaerzler.ethuzhmensa.ui.utils
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.consumeWindowInsets
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.ElevatedCard
+import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Scaffold
+import androidx.compose.material3.OutlinedCard
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -29,8 +27,9 @@ fun MensaOverviewCard(
     offer: DailyOfferWithPrices?,
     modifier: Modifier = Modifier,
 ) {
-    ElevatedCard(
-        modifier.fillMaxWidth()
+    OutlinedCard(
+        modifier.fillMaxWidth(),
+        elevation = CardDefaults.elevatedCardElevation()
     ) {
         Column(Modifier.fillMaxWidth()) {
             Row(
@@ -84,23 +83,15 @@ fun MensaOverviewCard(
     }
 }
 
-@Preview(showBackground = true, showSystemUi = true)
+@Preview(showBackground = true)
 @Composable
 fun MensaOverviewCardPreview() {
     ETHUZHMensaTheme {
-        Scaffold {
-            Column(
-                Modifier
-                    .padding(it)
-                    .consumeWindowInsets(it)
-                    .padding(horizontal = 8.dp)
-                    .fillMaxSize()
-            ) {
-                MensaOverviewCard(
-                    facility = MockData.facilities.first(),
-                    offer = MockData.offers.first()
-                )
-            }
+        Column(Modifier.padding(8.dp)) {
+            MensaOverviewCard(
+                facility = MockData.facilities.first(),
+                offer = MockData.offers.first()
+            )
         }
     }
 }

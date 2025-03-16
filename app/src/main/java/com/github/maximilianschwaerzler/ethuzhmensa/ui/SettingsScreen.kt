@@ -43,7 +43,7 @@ fun SettingsScreen(modifier: Modifier = Modifier, onBackNavigation: () -> Unit) 
                     }
                 },
                 title = { Text("Settings", maxLines = 1, overflow = TextOverflow.Ellipsis) },
-                colors = TopAppBarDefaults.centerAlignedTopAppBarColors(
+                colors = TopAppBarDefaults.topAppBarColors(
                     containerColor = MaterialTheme.colorScheme.surfaceContainer,
                     titleContentColor = MaterialTheme.colorScheme.onSurface,
                 )

@@ -13,5 +13,9 @@ class FacilityInfoRepository @Inject constructor(
     suspend fun getAllFacilities() =
         withContext(Dispatchers.IO) { facilityDao.getAll() }
 
+    suspend fun getFacilityById(facilityId: Int) = withContext(Dispatchers.IO) {
+        facilityDao.loadById(facilityId)
+    }
+
     suspend fun purgeDB() = withContext(Dispatchers.IO) { db.clearAllTables() }
 }

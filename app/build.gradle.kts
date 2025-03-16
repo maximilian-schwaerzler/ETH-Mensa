@@ -90,4 +90,8 @@ dependencies {
     // Hilt
     implementation(libs.hilt.android)
     ksp(libs.hilt.android.compiler)
+
+    // Coil
+    implementation(libs.coil.compose)
+    implementation(libs.coil.network)
 }

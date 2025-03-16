@@ -15,6 +15,9 @@ interface FacilityDao {
     @Query("SELECT * FROM Facility")
     fun observeAll(): Flow<List<Facility>>
 
+    @Query("SELECT * FROM Facility WHERE id = :facilityId")
+    suspend fun loadById(facilityId: Int): Facility
+
     @Query("SELECT * FROM Facility WHERE id IN (:facilityIds)")
     suspend fun loadAllByIds(facilityIds: IntArray): List<Facility>
 

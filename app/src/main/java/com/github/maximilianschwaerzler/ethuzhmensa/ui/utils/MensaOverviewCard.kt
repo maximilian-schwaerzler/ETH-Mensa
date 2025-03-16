@@ -19,17 +19,24 @@ import androidx.compose.ui.unit.dp
 import com.github.maximilianschwaerzler.ethuzhmensa.data.db.entities.DailyOfferWithPrices
 import com.github.maximilianschwaerzler.ethuzhmensa.data.db.entities.Facility
 import com.github.maximilianschwaerzler.ethuzhmensa.data.utils.MockData
+import com.github.maximilianschwaerzler.ethuzhmensa.data.utils.pricesToString
 import com.github.maximilianschwaerzler.ethuzhmensa.ui.theme.ETHUZHMensaTheme
 
 @Composable
 fun MensaOverviewCard(
     facility: Facility,
     offer: DailyOfferWithPrices?,
+    onClick: (facilityId: Int) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     OutlinedCard(
+        { onClick(facility.id) },
         modifier.fillMaxWidth(),
-        elevation = CardDefaults.elevatedCardElevation()
+        elevation = CardDefaults.elevatedCardElevation(),
+        colors = CardDefaults.cardColors(
+            containerColor = MaterialTheme.colorScheme.primaryContainer,
+            contentColor = MaterialTheme.colorScheme.onPrimaryContainer
+        )
     ) {
         Column(Modifier.fillMaxWidth()) {
             Row(
@@ -53,7 +60,7 @@ fun MensaOverviewCard(
             HorizontalDivider(
                 Modifier.padding(vertical = 8.dp),
                 thickness = 2.dp,
-                color = MaterialTheme.colorScheme.surfaceDim
+                color = MaterialTheme.colorScheme.onPrimary
             )
             Column(
                 Modifier
@@ -66,7 +73,7 @@ fun MensaOverviewCard(
                             Column {
                                 Text(menu.menu.mealName, style = MaterialTheme.typography.bodyLarge)
                                 Text(
-                                    menu.prices.joinToString(" / ") { "${it.price} CHF" },
+                                    pricesToString(menu.prices),
                                     style = MaterialTheme.typography.bodySmall
                                 )
                             }
@@ -90,7 +97,8 @@ fun MensaOverviewCardPreview() {
         Column(Modifier.padding(8.dp)) {
             MensaOverviewCard(
                 facility = MockData.facilities.first(),
-                offer = MockData.offers.first()
+                offer = MockData.offers.first(),
+                onClick = {}
             )
         }
     }

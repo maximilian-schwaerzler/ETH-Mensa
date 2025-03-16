@@ -89,6 +89,7 @@ class OverviewScreenViewModel @Inject constructor(
     }
 
     fun onRefresh() = viewModelScope.launch {
+        Log.d("OverviewScreenViewModel", "Refreshing data. Today is ${LocalDate.now().toEpochDay()}")
         _isRefreshing.emit(true)
         coroutineScope {
             if (shouldUpdateFacilityInfo()) {
@@ -104,7 +105,7 @@ class OverviewScreenViewModel @Inject constructor(
                     dataStoreManager.setLastMenuSyncTime(LocalDate.now().toEpochDay())
                 }
 
-                // BUG: This is a workaround for the issue that the "Pull to Refresh" animation does not stop
+                // BUG: This is a workaround for the issue that the "Pull to Refresh" animation sometimes does not disappear
                 delay(10)
             }
         }

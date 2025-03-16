@@ -21,7 +21,8 @@ object MockData {
                         offerId = 1219,
                         name = "STREET",
                         mealName = "ARANCINI BOLOGNESE",
-                        mealDescription = "Mozzarella | Ratatouille | Reibkäse | Salat"
+                        mealDescription = "Mozzarella | Ratatouille | Reibkäse | Salat",
+                        imageUrl = "https://idapps.ethz.ch/cookpit-pub-services/v1/images/38670"
                     ),
                     prices = listOf(
                         DailyOffer.Menu.MenuPrice(

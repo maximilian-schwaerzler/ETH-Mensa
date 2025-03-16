@@ -27,7 +27,7 @@ import com.github.maximilianschwaerzler.ethuzhmensa.ui.theme.ETHUZHMensaTheme
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun SettingsScreen(modifier: Modifier = Modifier, onBackNavigation: () -> Unit) {
+fun SettingsScreen(modifier: Modifier = Modifier, onNavigateUp: () -> Unit) {
     var isLanguageEnabled by remember {
         mutableStateOf(true)
     }
@@ -38,7 +38,7 @@ fun SettingsScreen(modifier: Modifier = Modifier, onBackNavigation: () -> Unit) 
         topBar = {
             TopAppBar(
                 navigationIcon = {
-                    IconButton(onClick = { onBackNavigation() }) {
+                    IconButton(onClick = { onNavigateUp() }) {
                         Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Back")
                     }
                 },

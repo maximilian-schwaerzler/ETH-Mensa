@@ -1,6 +1,7 @@
 package com.github.maximilianschwaerzler.ethuzhmensa.ui
 
 import android.content.res.Configuration
+import android.widget.Toast
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -31,6 +32,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.nestedscroll.nestedScroll
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -47,12 +49,14 @@ fun OverviewScreen(
     facilitiesWithOffers: List<Pair<Facility, DailyOfferWithPrices?>>,
     onRefresh: () -> Unit,
     onSettingsNavigate: () -> Unit,
+    onDetailScreenNavigate: (facilityId: Int) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior(rememberTopAppBarState())
+    val context = LocalContext.current
     Scaffold(
         modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
-        containerColor = MaterialTheme.colorScheme.surface,
+        containerColor = MaterialTheme.colorScheme.background,
         contentColor = MaterialTheme.colorScheme.onSurface,
         topBar = {
             TopAppBar(
@@ -63,7 +67,10 @@ fun OverviewScreen(
                 ),
                 scrollBehavior = scrollBehavior,
                 actions = {
-                    IconButton(onClick = { onSettingsNavigate() }) {
+                    IconButton(onClick = {
+                        Toast.makeText(context, "Not yet implemented", Toast.LENGTH_SHORT).show()
+//                        onSettingsNavigate()
+                    }) {
                         Icon(
                             Icons.Default.Settings,
                             contentDescription = "Settings",
@@ -93,7 +100,7 @@ fun OverviewScreen(
                         filteredSortedFacilities,
                         key = { it.first.id }
                     ) {
-                        MensaOverviewCard(it.first, it.second)
+                        MensaOverviewCard(it.first, it.second, onDetailScreenNavigate)
                     }
                 }
             } else {
@@ -128,7 +135,8 @@ fun NoOffersInfoPanel(modifier: Modifier = Modifier, onRefresh: () -> Unit) {
 @Preview(
     uiMode = Configuration.UI_MODE_NIGHT_NO or Configuration.UI_MODE_TYPE_NORMAL,
     showSystemUi = true,
-    showBackground = true
+    showBackground = true,
+    wallpaper = androidx.compose.ui.tooling.preview.Wallpapers.GREEN_DOMINATED_EXAMPLE
 )
 @Preview(
     uiMode = Configuration.UI_MODE_NIGHT_YES or Configuration.UI_MODE_TYPE_NORMAL,
@@ -142,28 +150,31 @@ private fun OverviewScreenPreview() {
             isRefreshing = false,
             facilitiesWithOffers = MockData.facilitiesWithOffers,
             onRefresh = {},
-            onSettingsNavigate = {}
+            onSettingsNavigate = {},
+            onDetailScreenNavigate = {}
         )
     }
 }
 
-//@Preview(
-//    uiMode = Configuration.UI_MODE_NIGHT_NO or Configuration.UI_MODE_TYPE_NORMAL,
-//    showSystemUi = true,
-//    showBackground = true
-//)
-//@Preview(
-//    uiMode = Configuration.UI_MODE_NIGHT_YES or Configuration.UI_MODE_TYPE_NORMAL,
-//    showSystemUi = true,
-//    showBackground = true
-//)
-//@Composable
-//private fun OverviewScreenPreviewNoMenus() {
-//    ETHUZHMensaTheme {
-//        OverviewScreen(
-//            isRefreshing = false,
-//            facilitiesWithOffers = emptyList(),
-//            onRefresh = {}
-//        )
-//    }
-//}
+@Preview(
+    uiMode = Configuration.UI_MODE_NIGHT_NO or Configuration.UI_MODE_TYPE_NORMAL,
+    showSystemUi = true,
+    showBackground = true
+)
+@Preview(
+    uiMode = Configuration.UI_MODE_NIGHT_YES or Configuration.UI_MODE_TYPE_NORMAL,
+    showSystemUi = true,
+    showBackground = true
+)
+@Composable
+private fun OverviewScreenPreviewNoMenus() {
+    ETHUZHMensaTheme {
+        OverviewScreen(
+            isRefreshing = false,
+            facilitiesWithOffers = emptyList(),
+            onRefresh = {},
+            onSettingsNavigate = {},
+            onDetailScreenNavigate = {}
+        )
+    }
+}

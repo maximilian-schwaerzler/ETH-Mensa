@@ -11,7 +11,6 @@ import com.github.maximilianschwaerzler.ethuzhmensa.data.utils.saveAllDailyMenus
 import com.github.maximilianschwaerzler.ethuzhmensa.data.utils.saveFacilityInfoToDB
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
-import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
@@ -21,6 +20,7 @@ import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.supervisorScope
 import java.time.LocalDate
 import javax.inject.Inject
 
@@ -83,15 +83,21 @@ class OverviewScreenViewModel @Inject constructor(
                 "Menu data is older than 1 day, fetching data from the net"
             )
             return true
+        } else if (offersToday.first().isEmpty()) {
+            Log.d("OverviewScreenViewModel", "No menu data found, fetching data from the net")
+            return true
         }
         Log.d("OverviewScreenViewModel", "Menu data is up to date")
         return false
     }
 
     fun onRefresh() = viewModelScope.launch {
-        Log.d("OverviewScreenViewModel", "Refreshing data. Today is ${LocalDate.now().toEpochDay()}")
+        Log.d(
+            "OverviewScreenViewModel",
+            "Refreshing data. Today is ${LocalDate.now().toEpochDay()}"
+        )
         _isRefreshing.emit(true)
-        coroutineScope {
+        supervisorScope {
             if (shouldUpdateFacilityInfo()) {
                 launch {
                     saveFacilityInfoToDB(appContext)

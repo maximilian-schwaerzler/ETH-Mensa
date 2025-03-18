@@ -89,7 +89,7 @@ fun OverviewScreen(
                 .consumeWindowInsets(paddingValues)
         ) {
             val filteredSortedFacilities =
-                facilitiesWithOffers.filterNot { it.second == null }.sortedBy { it.first.id }
+                facilitiesWithOffers.filterNot { it.second == null || it.second!!.menus.isEmpty() }.sortedBy { it.first.id }
             if (filteredSortedFacilities.isNotEmpty()) {
                 LazyColumn(
                     Modifier.fillMaxSize(),

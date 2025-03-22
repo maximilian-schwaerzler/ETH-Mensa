@@ -36,7 +36,7 @@ data class MensaDetailScreen(val facilityId: Int)
 @Composable
 fun AppNavHost(modifier: Modifier = Modifier) {
     val navController = rememberNavController()
-    NavHost(navController, SplashScreen) {
+    NavHost(navController, SplashScreen, modifier) {
         composable<SplashScreen> {
             SplashScreen {
                 navController.navigate(

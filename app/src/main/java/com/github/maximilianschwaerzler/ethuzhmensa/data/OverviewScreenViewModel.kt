@@ -5,7 +5,9 @@ import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.github.maximilianschwaerzler.ethuzhmensa.R
+import com.github.maximilianschwaerzler.ethuzhmensa.data.db.FacilityDao
 import com.github.maximilianschwaerzler.ethuzhmensa.data.db.FacilityInfoRepository
+import com.github.maximilianschwaerzler.ethuzhmensa.data.db.MenuDao
 import com.github.maximilianschwaerzler.ethuzhmensa.data.db.MenuRepository
 import com.github.maximilianschwaerzler.ethuzhmensa.data.utils.saveAllDailyMenusToDBConcurrent
 import com.github.maximilianschwaerzler.ethuzhmensa.data.utils.saveFacilityInfoToDB
@@ -28,6 +30,8 @@ import javax.inject.Inject
 class OverviewScreenViewModel @Inject constructor(
     private val facilityInfoRepo: FacilityInfoRepository,
     private val menuRepository: MenuRepository,
+    private val menuDao: MenuDao,
+    private val facilityDao: FacilityDao,
     @ApplicationContext val appContext: Context,
     private val dataStoreManager: DataStoreManager
 ) : ViewModel() {
@@ -100,14 +104,14 @@ class OverviewScreenViewModel @Inject constructor(
         supervisorScope {
             if (shouldUpdateFacilityInfo()) {
                 launch {
-                    saveFacilityInfoToDB(appContext)
+                    saveFacilityInfoToDB(appContext, facilityDao)
                     dataStoreManager.setLastFacilitySyncTime(LocalDate.now().toEpochDay())
                 }
             }
 
             if (shouldUpdateMenus()) {
                 launch {
-                    saveAllDailyMenusToDBConcurrent(appContext, LocalDate.now())
+                    saveAllDailyMenusToDBConcurrent(appContext, LocalDate.now(), menuDao)
                     dataStoreManager.setLastMenuSyncTime(LocalDate.now().toEpochDay())
                 }
 
@@ -123,11 +127,11 @@ class OverviewScreenViewModel @Inject constructor(
 //    }
 
     fun updateFacilityInfoDBNet() = viewModelScope.launch {
-        saveFacilityInfoToDB(appContext)
+        saveFacilityInfoToDB(appContext, facilityDao)
     }
 
     fun updateMenusDBNet(forWeek: LocalDate = LocalDate.now()) = viewModelScope.launch {
-        saveAllDailyMenusToDBConcurrent(appContext, forWeek)
+        saveAllDailyMenusToDBConcurrent(appContext, forWeek, menuDao)
     }
 
     fun deleteOlderThan(date: LocalDate = LocalDate.now()) = viewModelScope.launch {

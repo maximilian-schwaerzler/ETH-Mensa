@@ -4,7 +4,9 @@ import android.content.Context
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.github.maximilianschwaerzler.ethuzhmensa.data.db.FacilityDao
 import com.github.maximilianschwaerzler.ethuzhmensa.data.db.FacilityInfoRepository
+import com.github.maximilianschwaerzler.ethuzhmensa.data.db.MenuDao
 import com.github.maximilianschwaerzler.ethuzhmensa.data.db.MenuRepository
 import com.github.maximilianschwaerzler.ethuzhmensa.data.db.entities.DailyOfferWithPrices
 import com.github.maximilianschwaerzler.ethuzhmensa.data.utils.saveAllDailyMenusToDBConcurrent
@@ -24,6 +26,8 @@ import kotlin.system.measureTimeMillis
 class DebugScreenViewModel @Inject constructor(
     private val facilityInfoRepo: FacilityInfoRepository,
     private val menuRepository: MenuRepository,
+    private val menuDao: MenuDao,
+    private val facilityDao: FacilityDao,
     @ApplicationContext val context: Context
 ) : ViewModel() {
     private val _offers = MutableStateFlow(emptyList<DailyOfferWithPrices>())
@@ -43,7 +47,7 @@ class DebugScreenViewModel @Inject constructor(
         _isRefreshing.tryEmit(true)
         viewModelScope.launch {
             measureTimeMillis {
-                saveAllDailyMenusToDBConcurrent(context, LocalDate.now())
+                saveAllDailyMenusToDBConcurrent(context, LocalDate.now(), menuDao)
             }.let { Log.d("OverviewScreen", "Menus loaded in $it ms") }
             reloadAllMenusForDate(LocalDate.of(2025, 3, 12))
             _isRefreshing.emit(false)
@@ -55,11 +59,11 @@ class DebugScreenViewModel @Inject constructor(
     }
 
     fun updateFacilityInfoDBNet() = viewModelScope.launch {
-        saveFacilityInfoToDB(context)
+        saveFacilityInfoToDB(context, facilityDao)
     }
 
     fun updateMenusDBNet(forWeek: LocalDate = LocalDate.now()) = viewModelScope.launch {
-        saveAllDailyMenusToDBConcurrent(context, forWeek)
+        saveAllDailyMenusToDBConcurrent(context, forWeek, menuDao)
     }
 
     fun deleteOlderThanToday() = viewModelScope.launch {

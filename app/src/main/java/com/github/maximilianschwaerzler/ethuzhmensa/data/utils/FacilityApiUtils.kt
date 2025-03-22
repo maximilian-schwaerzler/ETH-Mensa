@@ -9,6 +9,7 @@ import com.github.kittinunf.fuel.core.ResponseDeserializable
 import com.github.kittinunf.fuel.coroutines.awaitObject
 import com.github.maximilianschwaerzler.ethuzhmensa.R
 import com.github.maximilianschwaerzler.ethuzhmensa.data.LocalFacilityInfo
+import com.github.maximilianschwaerzler.ethuzhmensa.data.db.FacilityDao
 import com.github.maximilianschwaerzler.ethuzhmensa.data.db.MensaDatabase
 import com.github.maximilianschwaerzler.ethuzhmensa.data.db.entities.Facility
 import com.google.gson.JsonObject
@@ -85,10 +86,7 @@ private suspend fun parseFacilityInformation(facilityId: Int): LocalFacilityInfo
  *
  * @param context Application context
  */
-suspend fun saveFacilityInfoToDB(context: Context) = withContext(Dispatchers.IO) {
-    val db = MensaDatabase.getInstance(context)
-    val facilityDao = db.facilityDao()
-
+suspend fun saveFacilityInfoToDB(context: Context, facilityDao: FacilityDao) = withContext(Dispatchers.IO) {
     // Get the facility information from the API
     val mensaIds = context.resources.getIntArray(R.array.id_mensas_with_customer_groups)
     for (facilityId in mensaIds) {

@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">ETH/UZH Mensa</string>
+    <string name="db_name">mensas.db</string>
 </resources>

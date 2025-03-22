@@ -5,9 +5,9 @@ import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.github.maximilianschwaerzler.ethuzhmensa.data.db.FacilityDao
-import com.github.maximilianschwaerzler.ethuzhmensa.data.db.FacilityInfoRepository
+import com.github.maximilianschwaerzler.ethuzhmensa.repository.FacilityRepository
 import com.github.maximilianschwaerzler.ethuzhmensa.data.db.MenuDao
-import com.github.maximilianschwaerzler.ethuzhmensa.data.db.MenuRepository
+import com.github.maximilianschwaerzler.ethuzhmensa.repository.MenuRepository
 import com.github.maximilianschwaerzler.ethuzhmensa.data.db.entities.DailyOfferWithPrices
 import com.github.maximilianschwaerzler.ethuzhmensa.data.utils.saveAllDailyMenusToDBConcurrent
 import com.github.maximilianschwaerzler.ethuzhmensa.data.utils.saveFacilityInfoToDB
@@ -24,7 +24,7 @@ import kotlin.system.measureTimeMillis
 
 @HiltViewModel
 class DebugScreenViewModel @Inject constructor(
-    private val facilityInfoRepo: FacilityInfoRepository,
+    private val facilityInfoRepo: FacilityRepository,
     private val menuRepository: MenuRepository,
     private val menuDao: MenuDao,
     private val facilityDao: FacilityDao,

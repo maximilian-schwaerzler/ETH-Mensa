@@ -6,11 +6,11 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.github.maximilianschwaerzler.ethuzhmensa.R
 import com.github.maximilianschwaerzler.ethuzhmensa.data.db.FacilityDao
-import com.github.maximilianschwaerzler.ethuzhmensa.data.db.FacilityInfoRepository
 import com.github.maximilianschwaerzler.ethuzhmensa.data.db.MenuDao
-import com.github.maximilianschwaerzler.ethuzhmensa.data.db.MenuRepository
 import com.github.maximilianschwaerzler.ethuzhmensa.data.utils.saveAllDailyMenusToDBConcurrent
 import com.github.maximilianschwaerzler.ethuzhmensa.data.utils.saveFacilityInfoToDB
+import com.github.maximilianschwaerzler.ethuzhmensa.repository.FacilityRepository
+import com.github.maximilianschwaerzler.ethuzhmensa.repository.MenuRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.delay
@@ -24,11 +24,12 @@ import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.supervisorScope
 import java.time.LocalDate
+import java.time.chrono.ChronoLocalDate
 import javax.inject.Inject
 
 @HiltViewModel
 class OverviewScreenViewModel @Inject constructor(
-    private val facilityInfoRepo: FacilityInfoRepository,
+    private val facilityInfoRepo: FacilityRepository,
     private val menuRepository: MenuRepository,
     private val menuDao: MenuDao,
     private val facilityDao: FacilityDao,
@@ -48,8 +49,8 @@ class OverviewScreenViewModel @Inject constructor(
     val isRefreshing = _isRefreshing.asStateFlow()
 
     suspend fun shouldUpdateFacilityInfo(): Boolean {
-        val lastFacilityInfoUpdate = dataStoreManager.lastFacilitySyncTime.firstOrNull()
-        if (lastFacilityInfoUpdate == 0L || lastFacilityInfoUpdate == null) {
+        val lastFacilityInfoUpdate = dataStoreManager.lastFacilityFetchDate.firstOrNull()
+        if (lastFacilityInfoUpdate == LocalDate.MIN || lastFacilityInfoUpdate == null) {
             Log.d(
                 "OverviewScreenViewModel",
                 "No facility info update time found, fetching data from the net"
@@ -58,7 +59,7 @@ class OverviewScreenViewModel @Inject constructor(
         } else if (LocalDate.now().minusDays(
                 appContext.resources.getInteger(R.integer.config_facility_info_stale_days)
                     .toLong()
-            ) > LocalDate.ofEpochDay(lastFacilityInfoUpdate)
+            ).isAfter(lastFacilityInfoUpdate as ChronoLocalDate?)
         ) {
             Log.d(
                 "OverviewScreenViewModel",
@@ -74,14 +75,14 @@ class OverviewScreenViewModel @Inject constructor(
     }
 
     suspend fun shouldUpdateMenus(): Boolean {
-        val lastMenuSyncTime = dataStoreManager.lastMenuSyncTime.firstOrNull()
-        if (lastMenuSyncTime == 0L || lastMenuSyncTime == null) {
+        val lastMenuSyncTime = dataStoreManager.lastMenuFetchDate.firstOrNull()
+        if (lastMenuSyncTime == LocalDate.MIN || lastMenuSyncTime == null) {
             Log.d(
                 "OverviewScreenViewModel",
                 "No menu update time found, fetching data from the net"
             )
             return true
-        } else if (LocalDate.ofEpochDay(lastMenuSyncTime).isBefore(LocalDate.now())) {
+        } else if (lastMenuSyncTime.isBefore(LocalDate.now())) {
             Log.d(
                 "OverviewScreenViewModel",
                 "Menu data is older than 1 day, fetching data from the net"
@@ -105,14 +106,14 @@ class OverviewScreenViewModel @Inject constructor(
             if (shouldUpdateFacilityInfo()) {
                 launch {
                     saveFacilityInfoToDB(appContext, facilityDao)
-                    dataStoreManager.setLastFacilitySyncTime(LocalDate.now().toEpochDay())
+                    dataStoreManager.setLastFacilityFetchDate(LocalDate.now())
                 }
             }
 
             if (shouldUpdateMenus()) {
                 launch {
                     saveAllDailyMenusToDBConcurrent(appContext, LocalDate.now(), menuDao)
-                    dataStoreManager.setLastMenuSyncTime(LocalDate.now().toEpochDay())
+                    dataStoreManager.setLastMenuFetchDate(LocalDate.now())
                 }
 
                 // BUG: This is a workaround for the issue that the "Pull to Refresh" animation sometimes does not disappear

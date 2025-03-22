@@ -1,10 +1,11 @@
-package com.github.maximilianschwaerzler.ethuzhmensa.data.db
+package com.github.maximilianschwaerzler.ethuzhmensa.repository
 
+import com.github.maximilianschwaerzler.ethuzhmensa.data.db.MensaDatabase
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
-class FacilityInfoRepository @Inject constructor(
+class FacilityRepository @Inject constructor(
     private val db: MensaDatabase
 ) {
     private val facilityDao = db.facilityDao()

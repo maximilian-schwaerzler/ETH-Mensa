@@ -1,5 +1,6 @@
-package com.github.maximilianschwaerzler.ethuzhmensa.data.db
+package com.github.maximilianschwaerzler.ethuzhmensa.repository
 
+import com.github.maximilianschwaerzler.ethuzhmensa.data.db.MensaDatabase
 import java.time.LocalDate
 import javax.inject.Inject
 

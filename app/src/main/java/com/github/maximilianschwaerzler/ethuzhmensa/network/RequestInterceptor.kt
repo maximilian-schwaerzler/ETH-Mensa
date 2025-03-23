@@ -1,5 +1,6 @@
 package com.github.maximilianschwaerzler.ethuzhmensa.network
 
+import android.util.Log
 import okhttp3.Interceptor
 import okhttp3.Response
 
@@ -13,7 +14,11 @@ internal class RequestInterceptor : Interceptor {
         val originalUrl = originalRequest.url
         val url = originalUrl.newBuilder()
             .addQueryParameter("client-id", "ethz-wcms")
+            .addQueryParameter("rs-first", "0")
+            .addQueryParameter("rs-size", "50")
             .build()
+
+        Log.d("RequestInterceptor", "New url: $url")
 
         val requestBuilder = originalRequest.newBuilder().url(url)
         val request = requestBuilder.build()

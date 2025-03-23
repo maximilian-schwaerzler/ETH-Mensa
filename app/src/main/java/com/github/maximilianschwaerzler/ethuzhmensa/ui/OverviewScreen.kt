@@ -1,6 +1,7 @@
 package com.github.maximilianschwaerzler.ethuzhmensa.ui
 
 import android.content.res.Configuration
+import android.util.Log
 import android.widget.Toast
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -29,6 +30,7 @@ import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.pulltorefresh.PullToRefreshBox
 import androidx.compose.material3.rememberTopAppBarState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.nestedscroll.nestedScroll
@@ -45,7 +47,7 @@ import com.github.maximilianschwaerzler.ethuzhmensa.ui.utils.MensaOverviewCard
 @Composable
 @OptIn(ExperimentalMaterial3Api::class)
 fun OverviewScreen(
-    isRefreshing: Boolean,
+    isLoading: Boolean,
     facilitiesWithOffers: List<Pair<Facility, OfferWithPrices?>>,
     onRefresh: () -> Unit,
     onSettingsNavigate: () -> Unit,
@@ -82,29 +84,37 @@ fun OverviewScreen(
         }
     ) { paddingValues ->
         PullToRefreshBox(
-            isRefreshing,
+            isLoading,
             onRefresh,
             Modifier
                 .padding(paddingValues)
                 .consumeWindowInsets(paddingValues)
+                .fillMaxSize()
         ) {
-            val filteredSortedFacilities =
-                facilitiesWithOffers.filterNot { it.second == null || it.second!!.menus.isEmpty() }.sortedBy { it.first.id }
-            if (filteredSortedFacilities.isNotEmpty()) {
-                LazyColumn(
-                    Modifier.fillMaxSize(),
-                    contentPadding = PaddingValues(8.dp),
-                    verticalArrangement = Arrangement.spacedBy(8.dp)
-                ) {
-                    items(
-                        filteredSortedFacilities,
-                        key = { it.first.id }
+            if (!isLoading) {
+                LaunchedEffect(facilitiesWithOffers) {
+                    Log.d("OverviewScreen", "Facilities with offers: $facilitiesWithOffers")
+                }
+                val filteredSortedFacilities =
+                    facilitiesWithOffers.filterNot { it.second == null || it.second!!.menus.isEmpty() }.sortedBy { it.first.id }
+                if (filteredSortedFacilities.isNotEmpty()) {
+                    LazyColumn(
+                        Modifier.fillMaxSize(),
+                        contentPadding = PaddingValues(8.dp),
+                        verticalArrangement = Arrangement.spacedBy(8.dp)
                     ) {
-                        MensaOverviewCard(it.first, it.second, onDetailScreenNavigate)
+                        items(
+                            filteredSortedFacilities,
+                            key = { it.first.id }
+                        ) {
+                            MensaOverviewCard(it.first, it.second, onDetailScreenNavigate)
+                        }
                     }
+                } else {
+                    NoOffersInfoPanel { onRefresh() }
                 }
             } else {
-                NoOffersInfoPanel { onRefresh() }
+                Text("Loading...")
             }
         }
     }
@@ -147,7 +157,7 @@ fun NoOffersInfoPanel(modifier: Modifier = Modifier, onRefresh: () -> Unit) {
 private fun OverviewScreenPreview() {
     ETHUZHMensaTheme {
         OverviewScreen(
-            isRefreshing = false,
+            isLoading = false,
             facilitiesWithOffers = MockData.facilitiesWithOffers,
             onRefresh = {},
             onSettingsNavigate = {},
@@ -170,7 +180,7 @@ private fun OverviewScreenPreview() {
 private fun OverviewScreenPreviewNoMenus() {
     ETHUZHMensaTheme {
         OverviewScreen(
-            isRefreshing = false,
+            isLoading = false,
             facilitiesWithOffers = emptyList(),
             onRefresh = {},
             onSettingsNavigate = {},

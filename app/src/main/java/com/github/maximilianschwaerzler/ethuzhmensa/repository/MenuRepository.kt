@@ -39,7 +39,7 @@ class MenuRepository @Inject constructor(
         ) {
             Log.d("MenuRepository", "Fetching new menus from API")
             saveAllDailyMenusToDBConcurrent(appContext, LocalDate.now(), menuDao)
-            dataStoreManager.setLastMenuFetchDate(LocalDate.now())
+            dataStoreManager.updateLastMenuFetchDate(LocalDate.now())
             emit(menuDao.getAllOffersForDate(date))
         }
     }.flowOn(Dispatchers.IO)

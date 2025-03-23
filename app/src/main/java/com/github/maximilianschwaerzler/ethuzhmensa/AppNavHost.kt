@@ -1,5 +1,6 @@
 package com.github.maximilianschwaerzler.ethuzhmensa
 
+import android.util.Log
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -48,13 +49,14 @@ fun AppNavHost(modifier: Modifier = Modifier) {
 
         composable<OverviewScreen> {
             val viewModel: OverviewScreenViewModel = hiltViewModel()
-            val isRefreshing = viewModel.isRefreshing.collectAsStateWithLifecycle()
+            val isLoading = viewModel.isLoading.collectAsStateWithLifecycle()
             val facilitiesWithOffers = viewModel.facilitiesWithOffers.collectAsStateWithLifecycle()
+            Log.d("AppNavHost", "Facilities: ${facilitiesWithOffers.value}")
 
             OverviewScreen(
-                isRefreshing = isRefreshing.value,
+                isLoading = isLoading.value,
                 facilitiesWithOffers = facilitiesWithOffers.value,
-                onRefresh = viewModel::onRefresh,
+                onRefresh = viewModel::refreshData,
                 onSettingsNavigate = { navController.navigate(SettingsScreen) },
                 onDetailScreenNavigate = { facilityId ->
                     navController.navigate(

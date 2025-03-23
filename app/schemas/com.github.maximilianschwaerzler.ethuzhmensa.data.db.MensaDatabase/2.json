@@ -1,8 +1,8 @@
 {
   "formatVersion": 1,
   "database": {
-    "version": 1,
-    "identityHash": "5d3d974500eafe9e609b8fda7e6a64e1",
+    "version": 2,
+    "identityHash": "4a254f54773c534ac1ec138888739c71",
     "entities": [
       {
         "tableName": "Facility",
@@ -37,7 +37,7 @@
         "foreignKeys": []
       },
       {
-        "tableName": "DailyOffer",
+        "tableName": "Offer",
         "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `facilityId` INTEGER NOT NULL, `date` INTEGER NOT NULL)",
         "fields": [
           {
@@ -70,7 +70,7 @@
       },
       {
         "tableName": "Menu",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `offerId` INTEGER NOT NULL, `name` TEXT NOT NULL, `mealName` TEXT NOT NULL, `mealDescription` TEXT NOT NULL, `imageUrl` TEXT, FOREIGN KEY(`offerId`) REFERENCES `DailyOffer`(`id`) ON UPDATE NO ACTION ON DELETE CASCADE )",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `offerId` INTEGER NOT NULL, `name` TEXT NOT NULL, `mealName` TEXT NOT NULL, `mealDescription` TEXT NOT NULL, `imageUrl` TEXT, FOREIGN KEY(`offerId`) REFERENCES `Offer`(`id`) ON UPDATE NO ACTION ON DELETE CASCADE )",
         "fields": [
           {
             "fieldPath": "id",
@@ -128,7 +128,7 @@
         ],
         "foreignKeys": [
           {
-            "table": "DailyOffer",
+            "table": "Offer",
             "onDelete": "CASCADE",
             "onUpdate": "NO ACTION",
             "columns": [
@@ -216,7 +216,7 @@
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '5d3d974500eafe9e609b8fda7e6a64e1')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '4a254f54773c534ac1ec138888739c71')"
     ]
   }
 }

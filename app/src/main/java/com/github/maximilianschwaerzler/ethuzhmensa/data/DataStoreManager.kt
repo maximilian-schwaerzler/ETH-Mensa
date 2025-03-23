@@ -17,7 +17,7 @@ class DataStoreManager @Inject constructor(@ApplicationContext appContext: Conte
     val lastMenuFetchDateKey = longPreferencesKey("last_menu_fetch_date")
     val lastFacilityFetchDateKey = longPreferencesKey("last_facility_fetch_date")
 
-    suspend fun setLastMenuFetchDate(date: LocalDate) {
+    suspend fun updateLastMenuFetchDate(date: LocalDate = LocalDate.now()) {
         appDataStore.edit { settings ->
             settings[lastMenuFetchDateKey] = date.toEpochDay()
         }
@@ -30,7 +30,7 @@ class DataStoreManager @Inject constructor(@ApplicationContext appContext: Conte
     }
 
 
-    suspend fun setLastFacilityFetchDate(date: LocalDate) {
+    suspend fun updateLastFacilityFetchDate(date: LocalDate = LocalDate.now()) {
         appDataStore.edit { settings ->
             settings[lastFacilityFetchDateKey] = date.toEpochDay()
         }

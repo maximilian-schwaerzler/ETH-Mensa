@@ -8,7 +8,7 @@ import com.github.maximilianschwaerzler.ethuzhmensa.data2.dto.OfferDto
 import com.google.gson.JsonObject
 import java.time.LocalDate
 
-fun mapJsonOfferToOffersWithPrices(jsonObject: JsonObject): List<OfferDto>? {
+fun mapJsonObjectToOffers(jsonObject: JsonObject): List<OfferDto>? {
     if (jsonObject.isEmpty) {
         Log.e("MenuApiUtils", "JSON data is empty")
         return null
@@ -30,19 +30,19 @@ fun mapJsonOfferToOffersWithPrices(jsonObject: JsonObject): List<OfferDto>? {
             day.asJsonObject.get("opening-hour-array").asJsonArray.get(0).asJsonObject.get("meal-time-array").asJsonArray.get(
                 0
             ).asJsonObject.get("line-array").asJsonArray
-        } catch (e: NullPointerException) {
-            Log.w("MenuApiUtils", "No menu for $date in facility $facilityId")
+        } catch (_: NullPointerException) {
+//            Log.w("MenuMapper", "No menu for $date in facility $facilityId", e)
             continue
         }
         for (menuItem in menus) {
             if (facilityId == 3) {
-                Log.d("MenuApiUtils", "$facilityId; $menuItem")
+                Log.d("MenuMapper", "$facilityId; $menuItem")
             }
             val menuName = menuItem.asJsonObject.get("name").asJsonPrimitive.asString
             val meal = try {
                 menuItem.asJsonObject.get("meal").asJsonObject
-            } catch (e: Exception) {
-                Log.w("MenuApiUtils", "No meal for $menuName in facility $facilityId")
+            } catch (_: Exception) {
+                Log.w("MenuMapper", "No meal for $menuName in facility $facilityId on $date")
                 continue
             }
             val mealName = meal.get("name").asJsonPrimitive.asString
@@ -78,3 +78,4 @@ fun mapJsonOfferToOffersWithPrices(jsonObject: JsonObject): List<OfferDto>? {
 
     return returnList
 }
+

@@ -9,7 +9,8 @@ interface CookpitMenuService {
     @GET("/cookpit-pub-services/v1/weeklyrotas")
     suspend fun fetchMenus(
         @Query("facility") facilityId: Int,
-        @Query("valid-after") date: String,
-        @Query("lang") language: String = "de"
+        @Query("valid-after") dateStart: String,
+        @Query("lang") language: String = "de",
+        @Query("valid-before") dateEnd: String? = null,
     ): Response<JsonObject>
 }

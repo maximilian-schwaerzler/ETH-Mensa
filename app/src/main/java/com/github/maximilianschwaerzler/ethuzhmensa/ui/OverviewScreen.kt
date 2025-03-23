@@ -36,7 +36,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.github.maximilianschwaerzler.ethuzhmensa.data.db.entities.DailyOfferWithPrices
+import com.github.maximilianschwaerzler.ethuzhmensa.data.db.entities.OfferWithPrices
 import com.github.maximilianschwaerzler.ethuzhmensa.data.db.entities.Facility
 import com.github.maximilianschwaerzler.ethuzhmensa.data.utils.MockData
 import com.github.maximilianschwaerzler.ethuzhmensa.ui.theme.ETHUZHMensaTheme
@@ -46,7 +46,7 @@ import com.github.maximilianschwaerzler.ethuzhmensa.ui.utils.MensaOverviewCard
 @OptIn(ExperimentalMaterial3Api::class)
 fun OverviewScreen(
     isRefreshing: Boolean,
-    facilitiesWithOffers: List<Pair<Facility, DailyOfferWithPrices?>>,
+    facilitiesWithOffers: List<Pair<Facility, OfferWithPrices?>>,
     onRefresh: () -> Unit,
     onSettingsNavigate: () -> Unit,
     onDetailScreenNavigate: (facilityId: Int) -> Unit,

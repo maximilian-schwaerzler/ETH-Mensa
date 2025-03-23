@@ -3,10 +3,10 @@ package com.github.maximilianschwaerzler.ethuzhmensa.data.db.entities
 import androidx.room.Embedded
 import androidx.room.Relation
 
-data class DailyOfferWithPrices(
-    @Embedded val dailyOffer: DailyOffer,
+data class OfferWithPrices(
+    @Embedded val offer: Offer,
     @Relation(
-        entity = DailyOffer.Menu::class,
+        entity = Offer.Menu::class,
         parentColumn = "id",
         entityColumn = "offerId"
     )

@@ -57,6 +57,11 @@ dependencies {
     implementation(libs.androidx.ui.tooling.preview)
     implementation(libs.androidx.material3)
     implementation(libs.androidx.navigation.compose)
+    implementation(libs.androidx.window)
+    implementation(libs.androidx.window.core)
+    implementation(libs.androidx.lifecycle.viewmodel.compose)
+    implementation(libs.androidx.hilt.navigation.compose)
+    implementation(libs.androidx.datastore.preferences)
 
     // Fuel HTTP Client
     implementation(libs.fuel)
@@ -64,14 +69,13 @@ dependencies {
     implementation(libs.fuel.coroutines)
     implementation(libs.fuel.gson)
 
+    // Retrofit
+    implementation(libs.retrofit)
+    implementation(libs.retrofit.gson)
+
     // JSON Support
     implementation(libs.kotlinx.serialization.json)
     implementation(libs.gson)
-    implementation(libs.androidx.window)
-    implementation(libs.androidx.window.core)
-    implementation(libs.androidx.lifecycle.viewmodel.compose)
-    implementation(libs.androidx.hilt.navigation.compose)
-    implementation(libs.androidx.datastore.preferences)
 
     // Testing
     testImplementation(libs.junit)

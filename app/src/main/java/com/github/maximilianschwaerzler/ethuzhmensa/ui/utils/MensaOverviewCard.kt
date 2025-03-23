@@ -16,7 +16,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.github.maximilianschwaerzler.ethuzhmensa.data.db.entities.DailyOfferWithPrices
+import com.github.maximilianschwaerzler.ethuzhmensa.data.db.entities.OfferWithPrices
 import com.github.maximilianschwaerzler.ethuzhmensa.data.db.entities.Facility
 import com.github.maximilianschwaerzler.ethuzhmensa.data.utils.MockData
 import com.github.maximilianschwaerzler.ethuzhmensa.data.utils.pricesToString
@@ -25,7 +25,7 @@ import com.github.maximilianschwaerzler.ethuzhmensa.ui.theme.ETHUZHMensaTheme
 @Composable
 fun MensaOverviewCard(
     facility: Facility,
-    offer: DailyOfferWithPrices?,
+    offer: OfferWithPrices?,
     onClick: (facilityId: Int) -> Unit,
     modifier: Modifier = Modifier,
 ) {

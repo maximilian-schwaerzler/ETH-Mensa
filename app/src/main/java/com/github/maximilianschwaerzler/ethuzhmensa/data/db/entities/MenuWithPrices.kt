@@ -4,10 +4,10 @@ import androidx.room.Embedded
 import androidx.room.Relation
 
 data class MenuWithPrices(
-    @Embedded val menu: DailyOffer.Menu,
+    @Embedded val menu: Offer.Menu,
     @Relation(
         parentColumn = "id",
         entityColumn = "menuId"
     )
-    val prices: List<DailyOffer.Menu.MenuPrice>
+    val prices: List<Offer.Menu.MenuPrice>
 )

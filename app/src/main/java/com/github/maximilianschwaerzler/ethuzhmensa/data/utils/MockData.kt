@@ -1,22 +1,22 @@
 package com.github.maximilianschwaerzler.ethuzhmensa.data.utils
 
-import com.github.maximilianschwaerzler.ethuzhmensa.data.db.entities.DailyOffer
-import com.github.maximilianschwaerzler.ethuzhmensa.data.db.entities.DailyOfferWithPrices
+import com.github.maximilianschwaerzler.ethuzhmensa.data.db.entities.Offer
+import com.github.maximilianschwaerzler.ethuzhmensa.data.db.entities.OfferWithPrices
 import com.github.maximilianschwaerzler.ethuzhmensa.data.db.entities.Facility
 import com.github.maximilianschwaerzler.ethuzhmensa.data.db.entities.MenuWithPrices
 import java.time.LocalDate
 
 object MockData {
     val offers = listOf(
-        DailyOfferWithPrices(
-            dailyOffer = DailyOffer(
+        OfferWithPrices(
+            offer = Offer(
                 id = 1219,
                 facilityId = 9,
                 date = LocalDate.of(2025, 2, 17),
             ),
             menus = listOf(
                 MenuWithPrices(
-                    menu = DailyOffer.Menu(
+                    menu = Offer.Menu(
                         id = 29728,
                         offerId = 1219,
                         name = "STREET",
@@ -25,7 +25,7 @@ object MockData {
                         imageUrl = "https://idapps.ethz.ch/cookpit-pub-services/v1/images/38670"
                     ),
                     prices = listOf(
-                        DailyOffer.Menu.MenuPrice(
+                        Offer.Menu.MenuPrice(
                             id = 1,
                             menuId = 29728,
                             price = Price(9.5),
@@ -33,7 +33,7 @@ object MockData {
                             customerGroupDesc = "Studierende",
                             customerGroupDescShort = "Stud."
                         ),
-                        DailyOffer.Menu.MenuPrice(
+                        Offer.Menu.MenuPrice(
                             id = 2,
                             menuId = 29728,
                             price = Price(11.5),
@@ -41,7 +41,7 @@ object MockData {
                             customerGroupDesc = "Interne",
                             customerGroupDescShort = "Int."
                         ),
-                        DailyOffer.Menu.MenuPrice(
+                        Offer.Menu.MenuPrice(
                             id = 3,
                             menuId = 29728,
                             price = Price(15.5),
@@ -52,7 +52,7 @@ object MockData {
                     )
                 ),
                 MenuWithPrices(
-                    menu = DailyOffer.Menu(
+                    menu = Offer.Menu(
                         id = 29729,
                         offerId = 1219,
                         name = "GARDEN",
@@ -60,7 +60,7 @@ object MockData {
                         mealDescription = "Kartoffeln | Bechamel | Spinat | Reibkäse | Spiegelei | Tomatenpesto | Frucht"
                     ),
                     prices = listOf(
-                        DailyOffer.Menu.MenuPrice(
+                        Offer.Menu.MenuPrice(
                             id = 4,
                             menuId = 29729,
                             price = Price(7.0),
@@ -68,7 +68,7 @@ object MockData {
                             customerGroupDesc = "Studierende",
                             customerGroupDescShort = "Stud."
                         ),
-                        DailyOffer.Menu.MenuPrice(
+                        Offer.Menu.MenuPrice(
                             id = 5,
                             menuId = 29729,
                             price = Price(11.5),
@@ -76,7 +76,7 @@ object MockData {
                             customerGroupDesc = "Interne",
                             customerGroupDescShort = "Int."
                         ),
-                        DailyOffer.Menu.MenuPrice(
+                        Offer.Menu.MenuPrice(
                             id = 6,
                             menuId = 29729,
                             price = Price(14.5),
@@ -88,15 +88,15 @@ object MockData {
                 )
             )
         ),
-        DailyOfferWithPrices(
-            dailyOffer = DailyOffer(
+        OfferWithPrices(
+            offer = Offer(
                 id = 1220,
                 facilityId = 9,
                 date = LocalDate.of(2025, 2, 18),
             ),
             menus = listOf(
                 MenuWithPrices(
-                    menu = DailyOffer.Menu(
+                    menu = Offer.Menu(
                         id = 37222,
                         offerId = 1220,
                         name = "STREET",
@@ -104,7 +104,7 @@ object MockData {
                         mealDescription = "-"
                     ),
                     prices = listOf(
-                        DailyOffer.Menu.MenuPrice(
+                        Offer.Menu.MenuPrice(
                             id = 10,
                             menuId = 37222,
                             price = Price(11.5),
@@ -112,7 +112,7 @@ object MockData {
                             customerGroupDesc = "Studierende",
                             customerGroupDescShort = "Stud."
                         ),
-                        DailyOffer.Menu.MenuPrice(
+                        Offer.Menu.MenuPrice(
                             id = 11,
                             menuId = 37222,
                             price = Price(13.5),
@@ -120,7 +120,7 @@ object MockData {
                             customerGroupDesc = "Interne",
                             customerGroupDescShort = "Int."
                         ),
-                        DailyOffer.Menu.MenuPrice(
+                        Offer.Menu.MenuPrice(
                             id = 12,
                             menuId = 37222,
                             price = Price(17.5),
@@ -131,7 +131,7 @@ object MockData {
                     )
                 ),
                 MenuWithPrices(
-                    menu = DailyOffer.Menu(
+                    menu = Offer.Menu(
                         id = 37223,
                         offerId = 1220,
                         name = "GARDEN",
@@ -139,7 +139,7 @@ object MockData {
                         mealDescription = "Tofu | Ei | Weizennudeln | Frühlingszwiebeln | Zucchetti | Erdnüsse | Tamarinden | Sojasauce | Limette"
                     ),
                     prices = listOf(
-                        DailyOffer.Menu.MenuPrice(
+                        Offer.Menu.MenuPrice(
                             id = 13,
                             menuId = 37223,
                             price = Price(7.0),
@@ -147,7 +147,7 @@ object MockData {
                             customerGroupDesc = "Studierende",
                             customerGroupDescShort = "Stud."
                         ),
-                        DailyOffer.Menu.MenuPrice(
+                        Offer.Menu.MenuPrice(
                             id = 14,
                             menuId = 37223,
                             price = Price(11.5),
@@ -155,7 +155,7 @@ object MockData {
                             customerGroupDesc = "Interne",
                             customerGroupDescShort = "Int."
                         ),
-                        DailyOffer.Menu.MenuPrice(
+                        Offer.Menu.MenuPrice(
                             id = 15,
                             menuId = 37223,
                             price = Price(14.5),
@@ -244,6 +244,6 @@ object MockData {
 
     val facilitiesWithOffers =
         facilities.map { facility ->
-            facility to offers.find { it.dailyOffer.facilityId == facility.id }
+            facility to offers.find { it.offer.facilityId == facility.id }
         }
 }

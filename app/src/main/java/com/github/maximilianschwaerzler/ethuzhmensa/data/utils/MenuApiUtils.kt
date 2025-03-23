@@ -10,7 +10,7 @@ import com.github.kittinunf.fuel.coroutines.awaitObject
 import com.github.maximilianschwaerzler.ethuzhmensa.R
 import com.github.maximilianschwaerzler.ethuzhmensa.data.LocalDailyMenu
 import com.github.maximilianschwaerzler.ethuzhmensa.data.db.MenuDao
-import com.github.maximilianschwaerzler.ethuzhmensa.data.db.entities.DailyOffer
+import com.github.maximilianschwaerzler.ethuzhmensa.data.db.entities.Offer
 import com.google.gson.JsonObject
 import com.google.gson.JsonParser
 import kotlinx.coroutines.Dispatchers
@@ -171,14 +171,14 @@ suspend fun saveDailyMenusForFacilityDateToDB(
 ) {
     val localDailyMenus = parseMenuJson(facilityId, forWeek)
     for (localDailyMenu in localDailyMenus) {
-        val dailyOffer = DailyOffer(
+        val offer = Offer(
             id = 0,
             facilityId = localDailyMenu.facilityId!!,
             date = localDailyMenu.date!!
         )
-        val dailyOfferId = menuDao.insertOffer(dailyOffer)
+        val dailyOfferId = menuDao.insertOffer(offer)
         for (localMenuOption in localDailyMenu.menuOptions) {
-            val menu = DailyOffer.Menu(
+            val menu = Offer.Menu(
                 id = 0,
                 offerId = dailyOfferId,
                 name = localMenuOption.name!!,
@@ -188,7 +188,7 @@ suspend fun saveDailyMenusForFacilityDateToDB(
             )
             val menuId = menuDao.insertMenu(menu)
             for (localMenuPrice in localMenuOption.pricing) {
-                val price = DailyOffer.Menu.MenuPrice(
+                val price = Offer.Menu.MenuPrice(
                     id = 0,
                     menuId = menuId,
                     price = localMenuPrice.price!!,

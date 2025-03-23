@@ -8,7 +8,7 @@ import com.github.maximilianschwaerzler.ethuzhmensa.data.db.FacilityDao
 import com.github.maximilianschwaerzler.ethuzhmensa.repository.FacilityRepository
 import com.github.maximilianschwaerzler.ethuzhmensa.data.db.MenuDao
 import com.github.maximilianschwaerzler.ethuzhmensa.repository.MenuRepository
-import com.github.maximilianschwaerzler.ethuzhmensa.data.db.entities.DailyOfferWithPrices
+import com.github.maximilianschwaerzler.ethuzhmensa.data.db.entities.OfferWithPrices
 import com.github.maximilianschwaerzler.ethuzhmensa.data.utils.saveAllDailyMenusToDBConcurrent
 import com.github.maximilianschwaerzler.ethuzhmensa.data.utils.saveFacilityInfoToDB
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -30,7 +30,7 @@ class DebugScreenViewModel @Inject constructor(
     private val facilityDao: FacilityDao,
     @ApplicationContext val context: Context
 ) : ViewModel() {
-    private val _offers = MutableStateFlow(emptyList<DailyOfferWithPrices>())
+    private val _offers = MutableStateFlow(emptyList<OfferWithPrices>())
     val offers = _offers.asStateFlow()
 
     private val _isRefreshing = MutableStateFlow(false)

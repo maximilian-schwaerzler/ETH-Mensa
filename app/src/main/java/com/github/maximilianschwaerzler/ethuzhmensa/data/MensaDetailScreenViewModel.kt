@@ -4,7 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.github.maximilianschwaerzler.ethuzhmensa.repository.FacilityRepository
 import com.github.maximilianschwaerzler.ethuzhmensa.repository.MenuRepository
-import com.github.maximilianschwaerzler.ethuzhmensa.data.db.entities.DailyOfferWithPrices
+import com.github.maximilianschwaerzler.ethuzhmensa.data.db.entities.OfferWithPrices
 import com.github.maximilianschwaerzler.ethuzhmensa.data.db.entities.Facility
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -20,7 +20,7 @@ class MensaDetailScreenViewModel @Inject constructor(
 //    @ApplicationContext val appContext: Context,
 //    private val dataStoreManager: DataStoreManager
 ) : ViewModel() {
-    private val _menus = MutableStateFlow<DailyOfferWithPrices?>(null)
+    private val _menus = MutableStateFlow<OfferWithPrices?>(null)
     val menus = _menus.asStateFlow()
 
     private val _facility = MutableStateFlow<Facility?>(null)

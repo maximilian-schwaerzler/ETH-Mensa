@@ -1,14 +1,14 @@
 package com.github.maximilianschwaerzler.ethuzhmensa.data.db.entities
 
-import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.ForeignKey
+import androidx.room.Index
 import androidx.room.PrimaryKey
 import com.github.maximilianschwaerzler.ethuzhmensa.data.utils.Price
 import java.time.LocalDate
 
 @Entity
-data class DailyOffer(
+data class Offer(
     @PrimaryKey(autoGenerate = true) val id: Long,
     val facilityId: Int,
     val date: LocalDate
@@ -16,16 +16,17 @@ data class DailyOffer(
     @Entity(
         foreignKeys = [
             ForeignKey(
-                entity = DailyOffer::class,
+                entity = Offer::class,
                 parentColumns = ["id"],
                 childColumns = ["offerId"],
                 onDelete = ForeignKey.CASCADE
             )
-        ]
+        ],
+        indices = [Index("offerId")]
     )
     data class Menu(
         @PrimaryKey(autoGenerate = true) val id: Long,
-        @ColumnInfo(index = true) val offerId: Long,
+        val offerId: Long,
         val name: String,
         val mealName: String,
         val mealDescription: String,
@@ -39,11 +40,12 @@ data class DailyOffer(
                     childColumns = ["menuId"],
                     onDelete = ForeignKey.CASCADE
                 )
-            ]
+            ],
+            indices = [Index("menuId")]
         )
         data class MenuPrice(
             @PrimaryKey(autoGenerate = true) val id: Long,
-            @ColumnInfo(index = true) val menuId: Long,
+            val menuId: Long,
             val price: Price,
             val customerGroupId: Int,
             val customerGroupDesc: String,

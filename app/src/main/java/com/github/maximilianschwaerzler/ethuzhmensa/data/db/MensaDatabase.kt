@@ -22,7 +22,6 @@ abstract class MensaDatabase : RoomDatabase() {
     abstract fun facilityDao(): FacilityDao
     abstract fun menuDao(): MenuDao
 
-
     @RenameTable(
         fromTableName = "DailyOffer",
         toTableName = "Offer"

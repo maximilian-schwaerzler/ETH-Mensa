@@ -11,8 +11,7 @@ class FacilityRepository @Inject constructor(
     private val facilityDao = db.facilityDao()
 
     fun observeAllFacilities() = facilityDao.observeAll()
-    suspend fun getAllFacilities() =
-        withContext(Dispatchers.IO) { facilityDao.getAll() }
+    suspend fun getAllFacilities() = facilityDao.getAll()
 
     suspend fun getFacilityById(facilityId: Int) = withContext(Dispatchers.IO) {
         facilityDao.loadById(facilityId)

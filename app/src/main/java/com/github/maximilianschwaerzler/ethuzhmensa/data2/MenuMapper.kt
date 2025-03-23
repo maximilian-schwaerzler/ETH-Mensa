@@ -10,7 +10,7 @@ import java.time.LocalDate
 
 fun mapJsonObjectToOffers(jsonObject: JsonObject): List<OfferDto>? {
     if (jsonObject.isEmpty) {
-        Log.e("MenuApiUtils", "JSON data is empty")
+//        Log.e("MenuApiUtils", "JSON data is empty")
         return null
     }
     val returnList = mutableListOf<OfferDto>()
@@ -36,13 +36,13 @@ fun mapJsonObjectToOffers(jsonObject: JsonObject): List<OfferDto>? {
         }
         for (menuItem in menus) {
             if (facilityId == 3) {
-                Log.d("MenuMapper", "$facilityId; $menuItem")
+//                Log.d("MenuMapper", "$facilityId; $menuItem")
             }
             val menuName = menuItem.asJsonObject.get("name").asJsonPrimitive.asString
             val meal = try {
                 menuItem.asJsonObject.get("meal").asJsonObject
             } catch (_: Exception) {
-                Log.w("MenuMapper", "No meal for $menuName in facility $facilityId on $date")
+//                Log.w("MenuMapper", "No meal for $menuName in facility $facilityId on $date")
                 continue
             }
             val mealName = meal.get("name").asJsonPrimitive.asString

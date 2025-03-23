@@ -16,21 +16,22 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.github.maximilianschwaerzler.ethuzhmensa.data.db.entities.OfferWithPrices
 import com.github.maximilianschwaerzler.ethuzhmensa.data.db.entities.Facility
+import com.github.maximilianschwaerzler.ethuzhmensa.data.db.entities.OfferWithPrices
 import com.github.maximilianschwaerzler.ethuzhmensa.data.utils.MockData
 import com.github.maximilianschwaerzler.ethuzhmensa.data.utils.pricesToString
 import com.github.maximilianschwaerzler.ethuzhmensa.ui.theme.ETHUZHMensaTheme
+import java.time.LocalDate
 
 @Composable
 fun MensaOverviewCard(
     facility: Facility,
     offer: OfferWithPrices?,
-    onClick: (facilityId: Int) -> Unit,
+    onClick: (facilityId: Int, date: LocalDate) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     OutlinedCard(
-        { onClick(facility.id) },
+        { onClick(facility.id, offer?.offer?.date ?: LocalDate.now()) },
         modifier.fillMaxWidth(),
         elevation = CardDefaults.elevatedCardElevation(),
         colors = CardDefaults.cardColors(
@@ -98,7 +99,7 @@ fun MensaOverviewCardPreview() {
             MensaOverviewCard(
                 facility = MockData.facilities.first(),
                 offer = MockData.offers.first(),
-                onClick = {}
+                onClick = { _, _ -> }
             )
         }
     }

@@ -49,23 +49,23 @@ class MenuRepository2 @Inject constructor(
                 launch {
                     val apiResponse = fetchOfferForFacility(facilityId)
                     if (!apiResponse.isSuccessful) {
-                        Log.e(
-                            "MenuRepository2", "API call to facility $facilityId failed",
-                            RuntimeException(apiResponse.errorBody()?.string())
-                        )
+//                        Log.e(
+//                            "MenuRepository2", "API call to facility $facilityId failed",
+//                            RuntimeException(apiResponse.errorBody()?.string())
+//                        )
                         return@launch
                     }
                     val apiResponseBody = apiResponse.body()!!
-                    Log.d(
-                        "MenuRepository2",
-                        "API response for facility $facilityId: $apiResponseBody"
-                    )
+//                    Log.d(
+//                        "MenuRepository2",
+//                        "API response for facility $facilityId: $apiResponseBody"
+//                    )
                     val offers = mapJsonObjectToOffers(apiResponseBody)
                     if (offers == null) {
-                        Log.d(
-                            "MenuRepository2",
-                            "Failed to map JSON object to offers for facility $facilityId"
-                        )
+//                        Log.d(
+//                            "MenuRepository2",
+//                            "Failed to map JSON object to offers for facility $facilityId"
+//                        )
                         return@launch
                     }
 
@@ -106,14 +106,14 @@ class MenuRepository2 @Inject constructor(
 
     suspend fun getOffersForDate(date: LocalDate): List<OfferWithPrices> {
         val lastMenuFetchDate = dataStoreManager.lastMenuFetchDate.first()
-        Log.d("MenuRepository2", "Last menu fetch date: $lastMenuFetchDate")
+//        Log.d("MenuRepository2", "Last menu fetch date: $lastMenuFetchDate")
         if (lastMenuFetchDate.get(IsoFields.WEEK_OF_WEEK_BASED_YEAR) != date.get(
                 IsoFields.WEEK_OF_WEEK_BASED_YEAR
             )
         ) {
-            Log.d("MenuRepository2", "Fetching new menus from API")
+//            Log.d("MenuRepository2", "Fetching new menus from API")
             saveAllMenusToDB()
-            dataStoreManager.updateLastMenuFetchDate(LocalDate.MIN)
+            dataStoreManager.updateLastMenuFetchDate()
         }
         return menuDao.getAllOffersForDate(date)
     }

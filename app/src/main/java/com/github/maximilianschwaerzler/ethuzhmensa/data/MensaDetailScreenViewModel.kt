@@ -26,12 +26,12 @@ class MensaDetailScreenViewModel @Inject constructor(
     private val _facility = MutableStateFlow<Facility?>(null)
     val facility = _facility.asStateFlow()
 
-    fun loadFacilityAndMenus(facilityId: Int) = viewModelScope.launch {
+    fun loadFacilityAndMenus(facilityId: Int, date: LocalDate) = viewModelScope.launch {
         facilityInfoRepo.getFacilityById(facilityId).let {
             _facility.value = it
         }
 
-        menuRepository.getOfferForFacilityDate(facilityId, LocalDate.now()).let {
+        menuRepository.getOfferForFacilityDate(facilityId, date).let {
             _menus.value = it
         }
     }

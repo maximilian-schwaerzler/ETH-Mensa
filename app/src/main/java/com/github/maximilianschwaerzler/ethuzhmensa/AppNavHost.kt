@@ -1,6 +1,5 @@
 package com.github.maximilianschwaerzler.ethuzhmensa
 
-import android.util.Log
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -17,7 +16,31 @@ import com.github.maximilianschwaerzler.ethuzhmensa.ui.MensaDetailScreen
 import com.github.maximilianschwaerzler.ethuzhmensa.ui.OverviewScreen
 import com.github.maximilianschwaerzler.ethuzhmensa.ui.SettingsScreen
 import com.github.maximilianschwaerzler.ethuzhmensa.ui.SplashScreen
+import kotlinx.serialization.KSerializer
 import kotlinx.serialization.Serializable
+import kotlinx.serialization.descriptors.PrimitiveKind
+import kotlinx.serialization.descriptors.PrimitiveSerialDescriptor
+import kotlinx.serialization.descriptors.SerialDescriptor
+import kotlinx.serialization.encoding.Decoder
+import kotlinx.serialization.encoding.Encoder
+import java.time.LocalDate
+
+object LocalDateAsLong : KSerializer<LocalDate> {
+    // Serial names of descriptors should be unique, this is why we advise including app package in the name.
+    override val descriptor: SerialDescriptor =
+        PrimitiveSerialDescriptor(
+            "com.github.maximilianschwaerzler.ethuzhmensa.LocalDate",
+            PrimitiveKind.LONG
+        )
+
+    override fun serialize(encoder: Encoder, value: LocalDate) {
+        encoder.encodeLong(value.toEpochDay())
+    }
+
+    override fun deserialize(decoder: Decoder): LocalDate {
+        return LocalDate.ofEpochDay(decoder.decodeLong())
+    }
+}
 
 @Serializable
 object SplashScreen
@@ -32,7 +55,10 @@ object OverviewScreen
 object SettingsScreen
 
 @Serializable
-data class MensaDetailScreen(val facilityId: Int)
+data class MensaDetailScreen(
+    val facilityId: Int,
+    val date: Long
+)
 
 @Composable
 fun AppNavHost(modifier: Modifier = Modifier) {
@@ -51,18 +77,15 @@ fun AppNavHost(modifier: Modifier = Modifier) {
             val viewModel: OverviewScreenViewModel = hiltViewModel()
             val isLoading = viewModel.isLoading.collectAsStateWithLifecycle()
             val facilitiesWithOffers = viewModel.facilitiesWithOffers.collectAsStateWithLifecycle()
-            Log.d("AppNavHost", "Facilities: ${facilitiesWithOffers.value}")
 
             OverviewScreen(
                 isLoading = isLoading.value,
                 facilitiesWithOffers = facilitiesWithOffers.value,
                 onRefresh = viewModel::refreshData,
                 onSettingsNavigate = { navController.navigate(SettingsScreen) },
-                onDetailScreenNavigate = { facilityId ->
+                onDetailScreenNavigate = { facilityId, date ->
                     navController.navigate(
-                        MensaDetailScreen(
-                            facilityId
-                        )
+                        MensaDetailScreen(facilityId, date.toEpochDay())
                     )
                 }
             )
@@ -74,8 +97,11 @@ fun AppNavHost(modifier: Modifier = Modifier) {
 
         composable<MensaDetailScreen> {
             val viewModel: MensaDetailScreenViewModel = hiltViewModel()
-            val facilityId = it.toRoute<MensaDetailScreen>().facilityId
-            viewModel.loadFacilityAndMenus(facilityId)
+            val mensaDetailScreenRoute = it.toRoute<MensaDetailScreen>()
+            viewModel.loadFacilityAndMenus(
+                mensaDetailScreenRoute.facilityId,
+                mensaDetailScreenRoute.date.let { LocalDate.ofEpochDay(it) }
+            )
             val facility = viewModel.facility.collectAsStateWithLifecycle()
             val menus = viewModel.menus.collectAsStateWithLifecycle()
             MensaDetailScreen(

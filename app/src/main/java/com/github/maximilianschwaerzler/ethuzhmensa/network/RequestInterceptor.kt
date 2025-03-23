@@ -18,7 +18,7 @@ internal class RequestInterceptor : Interceptor {
             .addQueryParameter("rs-size", "50")
             .build()
 
-        Log.d("RequestInterceptor", "New url: $url")
+//        Log.d("RequestInterceptor", "New url: $url")
 
         val requestBuilder = originalRequest.newBuilder().url(url)
         val request = requestBuilder.build()

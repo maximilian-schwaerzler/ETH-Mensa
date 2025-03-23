@@ -1,7 +1,6 @@
 package com.github.maximilianschwaerzler.ethuzhmensa.ui
 
 import android.content.res.Configuration
-import android.util.Log
 import android.widget.Toast
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -30,7 +29,6 @@ import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.pulltorefresh.PullToRefreshBox
 import androidx.compose.material3.rememberTopAppBarState
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.nestedscroll.nestedScroll
@@ -38,11 +36,12 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.github.maximilianschwaerzler.ethuzhmensa.data.db.entities.OfferWithPrices
 import com.github.maximilianschwaerzler.ethuzhmensa.data.db.entities.Facility
+import com.github.maximilianschwaerzler.ethuzhmensa.data.db.entities.OfferWithPrices
 import com.github.maximilianschwaerzler.ethuzhmensa.data.utils.MockData
 import com.github.maximilianschwaerzler.ethuzhmensa.ui.theme.ETHUZHMensaTheme
 import com.github.maximilianschwaerzler.ethuzhmensa.ui.utils.MensaOverviewCard
+import java.time.LocalDate
 
 @Composable
 @OptIn(ExperimentalMaterial3Api::class)
@@ -51,7 +50,7 @@ fun OverviewScreen(
     facilitiesWithOffers: List<Pair<Facility, OfferWithPrices?>>,
     onRefresh: () -> Unit,
     onSettingsNavigate: () -> Unit,
-    onDetailScreenNavigate: (facilityId: Int) -> Unit,
+    onDetailScreenNavigate: (facilityId: Int, date: LocalDate) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior(rememberTopAppBarState())
@@ -89,14 +88,16 @@ fun OverviewScreen(
             Modifier
                 .padding(paddingValues)
                 .consumeWindowInsets(paddingValues)
-                .fillMaxSize()
+                .fillMaxSize(),
+            contentAlignment = Alignment.Center
         ) {
             if (!isLoading) {
-                LaunchedEffect(facilitiesWithOffers) {
-                    Log.d("OverviewScreen", "Facilities with offers: $facilitiesWithOffers")
-                }
+//                LaunchedEffect(facilitiesWithOffers) {
+//                    Log.d("OverviewScreen", "Facilities with offers: $facilitiesWithOffers")
+//                }
                 val filteredSortedFacilities =
-                    facilitiesWithOffers.filterNot { it.second == null || it.second!!.menus.isEmpty() }.sortedBy { it.first.id }
+                    facilitiesWithOffers.filterNot { it.second == null || it.second!!.menus.isEmpty() }
+                        .sortedBy { it.first.id }
                 if (filteredSortedFacilities.isNotEmpty()) {
                     LazyColumn(
                         Modifier.fillMaxSize(),
@@ -161,7 +162,7 @@ private fun OverviewScreenPreview() {
             facilitiesWithOffers = MockData.facilitiesWithOffers,
             onRefresh = {},
             onSettingsNavigate = {},
-            onDetailScreenNavigate = {}
+            onDetailScreenNavigate = { _, _ -> }
         )
     }
 }
@@ -184,7 +185,7 @@ private fun OverviewScreenPreviewNoMenus() {
             facilitiesWithOffers = emptyList(),
             onRefresh = {},
             onSettingsNavigate = {},
-            onDetailScreenNavigate = {}
+            onDetailScreenNavigate = { _, _ -> }
         )
     }
 }

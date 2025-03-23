@@ -17,8 +17,6 @@ import javax.inject.Inject
 class MensaDetailScreenViewModel @Inject constructor(
     private val facilityInfoRepo: FacilityRepository,
     private val menuRepository: MenuRepository,
-//    @ApplicationContext val appContext: Context,
-//    private val dataStoreManager: DataStoreManager
 ) : ViewModel() {
     private val _menus = MutableStateFlow<OfferWithPrices?>(null)
     val menus = _menus.asStateFlow()

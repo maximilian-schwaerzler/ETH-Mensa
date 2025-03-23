@@ -1,12 +1,12 @@
-package com.github.maximilianschwaerzler.ethuzhmensa.data2
+package com.github.maximilianschwaerzler.ethuzhmensa.repository
 
 import android.content.Context
-import android.util.Log
 import com.github.maximilianschwaerzler.ethuzhmensa.R
 import com.github.maximilianschwaerzler.ethuzhmensa.data.DataStoreManager
 import com.github.maximilianschwaerzler.ethuzhmensa.data.db.MenuDao
 import com.github.maximilianschwaerzler.ethuzhmensa.data.db.entities.Offer
 import com.github.maximilianschwaerzler.ethuzhmensa.data.db.entities.OfferWithPrices
+import com.github.maximilianschwaerzler.ethuzhmensa.data2.mapJsonObjectToOffers
 import com.github.maximilianschwaerzler.ethuzhmensa.network.services.CookpitMenuService
 import com.google.gson.JsonObject
 import dagger.hilt.android.qualifiers.ApplicationContext
@@ -49,23 +49,11 @@ class MenuRepository2 @Inject constructor(
                 launch {
                     val apiResponse = fetchOfferForFacility(facilityId)
                     if (!apiResponse.isSuccessful) {
-//                        Log.e(
-//                            "MenuRepository2", "API call to facility $facilityId failed",
-//                            RuntimeException(apiResponse.errorBody()?.string())
-//                        )
                         return@launch
                     }
                     val apiResponseBody = apiResponse.body()!!
-//                    Log.d(
-//                        "MenuRepository2",
-//                        "API response for facility $facilityId: $apiResponseBody"
-//                    )
                     val offers = mapJsonObjectToOffers(apiResponseBody)
                     if (offers == null) {
-//                        Log.d(
-//                            "MenuRepository2",
-//                            "Failed to map JSON object to offers for facility $facilityId"
-//                        )
                         return@launch
                     }
 
@@ -107,15 +95,16 @@ class MenuRepository2 @Inject constructor(
     suspend fun getOffersForDate(date: LocalDate): List<OfferWithPrices> {
         val lastMenuFetchDate = dataStoreManager.lastMenuFetchDate.first()
 //        Log.d("MenuRepository2", "Last menu fetch date: $lastMenuFetchDate")
-        if (lastMenuFetchDate.get(IsoFields.WEEK_OF_WEEK_BASED_YEAR) != date.get(
+        var offers = menuDao.getAllOffersForDate(date)
+        if (offers.isEmpty() && lastMenuFetchDate.get(IsoFields.WEEK_OF_WEEK_BASED_YEAR) != date.get(
                 IsoFields.WEEK_OF_WEEK_BASED_YEAR
             )
         ) {
-//            Log.d("MenuRepository2", "Fetching new menus from API")
             saveAllMenusToDB()
             dataStoreManager.updateLastMenuFetchDate()
+            offers = menuDao.getAllOffersForDate(date)
         }
-        return menuDao.getAllOffersForDate(date)
+        return offers
     }
 
     enum class Language(val lang: String) {

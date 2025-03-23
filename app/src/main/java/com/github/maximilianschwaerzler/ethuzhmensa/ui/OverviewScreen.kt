@@ -91,32 +91,32 @@ fun OverviewScreen(
                 .fillMaxSize(),
             contentAlignment = Alignment.Center
         ) {
-            if (!isLoading) {
+//            if (!isLoading) {
 //                LaunchedEffect(facilitiesWithOffers) {
 //                    Log.d("OverviewScreen", "Facilities with offers: $facilitiesWithOffers")
 //                }
-                val filteredSortedFacilities =
-                    facilitiesWithOffers.filterNot { it.second == null || it.second!!.menus.isEmpty() }
-                        .sortedBy { it.first.id }
-                if (filteredSortedFacilities.isNotEmpty()) {
-                    LazyColumn(
-                        Modifier.fillMaxSize(),
-                        contentPadding = PaddingValues(8.dp),
-                        verticalArrangement = Arrangement.spacedBy(8.dp)
+            val filteredSortedFacilities =
+                facilitiesWithOffers.filterNot { it.second == null || it.second!!.menus.isEmpty() }
+                    .sortedBy { it.first.id }
+            if (filteredSortedFacilities.isNotEmpty()) {
+                LazyColumn(
+                    Modifier.fillMaxSize(),
+                    contentPadding = PaddingValues(8.dp),
+                    verticalArrangement = Arrangement.spacedBy(8.dp)
+                ) {
+                    items(
+                        filteredSortedFacilities,
+                        key = { it.first.id }
                     ) {
-                        items(
-                            filteredSortedFacilities,
-                            key = { it.first.id }
-                        ) {
-                            MensaOverviewCard(it.first, it.second, onDetailScreenNavigate)
-                        }
+                        MensaOverviewCard(it.first, it.second, onDetailScreenNavigate)
                     }
-                } else {
-                    NoOffersInfoPanel { onRefresh() }
                 }
             } else {
-                Text("Loading...")
+                NoOffersInfoPanel { onRefresh() }
             }
+//            } else {
+//                Text("Loading...")
+//            }
         }
     }
 }

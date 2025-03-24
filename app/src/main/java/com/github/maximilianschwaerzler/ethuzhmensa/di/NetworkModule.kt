@@ -1,6 +1,7 @@
 package com.github.maximilianschwaerzler.ethuzhmensa.di
 
 import com.github.maximilianschwaerzler.ethuzhmensa.network.RequestInterceptor
+import com.github.maximilianschwaerzler.ethuzhmensa.network.services.CookpitFacilityService
 import com.github.maximilianschwaerzler.ethuzhmensa.network.services.CookpitMenuService
 import dagger.Module
 import dagger.Provides
@@ -12,8 +13,9 @@ import retrofit2.converter.gson.GsonConverterFactory
 import javax.inject.Qualifier
 import javax.inject.Singleton
 
+@MustBeDocumented
+@Retention(AnnotationRetention.RUNTIME)
 @Qualifier
-@Retention(AnnotationRetention.BINARY)
 annotation class CookpitRetrofitClient
 
 @Module
@@ -22,7 +24,7 @@ object NetworkModule {
     @CookpitRetrofitClient
     @Provides
     @Singleton
-    fun provideRetrofitClient(): Retrofit {
+    fun provideCookpitRetrofitClient(): Retrofit {
         return Retrofit.Builder()
             .client(
                 OkHttpClient.Builder()
@@ -38,5 +40,11 @@ object NetworkModule {
     @Singleton
     fun provideCookpitMenuService(@CookpitRetrofitClient client: Retrofit): CookpitMenuService {
         return client.create(CookpitMenuService::class.java)
+    }
+
+    @Provides
+    @Singleton
+    fun provideCookpitFacilityService(@CookpitRetrofitClient client: Retrofit): CookpitFacilityService {
+        return client.create(CookpitFacilityService::class.java)
     }
 }

@@ -22,8 +22,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.github.maximilianschwaerzler.ethuzhmensa.data.db.entities.OfferWithPrices
 import com.github.maximilianschwaerzler.ethuzhmensa.data.db.entities.Facility
+import com.github.maximilianschwaerzler.ethuzhmensa.data.db.entities.OfferWithPrices
 import com.github.maximilianschwaerzler.ethuzhmensa.data.utils.MockData
 import com.github.maximilianschwaerzler.ethuzhmensa.ui.theme.ETHUZHMensaTheme
 import com.github.maximilianschwaerzler.ethuzhmensa.ui.utils.MenuDetailItem
@@ -37,6 +37,7 @@ fun MensaDetailScreen(
     modifier: Modifier = Modifier,
 ) {
     Scaffold(
+        modifier,
         containerColor = MaterialTheme.colorScheme.background,
         contentColor = MaterialTheme.colorScheme.onBackground,
         topBar = {
@@ -69,11 +70,14 @@ fun MensaDetailScreen(
         ) {
             if (facility != null && offer != null) {
                 Column {
-                    val showImages = !offer.menus.any { it.menu.imageUrl.isNullOrBlank() }
+//                    val showImages = !offer.menus.any { it.menu.imageUrl.isNullOrBlank() }
                     offer.menus.forEachIndexed { index, menu ->
-                        MenuDetailItem(menu = menu, showImage = showImages)
+                        MenuDetailItem(menu = menu, showImage = menu.menu.imageUrl != null)
                         if (index < offer.menus.size - 1) {
-                            HorizontalDivider(thickness = 5.dp, color = MaterialTheme.colorScheme.onPrimary)
+                            HorizontalDivider(
+                                thickness = 5.dp,
+                                color = MaterialTheme.colorScheme.onPrimary
+                            )
                         }
                     }
                 }
@@ -82,11 +86,13 @@ fun MensaDetailScreen(
     }
 }
 
-@Preview(showSystemUi = true, showBackground = true,
+@Preview(
+    showSystemUi = true, showBackground = true,
     wallpaper = androidx.compose.ui.tooling.preview.Wallpapers.BLUE_DOMINATED_EXAMPLE,
     uiMode = android.content.res.Configuration.UI_MODE_NIGHT_NO or android.content.res.Configuration.UI_MODE_TYPE_NORMAL
 )
-@Preview(showSystemUi = true, showBackground = true,
+@Preview(
+    showSystemUi = true, showBackground = true,
     wallpaper = androidx.compose.ui.tooling.preview.Wallpapers.BLUE_DOMINATED_EXAMPLE,
     uiMode = android.content.res.Configuration.UI_MODE_NIGHT_YES or android.content.res.Configuration.UI_MODE_TYPE_NORMAL
 )

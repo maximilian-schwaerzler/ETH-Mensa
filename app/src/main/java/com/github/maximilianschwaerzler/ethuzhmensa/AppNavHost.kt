@@ -82,7 +82,10 @@ fun AppNavHost(modifier: Modifier = Modifier) {
                 isLoading = isLoading.value,
                 facilitiesWithOffers = facilitiesWithOffers.value,
                 onRefresh = viewModel::refreshData,
-                onSettingsNavigate = { navController.navigate(SettingsScreen) },
+                onSettingsNavigate = {
+                    navController.navigate(SettingsScreen)
+//                    viewModel.getFacility()
+                },
                 onDetailScreenNavigate = { facilityId, date ->
                     navController.navigate(
                         MensaDetailScreen(facilityId, date.toEpochDay())

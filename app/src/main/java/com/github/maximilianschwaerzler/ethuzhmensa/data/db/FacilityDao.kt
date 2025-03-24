@@ -16,7 +16,7 @@ interface FacilityDao {
     fun observeAll(): Flow<List<Facility>>
 
     @Query("SELECT * FROM Facility WHERE id = :facilityId")
-    suspend fun loadById(facilityId: Int): Facility
+    suspend fun getFacilityById(facilityId: Int): Facility
 
     @Query("SELECT * FROM Facility WHERE id IN (:facilityIds)")
     suspend fun loadAllByIds(facilityIds: IntArray): List<Facility>
@@ -26,6 +26,9 @@ interface FacilityDao {
 
     @Upsert
     suspend fun insertAll(vararg facilities: Facility)
+
+    @Upsert
+    suspend fun insert(facility: Facility)
 
     @Delete
     suspend fun delete(facility: Facility)

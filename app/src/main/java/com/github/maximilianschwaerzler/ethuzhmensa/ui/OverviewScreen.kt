@@ -69,8 +69,8 @@ fun OverviewScreen(
                 scrollBehavior = scrollBehavior,
                 actions = {
                     IconButton(onClick = {
-                        Toast.makeText(context, "Not yet implemented", Toast.LENGTH_SHORT).show()
-//                        onSettingsNavigate()
+                        onSettingsNavigate()
+//                        Toast.makeText(context, "Not yet implemented", Toast.LENGTH_SHORT).show()
                     }) {
                         Icon(
                             Icons.Default.Settings,

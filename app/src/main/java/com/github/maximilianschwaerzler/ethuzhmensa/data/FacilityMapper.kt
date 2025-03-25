@@ -1,6 +1,6 @@
-package com.github.maximilianschwaerzler.ethuzhmensa.data2
+package com.github.maximilianschwaerzler.ethuzhmensa.data
 
-import com.github.maximilianschwaerzler.ethuzhmensa.data2.dto.FacilityDto
+import com.github.maximilianschwaerzler.ethuzhmensa.data.dto.FacilityDto
 import com.google.gson.JsonObject
 
 fun mapJsonObjectToFacility(jsonObject: JsonObject): FacilityDto {

@@ -1,25 +1,25 @@
-package com.github.maximilianschwaerzler.ethuzhmensa.data
+package com.github.maximilianschwaerzler.ethuzhmensa.data.dto
 
 import com.github.maximilianschwaerzler.ethuzhmensa.data.utils.Price
 import java.time.LocalDate
 
-data class LocalDailyMenu(
+data class OfferDto(
     val facilityId: Int? = null,
     val date: LocalDate? = null,
-    var menuOptions: List<LocalMenuOption> = emptyList()
+    var menuOptions: List<MenuDto> = emptyList()
 ) {
-    data class LocalMenuOption(
+    data class MenuDto(
         val name: String? = null,
         val mealName: String? = null,
         val mealDescription: String? = null,
-        var pricing: List<LocalMenuPrice> = emptyList(),
-        val imageUrl: String? = null
+        val imageUrl: String? = null,
+        var pricing: List<MenuPriceDto> = emptyList()
     ) {
-        data class LocalMenuPrice(
+        data class MenuPriceDto(
             val price: Price? = null,
             val customerGroupId: Int? = null,
             val customerGroupDesc: String? = null,
-            val customerGroupDescShort: String? = null,
+            val customerGroupDescShort: String? = null
         )
     }
 }

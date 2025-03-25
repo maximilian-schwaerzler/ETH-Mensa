@@ -1,4 +1,4 @@
-package com.github.maximilianschwaerzler.ethuzhmensa.data2.dto
+package com.github.maximilianschwaerzler.ethuzhmensa.data.dto
 
 data class FacilityDto(
     val facilityId: Int? = null,

@@ -1,10 +1,9 @@
-package com.github.maximilianschwaerzler.ethuzhmensa.data2
+package com.github.maximilianschwaerzler.ethuzhmensa.data
 
-import android.util.Log
+import com.github.maximilianschwaerzler.ethuzhmensa.data.dto.OfferDto
+import com.github.maximilianschwaerzler.ethuzhmensa.data.dto.OfferDto.MenuDto
+import com.github.maximilianschwaerzler.ethuzhmensa.data.dto.OfferDto.MenuDto.MenuPriceDto
 import com.github.maximilianschwaerzler.ethuzhmensa.data.utils.Price
-import com.github.maximilianschwaerzler.ethuzhmensa.data2.dto.MenuDto
-import com.github.maximilianschwaerzler.ethuzhmensa.data2.dto.MenuPriceDto
-import com.github.maximilianschwaerzler.ethuzhmensa.data2.dto.OfferDto
 import com.google.gson.JsonObject
 import java.time.LocalDate
 

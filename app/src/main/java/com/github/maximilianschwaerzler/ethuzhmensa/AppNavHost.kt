@@ -11,42 +11,15 @@ import androidx.navigation.compose.rememberNavController
 import androidx.navigation.toRoute
 import com.github.maximilianschwaerzler.ethuzhmensa.data.MensaDetailScreenViewModel
 import com.github.maximilianschwaerzler.ethuzhmensa.data.OverviewScreenViewModel
-import com.github.maximilianschwaerzler.ethuzhmensa.ui.DebugScreen
 import com.github.maximilianschwaerzler.ethuzhmensa.ui.MensaDetailScreen
 import com.github.maximilianschwaerzler.ethuzhmensa.ui.OverviewScreen
 import com.github.maximilianschwaerzler.ethuzhmensa.ui.SettingsScreen
 import com.github.maximilianschwaerzler.ethuzhmensa.ui.SplashScreen
-import kotlinx.serialization.KSerializer
 import kotlinx.serialization.Serializable
-import kotlinx.serialization.descriptors.PrimitiveKind
-import kotlinx.serialization.descriptors.PrimitiveSerialDescriptor
-import kotlinx.serialization.descriptors.SerialDescriptor
-import kotlinx.serialization.encoding.Decoder
-import kotlinx.serialization.encoding.Encoder
 import java.time.LocalDate
-
-object LocalDateAsLong : KSerializer<LocalDate> {
-    // Serial names of descriptors should be unique, this is why we advise including app package in the name.
-    override val descriptor: SerialDescriptor =
-        PrimitiveSerialDescriptor(
-            "com.github.maximilianschwaerzler.ethuzhmensa.LocalDate",
-            PrimitiveKind.LONG
-        )
-
-    override fun serialize(encoder: Encoder, value: LocalDate) {
-        encoder.encodeLong(value.toEpochDay())
-    }
-
-    override fun deserialize(decoder: Decoder): LocalDate {
-        return LocalDate.ofEpochDay(decoder.decodeLong())
-    }
-}
 
 @Serializable
 object SplashScreen
-
-@Serializable
-object DebugScreen
 
 @Serializable
 object OverviewScreen
@@ -112,7 +85,5 @@ fun AppNavHost(modifier: Modifier = Modifier) {
                 menus.value,
                 onNavigateUp = { navController.popBackStack() })
         }
-
-        composable<DebugScreen> { DebugScreen() }
     }
 }

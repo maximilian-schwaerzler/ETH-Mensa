@@ -2,12 +2,10 @@ package com.github.maximilianschwaerzler.ethuzhmensa.data
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.github.maximilianschwaerzler.ethuzhmensa.repository.FacilityRepository
-import com.github.maximilianschwaerzler.ethuzhmensa.repository.MenuRepository
 import com.github.maximilianschwaerzler.ethuzhmensa.data.db.entities.OfferWithPrices
 import com.github.maximilianschwaerzler.ethuzhmensa.data.db.entities.Facility
-import com.github.maximilianschwaerzler.ethuzhmensa.repository.FacilityRepository2
-import com.github.maximilianschwaerzler.ethuzhmensa.repository.MenuRepository2
+import com.github.maximilianschwaerzler.ethuzhmensa.repository.FacilityRepository
+import com.github.maximilianschwaerzler.ethuzhmensa.repository.MenuRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -17,8 +15,8 @@ import javax.inject.Inject
 
 @HiltViewModel
 class MensaDetailScreenViewModel @Inject constructor(
-    private val facilityInfoRepo: FacilityRepository2,
-    private val menuRepository: MenuRepository2,
+    private val facilityInfoRepo: FacilityRepository,
+    private val menuRepository: MenuRepository,
 ) : ViewModel() {
     private val _menus = MutableStateFlow<OfferWithPrices?>(null)
     val menus = _menus.asStateFlow()

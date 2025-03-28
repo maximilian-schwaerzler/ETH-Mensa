@@ -22,7 +22,12 @@ class FacilityRepository @Inject constructor(
     private val connMgr: ConnectivityManager,
     @ApplicationContext private val appContext: Context
 ) {
+    @Throws(IllegalStateException::class)
     suspend fun updateFacilityInfoDB() {
+        if (!connMgr.isConnected()) {
+            Log.w("FacilityRepository", "No internet connection, skipping facility update")
+            throw IllegalStateException("No internet connection")
+        }
         supervisorScope {
             for (facilityId in appContext.resources.getIntArray(R.array.id_mensas_with_customer_groups)) {
                 launch {
@@ -50,10 +55,6 @@ class FacilityRepository @Inject constructor(
 
     @Throws(IllegalStateException::class)
     suspend fun getAllFacilities(): List<Facility> {
-        if (!connMgr.isConnected()) {
-            Log.w("FacilityRepository", "No internet connection, skipping facility update")
-            throw IllegalStateException("No internet connection")
-        }
         val array = appContext.resources.getIntArray(R.array.id_mensas_with_customer_groups)
         return array.map {
             try {
@@ -78,10 +79,6 @@ class FacilityRepository @Inject constructor(
 
     @Throws(IllegalStateException::class)
     suspend fun getFacilityById(facilityId: Int): Facility {
-        if (!connMgr.isConnected()) {
-            Log.w("FacilityRepository", "No internet connection, skipping facility update")
-            throw IllegalStateException("No internet connection")
-        }
         return try {
             facilityDao.getFacilityById(facilityId)
         } catch (e: IllegalStateException) {

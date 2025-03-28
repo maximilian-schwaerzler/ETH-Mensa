@@ -63,12 +63,6 @@ dependencies {
     implementation(libs.androidx.hilt.navigation.compose)
     implementation(libs.androidx.datastore.preferences)
 
-    // Fuel HTTP Client
-    implementation(libs.fuel)
-    implementation(libs.fuel.android)
-    implementation(libs.fuel.coroutines)
-    implementation(libs.fuel.gson)
-
     // Retrofit
     implementation(libs.retrofit)
     implementation(libs.retrofit.gson)

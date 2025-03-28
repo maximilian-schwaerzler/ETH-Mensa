@@ -40,9 +40,14 @@ class OverviewScreenViewModel @Inject constructor(
         .onStart { refreshData() }
         .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5_000), listOf())
 
+    fun onPullToRefresh() {
+        _isLoading.value = true
+        refreshData()
+        _isLoading.value = false
+    }
+
     fun refreshData() =
         viewModelScope.launch(Dispatchers.IO) {
-            _isLoading.emit(true)
             try {
                 supervisorScope {
                     val facilityJob = launch {
@@ -64,8 +69,6 @@ class OverviewScreenViewModel @Inject constructor(
                 }
             } catch (e: Exception) {
                 Log.w("OverviewScreenViewModel", "Unexpected error", e)
-            } finally {
-                _isLoading.emit(false)
             }
         }
 }

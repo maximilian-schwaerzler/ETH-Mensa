@@ -1,6 +1,7 @@
 package com.github.maximilianschwaerzler.ethuzhmensa.repository
 
 import android.content.Context
+import android.net.ConnectivityManager
 import android.util.Log
 import com.github.maximilianschwaerzler.ethuzhmensa.R
 import com.github.maximilianschwaerzler.ethuzhmensa.data.DataStoreManager
@@ -8,6 +9,7 @@ import com.github.maximilianschwaerzler.ethuzhmensa.data.db.MenuDao
 import com.github.maximilianschwaerzler.ethuzhmensa.data.db.entities.Offer
 import com.github.maximilianschwaerzler.ethuzhmensa.data.db.entities.OfferWithPrices
 import com.github.maximilianschwaerzler.ethuzhmensa.data.mapJsonObjectToOffers
+import com.github.maximilianschwaerzler.ethuzhmensa.network.isConnected
 import com.github.maximilianschwaerzler.ethuzhmensa.network.services.CookpitMenuService
 import com.google.gson.JsonObject
 import dagger.hilt.android.qualifiers.ApplicationContext
@@ -26,6 +28,7 @@ class MenuRepository @Inject constructor(
     private val menuService: CookpitMenuService,
     private val menuDao: MenuDao,
     private val dataStoreManager: DataStoreManager,
+    private val connMgr: ConnectivityManager,
     @ApplicationContext private val appContext: Context
 ) {
     private suspend fun fetchOfferForFacility(
@@ -42,7 +45,16 @@ class MenuRepository @Inject constructor(
         )
     }
 
+    /**
+     * Fetches all menus for the week starting from the given date and saves them to the database.
+     * @throws IllegalStateException if there is no internet connection
+     */
+    @Throws(IllegalStateException::class)
     private suspend fun saveAllMenusToDB(date: LocalDate = LocalDate.now()) {
+        if (!connMgr.isConnected()) {
+            Log.w("MenuRepository", "No internet connection, skipping menu update")
+            throw IllegalStateException("No internet connection")
+        }
         val validFacilityIds =
             appContext.resources.getIntArray(R.array.id_mensas_with_customer_groups)
         supervisorScope {
@@ -64,7 +76,10 @@ class MenuRepository @Inject constructor(
                         }
                         try {
                             menuDao.getOfferForFacilityDate(facilityId, offer.date!!)
-                            Log.d("MenuRepository2", "Offer for facility $facilityId already exists, skipping")
+                            Log.d(
+                                "MenuRepository",
+                                "Offer for facility $facilityId already exists, skipping"
+                            )
                             continue
                         } catch (_: IllegalStateException) {
                         }
@@ -101,27 +116,37 @@ class MenuRepository @Inject constructor(
         }
     }
 
+    @Throws(IllegalStateException::class)
     private suspend fun getOffer(facilityId: Int, date: LocalDate?): OfferWithPrices {
         return try {
             date?.let { menuDao.getOfferForFacilityDate(facilityId, it) }
                 ?: menuDao.getOfferForFacilityDate(facilityId, LocalDate.now())
         } catch (e: IllegalStateException) {
             Log.w(
-                "MenuRepository2", "No offer found for facility $facilityId, updating from API", e
+                "MenuRepository", "No offer found for facility $facilityId, updating from API", e
             )
             val lastMenuFetchDate = dataStoreManager.lastMenuFetchDate.first()
             if (lastMenuFetchDate.get(IsoFields.WEEK_OF_WEEK_BASED_YEAR) != (date?.get(
                     IsoFields.WEEK_OF_WEEK_BASED_YEAR
                 ) ?: LocalDate.MIN)
             ) {
-                saveAllMenusToDB()
+                try {
+                    saveAllMenusToDB()
+                } catch (e: IllegalStateException) {
+                    Log.w(
+                        "MenuRepository",
+                        "Failed to fetch menus for facility $facilityId, skipping update",
+                        e
+                    )
+                    throw e
+                }
                 dataStoreManager.updateLastMenuFetchDate()
             }
             try {
                 menuDao.getOfferForFacilityDate(facilityId, date ?: LocalDate.now())
             } catch (e: IllegalStateException) {
                 Log.e(
-                    "MenuRepository2", "Failed to fetch offer for facility $facilityId", e
+                    "MenuRepository", "Failed to fetch offer for facility $facilityId", e
                 )
                 throw e
             }
@@ -135,7 +160,6 @@ class MenuRepository @Inject constructor(
             offers.isEmpty() && lastMenuFetchDate.get(IsoFields.WEEK_OF_WEEK_BASED_YEAR) != date.get(
                 IsoFields.WEEK_OF_WEEK_BASED_YEAR
             )
-//            true
         ) {
             saveAllMenusToDB()
             dataStoreManager.updateLastMenuFetchDate()

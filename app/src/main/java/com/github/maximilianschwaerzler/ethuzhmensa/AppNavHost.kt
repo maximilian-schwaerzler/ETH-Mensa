@@ -54,10 +54,9 @@ fun AppNavHost(modifier: Modifier = Modifier) {
             OverviewScreen(
                 isLoading = isLoading.value,
                 facilitiesWithOffers = facilitiesWithOffers.value,
-                onRefresh = viewModel::refreshData,
+                onRefresh = viewModel::onPullToRefresh,
                 onSettingsNavigate = {
                     navController.navigate(SettingsScreen)
-//                    viewModel.getFacility()
                 },
                 onDetailScreenNavigate = { facilityId, date ->
                     navController.navigate(
@@ -68,7 +67,7 @@ fun AppNavHost(modifier: Modifier = Modifier) {
         }
 
         composable<SettingsScreen> {
-            SettingsScreen { navController.popBackStack() }
+            SettingsScreen(onNavigateUp = navController::popBackStack)
         }
 
         composable<MensaDetailScreen> {

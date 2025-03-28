@@ -31,7 +31,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.nestedscroll.nestedScroll
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -69,7 +68,6 @@ fun OverviewScreen(
                 actions = {
                     IconButton(onClick = {
                         onSettingsNavigate()
-//                        Toast.makeText(context, "Not yet implemented", Toast.LENGTH_SHORT).show()
                     }) {
                         Icon(
                             Icons.Default.Settings,
@@ -90,10 +88,6 @@ fun OverviewScreen(
                 .fillMaxSize(),
             contentAlignment = Alignment.Center
         ) {
-//            if (!isLoading) {
-//                LaunchedEffect(facilitiesWithOffers) {
-//                    Log.d("OverviewScreen", "Facilities with offers: $facilitiesWithOffers")
-//                }
             val filteredSortedFacilities =
                 facilitiesWithOffers.filterNot { it.second == null || it.second!!.menus.isEmpty() }
                     .sortedBy { it.first.id }

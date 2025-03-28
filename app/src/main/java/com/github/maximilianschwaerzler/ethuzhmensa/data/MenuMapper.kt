@@ -35,9 +35,6 @@ fun mapJsonObjectToOffers(jsonObject: JsonObject): List<OfferDto>? {
                 continue
             }
             for (menuItem in menus) {
-                if (facilityId == 3) {
-//                Log.d("MenuMapper", "$facilityId; $menuItem")
-                }
                 val menuName = menuItem.asJsonObject.get("name").asJsonPrimitive.asString
                 val meal = try {
                     menuItem.asJsonObject.get("meal").asJsonObject

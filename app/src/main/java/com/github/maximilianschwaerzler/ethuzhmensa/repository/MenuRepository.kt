@@ -50,13 +50,15 @@ class MenuRepository @Inject constructor(
         return runCatching { getOfferForFacilityDate(facilityId, date) }.isSuccess
     }
 
+    @Throws(IllegalStateException::class)
     private suspend fun saveAllMenusToDB(date: LocalDate = LocalDate.now()) {
         if (!connMgr.isConnected()) {
             Log.w("MenuRepository", "No internet connection, skipping menu update")
             throw IllegalStateException("No internet connection")
         }
 
-        val validFacilityIds = appContext.resources.getIntArray(R.array.id_mensas_with_customer_groups)
+        val validFacilityIds =
+            appContext.resources.getIntArray(R.array.id_mensas_with_customer_groups)
 
         supervisorScope {
             for (facilityId in validFacilityIds) {
@@ -69,7 +71,10 @@ class MenuRepository @Inject constructor(
                     for (offer in offers) {
                         if (offer.menuOptions.isEmpty()) continue
                         if (menuDao.offerExists(facilityId, offer.date!!)) {
-                            Log.d("MenuRepository", "Offer for facility $facilityId already exists, skipping")
+                            Log.d(
+                                "MenuRepository",
+                                "Offer for facility $facilityId already exists, skipping"
+                            )
                             continue
                         }
 
@@ -127,17 +132,20 @@ class MenuRepository @Inject constructor(
         return runCatching {
             menuDao.getOfferForFacilityDate(facilityId, targetDate)
         }.getOrElse {
-            Log.w("MenuRepository", "No offer found for facility $facilityId, updating from API", it)
+            Log.w(
+                "MenuRepository",
+                "No offer found for facility $facilityId, updating from API",
+                it
+            )
             tryUpdateMenusIfNecessary(date)
             menuDao.getOfferForFacilityDate(facilityId, targetDate)
         }
     }
 
     suspend fun getOffersForDate(date: LocalDate): List<OfferWithPrices> {
-        val lastMenuFetchDate = dataStoreManager.lastMenuFetchDate.first()
         var offers = menuDao.getAllOffersForDate(date)
 
-        if (offers.isEmpty() && lastMenuFetchDate.get(IsoFields.WEEK_OF_WEEK_BASED_YEAR) != date.get(IsoFields.WEEK_OF_WEEK_BASED_YEAR)) {
+        if (tryUpdateMenusIfNecessary(date)) {
             saveAllMenusToDB()
             dataStoreManager.updateLastMenuFetchDate()
             offers = menuDao.getAllOffersForDate(date)

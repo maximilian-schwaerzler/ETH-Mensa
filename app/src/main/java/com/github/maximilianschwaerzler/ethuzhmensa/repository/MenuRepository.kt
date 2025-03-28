@@ -5,6 +5,7 @@ import android.net.ConnectivityManager
 import android.util.Log
 import com.github.maximilianschwaerzler.ethuzhmensa.R
 import com.github.maximilianschwaerzler.ethuzhmensa.data.DataStoreManager
+import com.github.maximilianschwaerzler.ethuzhmensa.data.DataStoreManager.MenuLanguage
 import com.github.maximilianschwaerzler.ethuzhmensa.data.db.MenuDao
 import com.github.maximilianschwaerzler.ethuzhmensa.data.db.entities.Offer
 import com.github.maximilianschwaerzler.ethuzhmensa.data.db.entities.OfferWithPrices
@@ -33,7 +34,9 @@ class MenuRepository @Inject constructor(
 ) {
 
     private suspend fun fetchOfferForFacility(
-        facilityId: Int, date: LocalDate = LocalDate.now(), language: Language = Language.GERMAN
+        facilityId: Int,
+        date: LocalDate = LocalDate.now(),
+        language: MenuLanguage = MenuLanguage.GERMAN
     ): Response<JsonObject> {
         val startOfWeek = date.with(TemporalAdjusters.previousOrSame(DayOfWeek.MONDAY))
         val endOfWeek = date.with(TemporalAdjusters.nextOrSame(DayOfWeek.SUNDAY)).plusDays(1)
@@ -41,7 +44,7 @@ class MenuRepository @Inject constructor(
         return menuService.fetchMenus(
             facilityId,
             dateFormatter.format(startOfWeek),
-            language.lang,
+            language.langCode,
             dateFormatter.format(endOfWeek)
         )
     }
@@ -51,8 +54,11 @@ class MenuRepository @Inject constructor(
     }
 
     @Throws(IllegalStateException::class)
-    private suspend fun saveAllMenusToDB(date: LocalDate = LocalDate.now()) {
-        if (!connMgr.isConnected()) {
+    private suspend fun saveAllMenusToDB(
+        date: LocalDate = LocalDate.now(),
+        force: Boolean = false
+    ) {
+        if (!force && !connMgr.isConnected()) {
             Log.w("MenuRepository", "No internet connection, skipping menu update")
             throw IllegalStateException("No internet connection")
         }
@@ -63,7 +69,11 @@ class MenuRepository @Inject constructor(
         supervisorScope {
             for (facilityId in validFacilityIds) {
                 launch {
-                    val apiResponse = fetchOfferForFacility(facilityId, date)
+                    val apiResponse = fetchOfferForFacility(
+                        facilityId,
+                        date,
+                        dataStoreManager.menuLanguage.first()
+                    )
                     if (!apiResponse.isSuccessful) return@launch
 
                     val offers = mapJsonObjectToOffers(apiResponse.body()!!) ?: return@launch
@@ -160,7 +170,11 @@ class MenuRepository @Inject constructor(
         return getOffer(facilityId, date)
     }
 
-    enum class Language(val lang: String) {
-        GERMAN("de"), ENGLISH("en")
+    /**
+     * Rebuilds the database by deleting all existing offers and fetching new ones from the API. For the language change
+     */
+    suspend fun rebuildDatabase() {
+        menuDao.deleteAllOffers()
+        saveAllMenusToDB(LocalDate.now(), true)
     }
 }

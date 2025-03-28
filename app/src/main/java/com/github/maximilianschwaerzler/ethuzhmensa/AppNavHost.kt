@@ -9,8 +9,9 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.toRoute
-import com.github.maximilianschwaerzler.ethuzhmensa.data.MensaDetailScreenViewModel
-import com.github.maximilianschwaerzler.ethuzhmensa.data.OverviewScreenViewModel
+import com.github.maximilianschwaerzler.ethuzhmensa.data.viewmodel.MensaDetailScreenViewModel
+import com.github.maximilianschwaerzler.ethuzhmensa.data.viewmodel.OverviewScreenViewModel
+import com.github.maximilianschwaerzler.ethuzhmensa.data.viewmodel.SettingsScreenViewModel
 import com.github.maximilianschwaerzler.ethuzhmensa.ui.MensaDetailScreen
 import com.github.maximilianschwaerzler.ethuzhmensa.ui.OverviewScreen
 import com.github.maximilianschwaerzler.ethuzhmensa.ui.SettingsScreen
@@ -67,7 +68,14 @@ fun AppNavHost(modifier: Modifier = Modifier) {
         }
 
         composable<SettingsScreen> {
-            SettingsScreen(onNavigateUp = navController::popBackStack)
+            val viewModel: SettingsScreenViewModel = hiltViewModel()
+            val uiState = viewModel.uiState.collectAsStateWithLifecycle()
+            SettingsScreen(
+                uiState.value.menuLanguage,
+                isLoading = uiState.value.isLoading,
+                viewModel::updateMenuLanguage,
+                onNavigateUp = navController::popBackStack
+            )
         }
 
         composable<MensaDetailScreen> {

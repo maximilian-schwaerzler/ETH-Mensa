@@ -1,4 +1,4 @@
-package com.github.maximilianschwaerzler.ethuzhmensa.data
+package com.github.maximilianschwaerzler.ethuzhmensa.data.viewmodel
 
 import com.github.maximilianschwaerzler.ethuzhmensa.data.db.entities.Facility
 import com.github.maximilianschwaerzler.ethuzhmensa.data.db.entities.OfferWithPrices

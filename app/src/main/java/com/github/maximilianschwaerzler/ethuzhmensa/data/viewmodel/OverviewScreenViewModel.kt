@@ -1,4 +1,4 @@
-package com.github.maximilianschwaerzler.ethuzhmensa.data
+package com.github.maximilianschwaerzler.ethuzhmensa.data.viewmodel
 
 import android.util.Log
 import androidx.lifecycle.ViewModel

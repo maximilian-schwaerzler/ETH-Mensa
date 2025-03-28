@@ -34,4 +34,7 @@ interface MenuDao {
 
     @Query("DELETE FROM Offer WHERE date < :date")
     suspend fun deleteOlderThan(date: LocalDate)
+
+    @Query("DELETE FROM Offer")
+    suspend fun deleteAllOffers()
 }

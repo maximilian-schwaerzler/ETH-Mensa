@@ -48,12 +48,11 @@ fun AppNavHost(modifier: Modifier = Modifier) {
 
         composable<OverviewScreen> {
             val viewModel: OverviewScreenViewModel = hiltViewModel()
-            val isLoading = viewModel.isLoading.collectAsStateWithLifecycle()
-            val facilitiesWithOffers = viewModel.facilitiesWithOffers.collectAsStateWithLifecycle()
+            val uiState = viewModel.uiState.collectAsStateWithLifecycle()
 
             OverviewScreen(
-                isLoading = isLoading.value,
-                facilitiesWithOffers = facilitiesWithOffers.value,
+                isLoading = uiState.value.isRefreshing,
+                facilitiesWithOffers = uiState.value.facilitiesWithOffers,
                 onRefresh = viewModel::onPullToRefresh,
                 onSettingsNavigate = {
                     navController.navigate(SettingsScreen)
@@ -62,7 +61,8 @@ fun AppNavHost(modifier: Modifier = Modifier) {
                     navController.navigate(
                         MensaDetailScreen(facilityId, date.toEpochDay())
                     )
-                }
+                },
+                isInitialLoading = uiState.value.isInitialLoading,
             )
         }
 

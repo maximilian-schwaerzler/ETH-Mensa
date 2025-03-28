@@ -9,9 +9,9 @@ import com.github.maximilianschwaerzler.ethuzhmensa.repository.FacilityRepositor
 import com.github.maximilianschwaerzler.ethuzhmensa.repository.MenuRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
-import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.flow.stateIn
@@ -30,19 +30,35 @@ class OverviewScreenViewModel @Inject constructor(
     private val facilities = MutableStateFlow<List<Facility>>(emptyList())
 
     private val _isLoading = MutableStateFlow(false)
-    val isLoading = _isLoading.asStateFlow()
+    private val _isInitialLoading = MutableStateFlow(true)
 
-    val facilitiesWithOffers = facilities.combine(offers) { facilities, offers ->
-        facilities.map { facility ->
+    val uiState = combine(
+        facilities,
+        offers,
+        _isLoading,
+        _isInitialLoading
+    ) { facilities, offers, isLoading, isInitialLoading ->
+        val facilitiesWithOffers = facilities.map { facility ->
             facility to offers.find { it.offer.facilityId == facility.id }
         }
+        OverviewScreenUiState(
+            isRefreshing = isLoading,
+            facilitiesWithOffers = facilitiesWithOffers,
+            isInitialLoading = isInitialLoading
+        )
     }
-        .onStart { refreshData() }
-        .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5_000), listOf())
+        .onStart {
+            _isInitialLoading.value = true
+            refreshData().join()
+            _isInitialLoading.value = false
+        }
+        .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5_000), OverviewScreenUiState())
 
-    fun onPullToRefresh() {
+    fun onPullToRefresh() = viewModelScope.launch(Dispatchers.IO) {
         _isLoading.value = true
         refreshData()
+        // Workaround for the pull to refresh indicator getting stuck
+        delay(500)
         _isLoading.value = false
     }
 

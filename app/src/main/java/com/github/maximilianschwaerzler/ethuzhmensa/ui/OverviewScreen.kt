@@ -1,7 +1,6 @@
 package com.github.maximilianschwaerzler.ethuzhmensa.ui
 
 import android.content.res.Configuration
-import android.widget.Toast
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -51,10 +50,10 @@ fun OverviewScreen(
     onRefresh: () -> Unit,
     onSettingsNavigate: () -> Unit,
     onDetailScreenNavigate: (facilityId: Int, date: LocalDate) -> Unit,
+    isInitialLoading: Boolean,
     modifier: Modifier = Modifier,
 ) {
     val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior(rememberTopAppBarState())
-    val context = LocalContext.current
     Scaffold(
         modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
         containerColor = MaterialTheme.colorScheme.background,
@@ -111,12 +110,20 @@ fun OverviewScreen(
                         MensaOverviewCard(it.first, it.second, onDetailScreenNavigate)
                     }
                 }
-            } else {
+            } else if (!isInitialLoading) {
                 NoOffersInfoPanel { onRefresh() }
+            } else {
+                Box(
+                    modifier = Modifier.fillMaxSize(),
+                    contentAlignment = Alignment.Center
+                ) {
+                    Text(
+                        "Loading...",
+                        style = MaterialTheme.typography.headlineSmall,
+                        color = MaterialTheme.colorScheme.onSurface
+                    )
+                }
             }
-//            } else {
-//                Text("Loading...")
-//            }
         }
     }
 }
@@ -162,7 +169,8 @@ private fun OverviewScreenPreview() {
             facilitiesWithOffers = MockData.facilitiesWithOffers,
             onRefresh = {},
             onSettingsNavigate = {},
-            onDetailScreenNavigate = { _, _ -> }
+            onDetailScreenNavigate = { _, _ -> },
+            isInitialLoading = false
         )
     }
 }
@@ -185,7 +193,8 @@ private fun OverviewScreenPreviewNoMenus() {
             facilitiesWithOffers = emptyList(),
             onRefresh = {},
             onSettingsNavigate = {},
-            onDetailScreenNavigate = { _, _ -> }
+            onDetailScreenNavigate = { _, _ -> },
+            isInitialLoading = false
         )
     }
 }

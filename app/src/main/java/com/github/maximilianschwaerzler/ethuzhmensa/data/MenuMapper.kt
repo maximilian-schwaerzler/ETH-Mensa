@@ -9,7 +9,6 @@ import java.time.LocalDate
 
 fun mapJsonObjectToOffers(jsonObject: JsonObject): List<OfferDto>? {
     if (jsonObject.isEmpty) {
-//        Log.e("MenuApiUtils", "JSON data is empty")
         return null
     }
     val returnList = mutableListOf<OfferDto>()
@@ -53,7 +52,6 @@ fun mapJsonObjectToOffers(jsonObject: JsonObject): List<OfferDto>? {
                     name = menuName,
                     mealName = mealName,
                     mealDescription = mealDesc,
-                    // TODO: Add image URL
                     imageUrl = imageUrl
                 )
                 for (priceCategory in meal.get("meal-price-array").asJsonArray) {

@@ -8,9 +8,7 @@ import com.github.maximilianschwaerzler.ethuzhmensa.data.db.entities.OfferWithPr
 import com.github.maximilianschwaerzler.ethuzhmensa.repository.FacilityRepository
 import com.github.maximilianschwaerzler.ethuzhmensa.repository.MenuRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.cancel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.asStateFlow
@@ -19,7 +17,6 @@ import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.supervisorScope
-import java.net.UnknownHostException
 import java.time.LocalDate
 import javax.inject.Inject
 
@@ -44,28 +41,31 @@ class OverviewScreenViewModel @Inject constructor(
         .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5_000), listOf())
 
     fun refreshData() =
-        viewModelScope.launch(Dispatchers.IO + CoroutineExceptionHandler { coroutineContext, throwable ->
-            if (throwable is UnknownHostException) {
-                Log.d("OverviewScreenViewModel", "No internet connection", throwable)
-                // TODO: Show error message to user
-                coroutineContext.cancel()
-            } else {
-                Log.d("OverviewScreenViewModel", "Crash!", throwable)
-            }
-        }) {
+        viewModelScope.launch(Dispatchers.IO) {
             _isLoading.emit(true)
-            supervisorScope {
-                launch {
-                    try {
-                        facilities.emit(facilityInfoRepo.getAllFacilities())
-                    } catch (e: IllegalStateException) {
-                        Log.d("OverviewScreenViewModel", "Crash!", e)
+            try {
+                supervisorScope {
+                    val facilityJob = launch {
+                        try {
+                            facilities.emit(facilityInfoRepo.getAllFacilities())
+                        } catch (e: IllegalStateException) {
+                            Log.d("OverviewScreenViewModel", "No internet connection", e)
+                        }
                     }
+                    val offerJob = launch {
+                        try {
+                            offers.emit(menuRepository.getOffersForDate(LocalDate.now()))
+                        } catch (e: IllegalStateException) {
+                            Log.w("OverviewScreenViewModel", "No internet connection", e)
+                        }
+                    }
+                    facilityJob.join()
+                    offerJob.join()
                 }
-                launch {
-                    offers.emit(menuRepository.getOffersForDate(LocalDate.now()))
-                }
+            } catch (e: Exception) {
+                Log.w("OverviewScreenViewModel", "Unexpected error", e)
+            } finally {
+                _isLoading.emit(false)
             }
-            _isLoading.emit(false)
         }
 }

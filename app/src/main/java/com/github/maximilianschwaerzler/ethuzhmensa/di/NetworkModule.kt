@@ -1,11 +1,14 @@
 package com.github.maximilianschwaerzler.ethuzhmensa.di
 
+import android.content.Context
+import android.net.ConnectivityManager
 import com.github.maximilianschwaerzler.ethuzhmensa.network.RequestInterceptor
 import com.github.maximilianschwaerzler.ethuzhmensa.network.services.CookpitFacilityService
 import com.github.maximilianschwaerzler.ethuzhmensa.network.services.CookpitMenuService
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
+import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
@@ -47,4 +50,9 @@ object NetworkModule {
     fun provideCookpitFacilityService(@CookpitRetrofitClient client: Retrofit): CookpitFacilityService {
         return client.create(CookpitFacilityService::class.java)
     }
+
+    @Provides
+    @Singleton
+    fun provideConnectivityManager(@ApplicationContext context: Context): ConnectivityManager =
+        context.getSystemService(ConnectivityManager::class.java)
 }

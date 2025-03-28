@@ -74,7 +74,7 @@ class MenuRepository @Inject constructor(
                         }
 
                         val dbOffer = Offer(
-                            id = 0, facilityId = offer.facilityId!!, date = offer.date!!
+                            id = 0, facilityId = offer.facilityId!!, date = offer.date
                         )
                         val dbOfferId = menuDao.insertOffer(dbOffer)
 

@@ -1,9 +1,16 @@
+/*
+ * Copyright (c) 2025 Maximilian Schwärzler
+ *
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
+ */
+
 package com.github.maximilianschwaerzler.ethuzhmensa.data.utils
 
-import com.github.maximilianschwaerzler.ethuzhmensa.data.db.entities.Offer
-import com.github.maximilianschwaerzler.ethuzhmensa.data.db.entities.OfferWithPrices
 import com.github.maximilianschwaerzler.ethuzhmensa.data.db.entities.Facility
 import com.github.maximilianschwaerzler.ethuzhmensa.data.db.entities.MenuWithPrices
+import com.github.maximilianschwaerzler.ethuzhmensa.data.db.entities.Offer
+import com.github.maximilianschwaerzler.ethuzhmensa.data.db.entities.OfferWithPrices
 import java.time.LocalDate
 
 object MockData {

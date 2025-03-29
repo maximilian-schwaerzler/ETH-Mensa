@@ -1,6 +1,5 @@
 package com.github.maximilianschwaerzler.ethuzhmensa.ui
 
-import android.content.res.Configuration
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -33,7 +32,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.tooling.preview.PreviewScreenSizes
 import androidx.compose.ui.unit.dp
@@ -144,11 +142,15 @@ fun NoOffersInfoPanel(modifier: Modifier = Modifier, onRefresh: () -> Unit) {
             )
             Spacer(Modifier.height(32.dp))
             Text(
-                stringResource(R.string.no_offers_available_today_singular), style = MaterialTheme.typography.headlineSmall
+                stringResource(R.string.no_offers_available_today_singular),
+                style = MaterialTheme.typography.headlineSmall
             )
             Spacer(Modifier.height(8.dp))
             Button(onClick = { onRefresh() }) {
-                Text(stringResource(R.string.refresh_label), style = MaterialTheme.typography.bodyLarge)
+                Text(
+                    stringResource(R.string.refresh_label),
+                    style = MaterialTheme.typography.bodyLarge
+                )
             }
         }
     }

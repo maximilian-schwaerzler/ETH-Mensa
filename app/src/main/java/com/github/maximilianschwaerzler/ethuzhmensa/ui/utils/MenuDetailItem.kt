@@ -86,8 +86,7 @@ fun MenuDetailItem(
                     )
                     if (menu.menu.mealDescription.isNotBlank()) {
                         Text(
-                            // TODO: Trim when saving to DB
-                            menu.menu.mealDescription.trim(),
+                            menu.menu.mealDescription,
                             style = MaterialTheme.typography.bodyMedium,
                         )
                     }

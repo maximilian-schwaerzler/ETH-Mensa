@@ -55,7 +55,14 @@ fun mapJsonObjectToOffers(jsonObject: JsonObject): List<OfferDto>? {
                 val menuDto = MenuDto(
                     name = menuName,
                     mealName = mealName,
-                    mealDescription = mealDesc,
+                    mealDescription = mealDesc
+                        .replace(
+                            Regex("""(\r\n)|\n"""),
+                            ""
+                        )
+                        .split("|").map { it.trim() }
+                        .filter { it.isNotEmpty() }
+                        .joinToString(" | "),
                     imageUrl = imageUrl
                 )
                 for (priceCategory in meal.get("meal-price-array").asJsonArray) {

@@ -34,6 +34,8 @@ import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.tooling.preview.PreviewLightDark
+import androidx.compose.ui.tooling.preview.PreviewScreenSizes
 import androidx.compose.ui.unit.dp
 import com.github.maximilianschwaerzler.ethuzhmensa.R
 import com.github.maximilianschwaerzler.ethuzhmensa.data.db.entities.Facility
@@ -152,17 +154,8 @@ fun NoOffersInfoPanel(modifier: Modifier = Modifier, onRefresh: () -> Unit) {
     }
 }
 
-@Preview(
-    uiMode = Configuration.UI_MODE_NIGHT_NO or Configuration.UI_MODE_TYPE_NORMAL,
-    showSystemUi = true,
-    showBackground = true,
-    wallpaper = androidx.compose.ui.tooling.preview.Wallpapers.GREEN_DOMINATED_EXAMPLE
-)
-@Preview(
-    uiMode = Configuration.UI_MODE_NIGHT_YES or Configuration.UI_MODE_TYPE_NORMAL,
-    showSystemUi = true,
-    showBackground = true
-)
+@PreviewScreenSizes
+@PreviewLightDark
 @Composable
 private fun OverviewScreenPreview() {
     ETHUZHMensaTheme {
@@ -177,16 +170,8 @@ private fun OverviewScreenPreview() {
     }
 }
 
-@Preview(
-    uiMode = Configuration.UI_MODE_NIGHT_NO or Configuration.UI_MODE_TYPE_NORMAL,
-    showSystemUi = true,
-    showBackground = true
-)
-@Preview(
-    uiMode = Configuration.UI_MODE_NIGHT_YES or Configuration.UI_MODE_TYPE_NORMAL,
-    showSystemUi = true,
-    showBackground = true
-)
+@PreviewScreenSizes
+@PreviewLightDark
 @Composable
 private fun OverviewScreenPreviewNoMenus() {
     ETHUZHMensaTheme {

@@ -21,6 +21,8 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.tooling.preview.PreviewLightDark
+import androidx.compose.ui.tooling.preview.PreviewScreenSizes
 import androidx.compose.ui.unit.dp
 import com.github.maximilianschwaerzler.ethuzhmensa.R
 import com.github.maximilianschwaerzler.ethuzhmensa.ui.theme.ETHUZHMensaTheme
@@ -63,16 +65,8 @@ fun SplashScreen(modifier: Modifier = Modifier, onFinishTimer: () -> Unit = {}) 
     }
 }
 
-@Preview(
-    uiMode = Configuration.UI_MODE_NIGHT_NO or Configuration.UI_MODE_TYPE_NORMAL,
-    showSystemUi = true,
-    showBackground = true
-)
-@Preview(
-    uiMode = Configuration.UI_MODE_NIGHT_YES or Configuration.UI_MODE_TYPE_NORMAL,
-    showSystemUi = true,
-    showBackground = true
-)
+@PreviewScreenSizes
+@PreviewLightDark
 @Composable
 private fun SplashScreenPrev() {
     ETHUZHMensaTheme {

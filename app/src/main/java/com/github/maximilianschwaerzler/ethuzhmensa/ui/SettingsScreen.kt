@@ -14,16 +14,17 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
-import androidx.compose.material.icons.filled.Info
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.ExposedDropdownMenuBox
 import androidx.compose.material3.ExposedDropdownMenuDefaults
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.ListItem
@@ -45,7 +46,8 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
-import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.tooling.preview.PreviewLightDark
+import androidx.compose.ui.tooling.preview.PreviewScreenSizes
 import androidx.compose.ui.unit.dp
 import androidx.core.net.toUri
 import com.github.maximilianschwaerzler.ethuzhmensa.R
@@ -151,7 +153,11 @@ fun SettingsScreen(
                         }
                     }
                 )
+                HorizontalDivider()
                 val externalLinkIcon = painterResource(R.drawable.external_link)
+                val sourceCodeIcon = painterResource(R.drawable.code_icon)
+                val languageIcon = painterResource(R.drawable.language_icon)
+                val githubLogo = painterResource(R.drawable.github_logo)
                 ListItem(
                     headlineContent = { Text(stringResource(R.string.app_language_label)) },
                     Modifier.clickable {
@@ -163,7 +169,7 @@ fun SettingsScreen(
                         )
                     },
                     leadingContent = {
-                        Icon(Icons.Default.Info, contentDescription = null)
+                        Icon(languageIcon, contentDescription = null)
                     },
                     supportingContent = {
                         Text(stringResource(R.string.change_app_language_in_settings_label))
@@ -175,6 +181,7 @@ fun SettingsScreen(
                         )
                     }
                 )
+                HorizontalDivider()
                 ListItem(
                     headlineContent = { Text(stringResource(R.string.source_code_label)) },
                     Modifier.clickable {
@@ -186,15 +193,16 @@ fun SettingsScreen(
                         )
                     },
                     leadingContent = {
-                        Icon(Icons.Default.Info, contentDescription = null)
+                        Icon(sourceCodeIcon, contentDescription = null)
                     },
                     supportingContent = {
                         Text(stringResource(R.string.source_code_link_desc))
                     },
                     trailingContent = {
                         Icon(
-                            externalLinkIcon,
-                            contentDescription = stringResource(R.string.open_github_repo_external_link_label)
+                            githubLogo,
+                            contentDescription = stringResource(R.string.open_github_repo_external_link_label),
+                            modifier = Modifier.size(24.dp)
                         )
                     }
                 )
@@ -207,9 +215,9 @@ fun SettingsScreen(
     }
 }
 
-//@PreviewScreenSizes
-//@PreviewLightDark
-@Preview
+@PreviewScreenSizes
+@PreviewLightDark
+//@Preview
 @Composable
 private fun SettingsScreenPreview() {
     ETHUZHMensaTheme {

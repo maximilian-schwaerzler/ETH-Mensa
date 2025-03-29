@@ -45,6 +45,10 @@ android {
         arg("room.generateKotlin", "true")
         arg("room.schemaLocation", "$projectDir/schemas")
     }
+
+    androidResources {
+        generateLocaleConfig = true
+    }
 }
 
 dependencies {

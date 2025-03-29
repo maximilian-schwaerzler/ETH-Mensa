@@ -14,4 +14,7 @@
     <string name="no_offer_available_for_today_plural">No offer available for today</string>
     <string name="updating_menu_language">Updating menus to %1$s</string>
     <string name="menu_language_label">Mensa Menu Language</string>
+    <string name="app_language_label">App Language</string>
+    <string name="change_app_language_in_settings_label">Change the app\'s UI language in the system settings</string>
+    <string name="open_system_settings_label">Open system settings</string>
 </resources>

@@ -40,7 +40,7 @@ fun MenuDetailItem(
     showImage: Boolean = true
 ) {
     Box(
-        Modifier
+        modifier
             .fillMaxWidth()
             .background(MaterialTheme.colorScheme.primaryContainer)
     ) {

@@ -14,4 +14,6 @@
     <string name="app_language_label">App Sprache</string>
     <string name="change_app_language_in_settings_label">Ändere die App UI Sprache in den Systemeinstellungen</string>
     <string name="open_system_settings_label">Systemeinstellungen öffnen</string>
+    <string name="source_code_link_desc">Diese Anwendung ist Open Source. Du findest den Quellcode und Updates auf GitHub.</string>
+    <string name="source_code_label">Source Code</string>
 </resources>

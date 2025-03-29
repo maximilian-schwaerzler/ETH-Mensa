@@ -40,10 +40,10 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.core.net.toUri
 import com.github.maximilianschwaerzler.ethuzhmensa.R
 import com.github.maximilianschwaerzler.ethuzhmensa.data.DataStoreManager.MenuLanguage
 import com.github.maximilianschwaerzler.ethuzhmensa.ui.theme.ETHUZHMensaTheme
-import androidx.core.net.toUri
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -162,7 +162,33 @@ fun SettingsScreen(
                         Text(stringResource(R.string.change_app_language_in_settings_label))
                     },
                     trailingContent = {
-                        Icon(externalLinkIcon, contentDescription = stringResource(R.string.open_system_settings_label))
+                        Icon(
+                            externalLinkIcon,
+                            contentDescription = stringResource(R.string.open_system_settings_label)
+                        )
+                    }
+                )
+                ListItem(
+                    headlineContent = { Text(stringResource(R.string.source_code_label)) },
+                    Modifier.clickable {
+                        // Open system settings to change the app language
+                        context.startActivity(
+                            Intent(Intent.ACTION_VIEW).apply {
+                                data = context.getString(R.string.github_repo_url).toUri()
+                            }
+                        )
+                    },
+                    leadingContent = {
+                        Icon(Icons.Default.Info, contentDescription = null)
+                    },
+                    supportingContent = {
+                        Text(stringResource(R.string.source_code_link_desc))
+                    },
+                    trailingContent = {
+                        Icon(
+                            externalLinkIcon,
+                            contentDescription = stringResource(R.string.open_github_repo_external_link_label)
+                        )
                     }
                 )
             } else {

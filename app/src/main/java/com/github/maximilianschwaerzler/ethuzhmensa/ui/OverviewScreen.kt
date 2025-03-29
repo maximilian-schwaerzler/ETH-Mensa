@@ -136,7 +136,7 @@ fun NoOffersInfoPanel(modifier: Modifier = Modifier, onRefresh: () -> Unit) {
         Column(horizontalAlignment = Alignment.CenterHorizontally) {
             Icon(
                 Icons.Default.Info,
-                contentDescription = stringResource(R.string.info_label),
+                contentDescription = null,
 //                tint = MaterialTheme.colorScheme.onSurface,
                 modifier = Modifier.size(48.dp)
             )

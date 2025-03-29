@@ -14,4 +14,6 @@
     <string name="app_language_label">Langue de l\'application</string>
     <string name="change_app_language_in_settings_label">Changer la langue de l\'interface dans les paramètres système</string>
     <string name="open_system_settings_label">Ouvrir les paramètres système</string>
+    <string name="source_code_link_desc">Cette application est open source. Vous pouvez trouver le code source et les mises à jour sur GitHub.</string>
+    <string name="source_code_label">Code source</string>
 </resources>

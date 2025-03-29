@@ -5,7 +5,6 @@
     <string name="language_english">English</string>
     <string name="settings_label">Settings</string>
     <string name="loading_label">Loading…</string>
-    <string name="info_label" translatable="false">Info</string>
     <string name="no_offers_available_today_singular">No offers available for today</string>
     <string name="refresh_label">Refresh</string>
     <string name="back_label">Back</string>
@@ -17,4 +16,8 @@
     <string name="app_language_label">App Language</string>
     <string name="change_app_language_in_settings_label">Change the app\'s UI language in the system settings</string>
     <string name="open_system_settings_label">Open system settings</string>
+    <string name="github_repo_url" translatable="false">https://github.com/maximilian-schwaerzler/ETH-UZH-Mensa</string>
+    <string name="source_code_link_desc">This app is open source. You can find the source code and updates on GitHub.</string>
+    <string name="source_code_label">Source Code</string>
+    <string name="open_github_repo_external_link_label">Open GitHub repository in browser</string>
 </resources>

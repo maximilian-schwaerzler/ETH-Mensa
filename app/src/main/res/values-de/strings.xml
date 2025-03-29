@@ -10,4 +10,5 @@
     <string name="eth_zurich_logo_label">ETH Zürich Logo</string>
     <string name="no_offer_available_for_today_plural">Kein Angebot für heute</string>
     <string name="updating_menu_language">Menusprache auf %1$s aktualisieren</string>
+    <string name="menu_language_label">Mensa Menü Sprache</string>
 </resources>

@@ -63,11 +63,20 @@ fun SettingsScreen(
                 navigationIcon = {
                     if (!isLoading) {
                         IconButton(onClick = { onNavigateUp() }) {
-                            Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = stringResource(R.string.back_label))
+                            Icon(
+                                Icons.AutoMirrored.Filled.ArrowBack,
+                                contentDescription = stringResource(R.string.back_label)
+                            )
                         }
                     }
                 },
-                title = { Text("Settings", maxLines = 1, overflow = TextOverflow.Ellipsis) },
+                title = {
+                    Text(
+                        stringResource(R.string.settings_label),
+                        maxLines = 1,
+                        overflow = TextOverflow.Ellipsis
+                    )
+                },
                 colors = TopAppBarDefaults.topAppBarColors(
                     containerColor = MaterialTheme.colorScheme.surfaceContainer,
                     titleContentColor = MaterialTheme.colorScheme.onSurface,
@@ -81,7 +90,7 @@ fun SettingsScreen(
                 .fillMaxSize()
         ) {
             if (!isLoading) {
-                ListItem({ Text("Menu Language") }, trailingContent = {
+                ListItem({ Text(stringResource(R.string.menu_language_label)) }, trailingContent = {
                     ExposedDropdownMenuBox(
                         menuLanguageDropdownExposed,
                         onExpandedChange = { menuLanguageDropdownExposed = it },

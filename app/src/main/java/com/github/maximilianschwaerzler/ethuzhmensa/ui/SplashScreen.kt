@@ -37,7 +37,7 @@ fun SplashScreen(modifier: Modifier = Modifier, onFinishTimer: () -> Unit = {}) 
     }
 
     Scaffold(
-        Modifier.fillMaxSize(),
+        modifier.fillMaxSize(),
         containerColor = MaterialTheme.colorScheme.background
     ) { innerPadding ->
         Column(
@@ -54,8 +54,10 @@ fun SplashScreen(modifier: Modifier = Modifier, onFinishTimer: () -> Unit = {}) 
                 fontWeight = FontWeight.Bold
             )
             Spacer(Modifier.height(32.dp))
-            Image(ethLogoPainter,
-                stringResource(R.string.eth_zurich_logo_label), Modifier.width(350.dp))
+            Image(
+                ethLogoPainter,
+                stringResource(R.string.eth_zurich_logo_label), Modifier.width(350.dp)
+            )
             Image(uzhLogoPainter, stringResource(R.string.uzh_logo_label), Modifier.width(150.dp))
         }
     }

@@ -34,11 +34,11 @@ object NetworkModule {
     @CookpitRetrofitClient
     @Provides
     @Singleton
-    fun provideCookpitRetrofitClient(): Retrofit {
+    fun provideCookpitRetrofitClient(@ApplicationContext appContext: Context): Retrofit {
         return Retrofit.Builder()
             .client(
                 OkHttpClient.Builder()
-                    .addInterceptor(RequestInterceptor())
+                    .addInterceptor(RequestInterceptor(appContext))
                     .build()
             )
             .baseUrl("https://idapps.ethz.ch")

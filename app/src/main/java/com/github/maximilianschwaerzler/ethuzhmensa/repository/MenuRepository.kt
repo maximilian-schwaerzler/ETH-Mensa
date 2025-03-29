@@ -83,7 +83,10 @@ class MenuRepository @Inject constructor(
                     )
                     if (!apiResponse.isSuccessful) return@launch
 
-                    val offers = mapJsonObjectToOffers(apiResponse.body()!!) ?: return@launch
+                    val offers = mapJsonObjectToOffers(
+                        apiResponse.body()!!,
+                        appContext.getString(R.string.cookpit_client_id)
+                    ) ?: return@launch
 
                     for (offer in offers) {
                         if (offer.menuOptions.isEmpty()) continue

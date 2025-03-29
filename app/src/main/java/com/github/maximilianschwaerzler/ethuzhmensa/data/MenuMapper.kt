@@ -7,6 +7,7 @@
 
 package com.github.maximilianschwaerzler.ethuzhmensa.data
 
+import androidx.core.net.toUri
 import com.github.maximilianschwaerzler.ethuzhmensa.data.dto.OfferDto
 import com.github.maximilianschwaerzler.ethuzhmensa.data.dto.OfferDto.MenuDto
 import com.github.maximilianschwaerzler.ethuzhmensa.data.dto.OfferDto.MenuDto.MenuPriceDto
@@ -14,7 +15,7 @@ import com.github.maximilianschwaerzler.ethuzhmensa.data.utils.Price
 import com.google.gson.JsonObject
 import java.time.LocalDate
 
-fun mapJsonObjectToOffers(jsonObject: JsonObject): List<OfferDto>? {
+fun mapJsonObjectToOffers(jsonObject: JsonObject, clientId: String): List<OfferDto>? {
     if (jsonObject.isEmpty) {
         return null
     }
@@ -63,7 +64,9 @@ fun mapJsonObjectToOffers(jsonObject: JsonObject): List<OfferDto>? {
                         .split("|").map { it.trim() }
                         .filter { it.isNotEmpty() }
                         .joinToString(" | "),
-                    imageUrl = imageUrl
+                    imageUrl = imageUrl?.toUri()?.buildUpon()
+                        ?.appendQueryParameter("client-id", clientId)
+                        ?.build()?.toString()
                 )
                 for (priceCategory in meal.get("meal-price-array").asJsonArray) {
                     val customerGroupId =

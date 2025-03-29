@@ -94,8 +94,7 @@ fun MenuDetailItem(
 
                 if (showImage && menu.menu.imageUrl != null) {
                     AsyncImage(
-                        // TODO: Add client-id in a better way
-                        model = "${menu.menu.imageUrl}?client-id=ethz-wcms",
+                        model = menu.menu.imageUrl,
                         contentDescription = menu.menu.name,
                         contentScale = ContentScale.Crop,
                         clipToBounds = true,

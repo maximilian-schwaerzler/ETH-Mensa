@@ -27,4 +27,5 @@
     <string name="source_code_link_desc">This app is open source. You can find the source code and updates on GitHub.</string>
     <string name="source_code_label">Source Code</string>
     <string name="open_github_repo_external_link_label">Open GitHub repository in browser</string>
+    <string name="cookpit_client_id" translatable="false">ethz-wcms</string>
 </resources>

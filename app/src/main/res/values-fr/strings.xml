@@ -22,4 +22,5 @@
     <string name="open_system_settings_label">Ouvrir les paramètres système</string>
     <string name="source_code_link_desc">Cette application est open source. Vous pouvez trouver le code source et les mises à jour sur GitHub.</string>
     <string name="source_code_label">Code source</string>
+    <string name="open_github_repo_external_link_label">Ouvrir le dépôt GitHub dans le navigateur</string>
 </resources>

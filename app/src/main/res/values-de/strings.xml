@@ -22,4 +22,5 @@
     <string name="open_system_settings_label">Systemeinstellungen öffnen</string>
     <string name="source_code_link_desc">Diese Anwendung ist Open Source. Du findest den Quellcode und Updates auf GitHub.</string>
     <string name="source_code_label">Source Code</string>
+    <string name="open_github_repo_external_link_label">GitHub-Repository im Browser öffnen</string>
 </resources>

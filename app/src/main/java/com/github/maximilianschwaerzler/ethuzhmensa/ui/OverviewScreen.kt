@@ -31,9 +31,11 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.nestedscroll.nestedScroll
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.github.maximilianschwaerzler.ethuzhmensa.R
 import com.github.maximilianschwaerzler.ethuzhmensa.data.db.entities.Facility
 import com.github.maximilianschwaerzler.ethuzhmensa.data.db.entities.OfferWithPrices
 import com.github.maximilianschwaerzler.ethuzhmensa.data.utils.MockData
@@ -59,7 +61,13 @@ fun OverviewScreen(
         contentColor = MaterialTheme.colorScheme.onSurface,
         topBar = {
             TopAppBar(
-                title = { Text("ETH/UZH Mensa", maxLines = 1, overflow = TextOverflow.Ellipsis) },
+                title = {
+                    Text(
+                        stringResource(R.string.app_name),
+                        maxLines = 1,
+                        overflow = TextOverflow.Ellipsis
+                    )
+                },
                 colors = TopAppBarDefaults.topAppBarColors(
                     containerColor = MaterialTheme.colorScheme.surfaceContainer,
                     titleContentColor = MaterialTheme.colorScheme.onSurface,
@@ -71,7 +79,7 @@ fun OverviewScreen(
                     }) {
                         Icon(
                             Icons.Default.Settings,
-                            contentDescription = "Settings",
+                            contentDescription = stringResource(R.string.settings_label),
                             tint = MaterialTheme.colorScheme.onSurface
                         )
                     }
@@ -112,7 +120,7 @@ fun OverviewScreen(
                     contentAlignment = Alignment.Center
                 ) {
                     Text(
-                        "Loading...",
+                        stringResource(R.string.loading_label),
                         style = MaterialTheme.typography.headlineSmall,
                         color = MaterialTheme.colorScheme.onSurface
                     )
@@ -128,17 +136,17 @@ fun NoOffersInfoPanel(modifier: Modifier = Modifier, onRefresh: () -> Unit) {
         Column(horizontalAlignment = Alignment.CenterHorizontally) {
             Icon(
                 Icons.Default.Info,
-                contentDescription = "Info",
+                contentDescription = stringResource(R.string.info_label),
 //                tint = MaterialTheme.colorScheme.onSurface,
                 modifier = Modifier.size(48.dp)
             )
             Spacer(Modifier.height(32.dp))
             Text(
-                "No offers available for today", style = MaterialTheme.typography.headlineSmall
+                stringResource(R.string.no_offers_available_today_singular), style = MaterialTheme.typography.headlineSmall
             )
             Spacer(Modifier.height(8.dp))
             Button(onClick = { onRefresh() }) {
-                Text("Refresh", style = MaterialTheme.typography.bodyLarge)
+                Text(stringResource(R.string.refresh_label), style = MaterialTheme.typography.bodyLarge)
             }
         }
     }

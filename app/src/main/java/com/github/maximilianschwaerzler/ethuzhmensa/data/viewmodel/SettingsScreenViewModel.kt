@@ -4,6 +4,7 @@ import android.content.Context
 import android.widget.Toast
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.github.maximilianschwaerzler.ethuzhmensa.R
 import com.github.maximilianschwaerzler.ethuzhmensa.data.DataStoreManager
 import com.github.maximilianschwaerzler.ethuzhmensa.repository.MenuRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -38,7 +39,10 @@ class SettingsScreenViewModel @Inject constructor(
     fun updateMenuLanguage(menuLanguage: DataStoreManager.MenuLanguage) {
         Toast.makeText(
             appContext,
-            "Updating menus to ${menuLanguage.getDisplayName(appContext)}",
+            appContext.getString(
+                R.string.updating_menu_language,
+                menuLanguage.getDisplayName(appContext)
+            ),
             Toast.LENGTH_SHORT
         ).show()
         viewModelScope.launch(Dispatchers.IO) {

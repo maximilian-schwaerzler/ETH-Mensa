@@ -18,6 +18,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.integerResource
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -53,8 +54,9 @@ fun SplashScreen(modifier: Modifier = Modifier, onFinishTimer: () -> Unit = {}) 
                 fontWeight = FontWeight.Bold
             )
             Spacer(Modifier.height(32.dp))
-            Image(ethLogoPainter, "ETH Zurich Logo", Modifier.width(350.dp))
-            Image(uzhLogoPainter, "UZH Logo", Modifier.width(150.dp))
+            Image(ethLogoPainter,
+                stringResource(R.string.eth_zurich_logo_label), Modifier.width(350.dp))
+            Image(uzhLogoPainter, stringResource(R.string.uzh_logo_label), Modifier.width(150.dp))
         }
     }
 }

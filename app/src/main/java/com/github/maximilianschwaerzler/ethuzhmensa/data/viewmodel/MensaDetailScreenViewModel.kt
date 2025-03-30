@@ -38,8 +38,15 @@ class MensaDetailScreenViewModel @Inject constructor(
                 _facility.value = it
             }
 
-            menuRepository.getOfferForFacilityDate(facilityId, date).let {
-                _menus.value = it
+            menuRepository.getOffer(facilityId, date).let { fetchedOffers ->
+                if (fetchedOffers == null) {
+                    Log.e(
+                        "MensaDetailScreenViewModel",
+                        "No offers found for facility $facilityId on date $date"
+                    )
+                    return@let
+                }
+                _menus.value = fetchedOffers
             }
         }
     } catch (e: IllegalStateException) {

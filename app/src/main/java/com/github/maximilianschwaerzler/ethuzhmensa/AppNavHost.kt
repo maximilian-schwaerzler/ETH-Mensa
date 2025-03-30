@@ -44,7 +44,7 @@ data class MensaDetailScreen(
 @Composable
 fun AppNavHost(modifier: Modifier = Modifier) {
     val navController = rememberNavController()
-    NavHost(navController, SplashScreen, modifier) {
+    NavHost(navController, OverviewScreen, modifier) {
         composable<SplashScreen> {
             SplashScreen {
                 navController.navigate(
@@ -58,6 +58,10 @@ fun AppNavHost(modifier: Modifier = Modifier) {
             val viewModel: OverviewScreenViewModel = hiltViewModel()
             val uiState = viewModel.uiState.collectAsStateWithLifecycle()
 
+            if (uiState.value.isInitialLoading) {
+                SplashScreen()
+            }
+
             OverviewScreen(
                 isLoading = uiState.value.isRefreshing,
                 facilitiesWithOffers = uiState.value.facilitiesWithOffers,
@@ -70,7 +74,6 @@ fun AppNavHost(modifier: Modifier = Modifier) {
                         MensaDetailScreen(facilityId, date.toEpochDay())
                     )
                 },
-                isInitialLoading = uiState.value.isInitialLoading,
             )
         }
 
@@ -78,10 +81,11 @@ fun AppNavHost(modifier: Modifier = Modifier) {
             val viewModel: SettingsScreenViewModel = hiltViewModel()
             val uiState = viewModel.uiState.collectAsStateWithLifecycle()
             SettingsScreen(
-                uiState.value.menuLanguage,
+                menuLanguage = uiState.value.menuLanguage,
                 isLoading = uiState.value.isLoading,
-                viewModel::updateMenuLanguage,
-                onNavigateUp = navController::popBackStack
+                onMenuLanguageChange = viewModel::updateMenuLanguage,
+                onNavigateUp = navController::popBackStack,
+                uiEvent = uiState.value.event
             )
         }
 

@@ -59,7 +59,6 @@ fun OverviewScreen(
     onRefresh: () -> Unit,
     onSettingsNavigate: () -> Unit,
     onDetailScreenNavigate: (facilityId: Int, date: LocalDate) -> Unit,
-    isInitialLoading: Boolean,
     modifier: Modifier = Modifier,
 ) {
     val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior(rememberTopAppBarState())
@@ -120,19 +119,8 @@ fun OverviewScreen(
                         MensaOverviewCard(it.first, it.second, onDetailScreenNavigate)
                     }
                 }
-            } else if (!isInitialLoading) {
-                NoOffersInfoPanel { onRefresh() }
             } else {
-                Box(
-                    modifier = Modifier.fillMaxSize(),
-                    contentAlignment = Alignment.Center
-                ) {
-                    Text(
-                        stringResource(R.string.loading_label),
-                        style = MaterialTheme.typography.headlineSmall,
-                        color = MaterialTheme.colorScheme.onSurface
-                    )
-                }
+                NoOffersInfoPanel { onRefresh() }
             }
         }
     }
@@ -175,8 +163,7 @@ private fun OverviewScreenPreview() {
             facilitiesWithOffers = MockData.facilitiesWithOffers,
             onRefresh = {},
             onSettingsNavigate = {},
-            onDetailScreenNavigate = { _, _ -> },
-            isInitialLoading = false
+            onDetailScreenNavigate = { _, _ -> }
         )
     }
 }
@@ -191,8 +178,7 @@ private fun OverviewScreenPreviewNoMenus() {
             facilitiesWithOffers = emptyList(),
             onRefresh = {},
             onSettingsNavigate = {},
-            onDetailScreenNavigate = { _, _ -> },
-            isInitialLoading = false
+            onDetailScreenNavigate = { _, _ -> }
         )
     }
 }

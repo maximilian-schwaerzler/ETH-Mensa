@@ -9,6 +9,7 @@ package com.github.maximilianschwaerzler.ethuzhmensa.di
 
 import android.content.Context
 import android.net.ConnectivityManager
+import com.github.maximilianschwaerzler.ethuzhmensa.network.NetworkCheckInterceptor
 import com.github.maximilianschwaerzler.ethuzhmensa.network.RequestInterceptor
 import com.github.maximilianschwaerzler.ethuzhmensa.network.services.CookpitFacilityService
 import com.github.maximilianschwaerzler.ethuzhmensa.network.services.CookpitMenuService
@@ -34,11 +35,15 @@ object NetworkModule {
     @CookpitRetrofitClient
     @Provides
     @Singleton
-    fun provideCookpitRetrofitClient(): Retrofit {
+    fun provideCookpitRetrofitClient(
+        @ApplicationContext appContext: Context,
+        connMgr: ConnectivityManager
+    ): Retrofit {
         return Retrofit.Builder()
             .client(
                 OkHttpClient.Builder()
-                    .addInterceptor(RequestInterceptor())
+                    .addInterceptor(NetworkCheckInterceptor(connMgr))
+                    .addInterceptor(RequestInterceptor(appContext))
                     .build()
             )
             .baseUrl("https://idapps.ethz.ch")

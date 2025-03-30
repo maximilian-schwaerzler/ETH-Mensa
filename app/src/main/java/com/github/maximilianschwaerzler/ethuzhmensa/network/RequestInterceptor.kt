@@ -7,6 +7,8 @@
 
 package com.github.maximilianschwaerzler.ethuzhmensa.network
 
+import android.content.Context
+import com.github.maximilianschwaerzler.ethuzhmensa.R
 import okhttp3.Interceptor
 import okhttp3.Response
 
@@ -14,15 +16,15 @@ import okhttp3.Response
  * Interceptor that adds the client-id to the request.
  * @see [Interceptor]
  */
-internal class RequestInterceptor : Interceptor {
+internal class RequestInterceptor(
+    private val appContext: Context
+) : Interceptor {
     override fun intercept(chain: Interceptor.Chain): Response {
         val originalRequest = chain.request()
         val originalUrl = originalRequest.url
         val url = originalUrl.newBuilder()
-            .addQueryParameter("client-id", "ethz-wcms")
+            .addQueryParameter("client-id", appContext.getString(R.string.cookpit_client_id))
             .build()
-
-//        Log.d("RequestInterceptor", "New url: $url")
 
         val requestBuilder = originalRequest.newBuilder().url(url)
         val request = requestBuilder.build()

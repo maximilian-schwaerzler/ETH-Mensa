@@ -14,12 +14,15 @@
     <string name="refresh_label">Neu laden</string>
     <string name="back_label">Zurück</string>
     <string name="eth_zurich_logo_label">ETH Zürich Logo</string>
+    <string name="uzh_logo_label">UZH Logo</string>
     <string name="no_offer_available_for_today_plural">Kein Angebot für heute</string>
-    <string name="updating_menu_language">Menusprache auf %1$s aktualisieren</string>
+    <string name="updated_menu_language">Menusprache wurde auf %1$s aktualisiert</string>
     <string name="menu_language_label">Mensa Menü Sprache</string>
     <string name="app_language_label">App Sprache</string>
     <string name="change_app_language_in_settings_label">Ändere die App UI Sprache in den Systemeinstellungen</string>
     <string name="open_system_settings_label">Systemeinstellungen öffnen</string>
     <string name="source_code_link_desc">Diese Anwendung ist Open Source. Du findest den Quellcode und Updates auf GitHub.</string>
     <string name="source_code_label">Source Code</string>
+    <string name="open_github_repo_external_link_label">GitHub-Repository im Browser öffnen</string>
+    <string name="no_internet_connection_label">Keine Internetverbindung. Bitte versuche es später noch einmal.</string>
 </resources>

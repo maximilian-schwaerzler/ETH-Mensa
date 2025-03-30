@@ -40,7 +40,7 @@ fun MenuDetailItem(
     showImage: Boolean = true
 ) {
     Box(
-        Modifier
+        modifier
             .fillMaxWidth()
             .background(MaterialTheme.colorScheme.primaryContainer)
     ) {
@@ -86,8 +86,7 @@ fun MenuDetailItem(
                     )
                     if (menu.menu.mealDescription.isNotBlank()) {
                         Text(
-                            // TODO: Trim when saving to DB
-                            menu.menu.mealDescription.trim(),
+                            menu.menu.mealDescription,
                             style = MaterialTheme.typography.bodyMedium,
                         )
                     }
@@ -95,8 +94,7 @@ fun MenuDetailItem(
 
                 if (showImage && menu.menu.imageUrl != null) {
                     AsyncImage(
-                        // TODO: Add client-id in a better way
-                        model = "${menu.menu.imageUrl}?client-id=ethz-wcms",
+                        model = menu.menu.imageUrl,
                         contentDescription = menu.menu.name,
                         contentScale = ContentScale.Crop,
                         clipToBounds = true,

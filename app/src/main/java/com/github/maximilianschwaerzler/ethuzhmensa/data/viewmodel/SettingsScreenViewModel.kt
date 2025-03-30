@@ -8,7 +8,6 @@
 package com.github.maximilianschwaerzler.ethuzhmensa.data.viewmodel
 
 import android.content.Context
-import android.widget.Toast
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.github.maximilianschwaerzler.ethuzhmensa.R
@@ -44,18 +43,25 @@ class SettingsScreenViewModel @Inject constructor(
     }
 
     fun updateMenuLanguage(menuLanguage: DataStoreManager.MenuLanguage) {
-        Toast.makeText(
-            appContext,
-            appContext.getString(
-                R.string.updating_menu_language,
-                menuLanguage.getDisplayName(appContext)
-            ),
-            Toast.LENGTH_SHORT
-        ).show()
         viewModelScope.launch(Dispatchers.IO) {
             _uiState.value = _uiState.value.copy(isLoading = true)
-            dataStoreManager.updateMenuLanguage(menuLanguage)
-            menuRepository.rebuildDatabase()
+            if (menuRepository.tryRebuildDatabase(menuLanguage).isSuccess) {
+                dataStoreManager.updateMenuLanguage(menuLanguage)
+                _uiState.value = _uiState.value.copy(
+                    event = SettingsScreenUiState.UiEvent.ShowSnackbar(
+                        appContext.getString(
+                            R.string.updated_menu_language,
+                            menuLanguage.getDisplayName(appContext)
+                        )
+                    )
+                )
+            } else {
+                _uiState.value = _uiState.value.copy(
+                    event = SettingsScreenUiState.UiEvent.ShowSnackbar(
+                        appContext.getString(R.string.no_internet_connection_label)
+                    )
+                )
+            }
             _uiState.value = _uiState.value.copy(isLoading = false)
         }
     }

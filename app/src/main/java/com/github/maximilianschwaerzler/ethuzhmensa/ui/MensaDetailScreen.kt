@@ -85,7 +85,6 @@ fun MensaDetailScreen(
         ) {
             if (facility != null && offer != null) {
                 Column {
-//                    val showImages = !offer.menus.any { it.menu.imageUrl.isNullOrBlank() }
                     offer.menus.forEachIndexed { index, menu ->
                         MenuDetailItem(menu = menu, showImage = menu.menu.imageUrl != null)
                         if (index < offer.menus.size - 1) {

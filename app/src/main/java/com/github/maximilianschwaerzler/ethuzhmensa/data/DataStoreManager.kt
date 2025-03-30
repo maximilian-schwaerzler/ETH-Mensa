@@ -41,7 +41,7 @@ class DataStoreManager @Inject constructor(@ApplicationContext appContext: Conte
 
         companion object {
             fun getFromLangCodeOrDefault(langCode: String): MenuLanguage {
-                return entries.firstOrNull { it.langCode == langCode } ?: GERMAN
+                return entries.firstOrNull { it.langCode == langCode } ?: ENGLISH
             }
         }
     }
@@ -55,7 +55,7 @@ class DataStoreManager @Inject constructor(@ApplicationContext appContext: Conte
     val menuLanguage = appDataStore.data.map<Preferences, MenuLanguage> { preferences ->
         preferences[menuLanguageKey]?.let {
             MenuLanguage.getFromLangCodeOrDefault(it)
-        } ?: MenuLanguage.GERMAN
+        } ?: MenuLanguage.ENGLISH
     }
 
     suspend fun updateLastMenuFetchDate(date: LocalDate = LocalDate.now()) {

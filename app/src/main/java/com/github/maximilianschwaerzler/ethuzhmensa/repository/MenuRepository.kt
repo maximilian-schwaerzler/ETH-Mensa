@@ -42,7 +42,7 @@ class MenuRepository @Inject constructor(
     private suspend fun fetchOfferForFacility(
         facilityId: Int,
         date: LocalDate = LocalDate.now(),
-        language: MenuLanguage = MenuLanguage.GERMAN
+        language: MenuLanguage = MenuLanguage.ENGLISH
     ): Response<JsonObject> {
         val startOfWeek = date.with(TemporalAdjusters.previousOrSame(DayOfWeek.MONDAY))
         val endOfWeek = date.with(TemporalAdjusters.nextOrSame(DayOfWeek.SUNDAY)).plusDays(1)

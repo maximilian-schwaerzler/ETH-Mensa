@@ -238,6 +238,6 @@ fun SettingsScreen(
 @Composable
 private fun SettingsScreenPreview() {
     ETHUZHMensaTheme {
-        SettingsScreen(MenuLanguage.GERMAN, false, {}, {}, null)
+        SettingsScreen(MenuLanguage.ENGLISH, false, {}, {}, null)
     }
 }

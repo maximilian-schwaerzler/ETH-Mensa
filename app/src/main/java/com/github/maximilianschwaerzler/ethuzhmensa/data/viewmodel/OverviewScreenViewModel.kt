@@ -82,7 +82,7 @@ class OverviewScreenViewModel @Inject constructor(
                     }
                     val offerJob = launch {
                         try {
-                            offers.emit(menuRepository.getOffersForDate(LocalDate.now()))
+                            offers.emit(menuRepository.getOffersForDate(LocalDate.of(2025, 3, 27)))
                         } catch (e: IllegalStateException) {
                             Log.w("OverviewScreenViewModel", "No internet connection", e)
                         }

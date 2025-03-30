@@ -78,6 +78,9 @@ dependencies {
     implementation(libs.retrofit)
     implementation(libs.retrofit.gson)
 
+    // NetworkResponseAdapter (https://haroldadmin.github.io/NetworkResponseAdapter/)
+    implementation(libs.networkresponseadapter)
+
     // JSON Support
     implementation(libs.kotlinx.serialization.json)
     implementation(libs.gson)

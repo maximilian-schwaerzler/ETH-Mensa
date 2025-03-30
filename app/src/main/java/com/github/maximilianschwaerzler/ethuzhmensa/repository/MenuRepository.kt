@@ -17,12 +17,11 @@ import com.github.maximilianschwaerzler.ethuzhmensa.data.db.MenuDao
 import com.github.maximilianschwaerzler.ethuzhmensa.data.db.entities.Offer
 import com.github.maximilianschwaerzler.ethuzhmensa.data.db.entities.OfferWithPrices
 import com.github.maximilianschwaerzler.ethuzhmensa.data.mapJsonObjectToOffers
-import com.github.maximilianschwaerzler.ethuzhmensa.network.isConnected
 import com.github.maximilianschwaerzler.ethuzhmensa.network.services.CookpitMenuService
 import com.google.gson.JsonObject
 import dagger.hilt.android.qualifiers.ApplicationContext
+import kotlinx.coroutines.async
 import kotlinx.coroutines.flow.first
-import kotlinx.coroutines.launch
 import kotlinx.coroutines.supervisorScope
 import retrofit2.Response
 import java.time.DayOfWeek
@@ -61,40 +60,35 @@ class MenuRepository @Inject constructor(
     }
 
     /**
-     * Fetches all menus from the API and saves them to the database. Fails with an [IllegalStateException] if the underlying network request fails.
+     * Fetches all menus from the API and saves them to the database.
      *
      * @param date The date for which to fetch the menus. Defaults to today.
-     * @param force If true, forces a menu update even if the last update was within the same week.
-     * @param forceLanguage If not null, forces the use of this language for the menu update.
+     * @param overrideLanguage If not null, forces the use of this language for the menu update.
      */
-    @Throws(IllegalStateException::class)
     private suspend fun saveAllMenusToDB(
         date: LocalDate = LocalDate.now(),
-        force: Boolean = false,
-        forceLanguage: MenuLanguage? = null
+        overrideLanguage: MenuLanguage? = null
     ) {
-        if (!force && !connMgr.isConnected()) {
-            Log.w("MenuRepository", "No internet connection, skipping menu update")
-            throw IllegalStateException("No internet connection")
-        }
 
         val validFacilityIds =
             appContext.resources.getIntArray(R.array.id_mensas_with_customer_groups)
-
         supervisorScope {
             for (facilityId in validFacilityIds) {
-                launch {
+                async {
                     val apiResponse = fetchOfferForFacility(
                         facilityId,
                         date,
-                        dataStoreManager.menuLanguage.first()
+                        overrideLanguage ?: dataStoreManager.menuLanguage.first()
                     )
-                    if (!apiResponse.isSuccessful) return@launch
+
+                    if (!apiResponse.isSuccessful) throw IllegalStateException(
+                        "Failed to fetch menus for facility $facilityId: ${apiResponse.code()} ${apiResponse.message()}"
+                    )
 
                     val offers = mapJsonObjectToOffers(
                         apiResponse.body()!!,
                         appContext.getString(R.string.cookpit_client_id)
-                    ) ?: return@launch
+                    ) ?: return@async
 
                     for (offer in offers) {
                         if (offer.menuOptions.isEmpty()) continue
@@ -140,22 +134,37 @@ class MenuRepository @Inject constructor(
         }
     }
 
-    private suspend fun tryUpdateMenusIfNecessary(date: LocalDate?): Boolean {
-        val lastMenuFetchDate = dataStoreManager.lastMenuFetchDate.first()
-        val currentWeek = date?.get(IsoFields.WEEK_OF_WEEK_BASED_YEAR)
-            ?: LocalDate.MIN.get(IsoFields.WEEK_OF_WEEK_BASED_YEAR)
+    /**
+     * Tries to update the menus for the given date. If the date is null, it will use the current date.
+     * If force is true, it will always update the menus, even if they are already up to date.
+     *
+     * @param date The date for which to update the menus.
+     * @param force If true, forces a menu update even if the last update was within the same week.
+     * @param language If not null, forces the use of this language for the menu update.
+     * @return A [Result] containing the updated date of the last menu fetch or an error if the update failed.
+     */
+    private suspend fun tryUpdatingMenus(
+        date: LocalDate,
+        force: Boolean = false,
+        language: MenuLanguage? = null
+    ): Result<LocalDate> {
 
-        return if (lastMenuFetchDate.get(IsoFields.WEEK_OF_WEEK_BASED_YEAR) != currentWeek) {
+        val lastMenuFetchDate = dataStoreManager.lastMenuFetchDate.first()
+        val currentWeek = date.get(IsoFields.WEEK_OF_WEEK_BASED_YEAR)
+
+        if (force || lastMenuFetchDate.get(IsoFields.WEEK_OF_WEEK_BASED_YEAR) != currentWeek) {
             runCatching {
-                saveAllMenusToDB()
+                saveAllMenusToDB(overrideLanguage = language)
                 dataStoreManager.updateLastMenuFetchDate()
-            }.onFailure {
-                Log.w("MenuRepository", "Failed to fetch menus, skipping update", it)
-            }.isSuccess
-        } else false
+            }.onFailure { exception ->
+                Log.w("MenuRepository", "Failed to update the menu DB")
+                return Result.failure(exception)
+            }
+        }
+        return Result.success(dataStoreManager.lastMenuFetchDate.first())
     }
 
-    private suspend fun getOffer(facilityId: Int, date: LocalDate?): OfferWithPrices {
+    suspend fun getOffer(facilityId: Int, date: LocalDate?): OfferWithPrices? {
         val targetDate = date ?: LocalDate.now()
         return runCatching {
             menuDao.getOfferForFacilityDate(facilityId, targetDate)
@@ -165,35 +174,31 @@ class MenuRepository @Inject constructor(
                 "No offer found for facility $facilityId, updating from API",
                 it
             )
-            tryUpdateMenusIfNecessary(date)
-            menuDao.getOfferForFacilityDate(facilityId, targetDate)
+            val result = tryUpdatingMenus(targetDate)
+            if (result.isSuccess) {
+                menuDao.getOfferForFacilityDate(facilityId, targetDate)
+            } else {
+                null
+            }
         }
     }
 
     suspend fun getOffersForDate(date: LocalDate): List<OfferWithPrices> {
-        var offers = menuDao.getAllOffersForDate(date)
-
-        if (tryUpdateMenusIfNecessary(date)) {
-            saveAllMenusToDB()
-            dataStoreManager.updateLastMenuFetchDate()
-            offers = menuDao.getAllOffersForDate(date)
-        }
-
-        return offers
-    }
-
-    suspend fun getOfferForFacilityDate(
-        facilityId: Int, date: LocalDate = LocalDate.now()
-    ): OfferWithPrices {
-        return getOffer(facilityId, date)
+        tryUpdatingMenus(date)
+        return menuDao.getAllOffersForDate(date)
     }
 
     /**
      * Rebuilds the database by deleting all existing offers and fetching new ones from the API. Fails with an [IllegalStateException] if the underlying network request fails.
      */
-    @Throws(IllegalStateException::class)
-    suspend fun tryRebuildDatabase(language: MenuLanguage) {
+    suspend fun tryRebuildDatabase(language: MenuLanguage): Result<Unit> {
         menuDao.deleteAllOffers()
-        saveAllMenusToDB(LocalDate.now(), true, language)
+        tryUpdatingMenus(LocalDate.now(), force = true, language = language)
+            .onFailure { exception ->
+                Log.w("MenuRepository", "Failed to rebuild the menu DB")
+                dataStoreManager.updateLastMenuFetchDate(LocalDate.MIN)
+                return Result.failure(exception)
+            }
+        return Result.success(Unit)
     }
 }

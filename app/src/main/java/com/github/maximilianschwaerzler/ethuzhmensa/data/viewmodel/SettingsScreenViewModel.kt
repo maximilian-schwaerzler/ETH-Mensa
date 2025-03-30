@@ -54,8 +54,15 @@ class SettingsScreenViewModel @Inject constructor(
         ).show()
         viewModelScope.launch(Dispatchers.IO) {
             _uiState.value = _uiState.value.copy(isLoading = true)
-            dataStoreManager.updateMenuLanguage(menuLanguage)
-            menuRepository.tryRebuildDatabase(menuLanguage)
+            if (menuRepository.tryRebuildDatabase(menuLanguage).isSuccess) {
+                dataStoreManager.updateMenuLanguage(menuLanguage)
+            } else {
+                _uiState.value = _uiState.value.copy(
+                    event = SettingsScreenUiState.UiEvent.ShowSnackbar(
+                        "No internet connection. Please try again later."
+                    )
+                )
+            }
             _uiState.value = _uiState.value.copy(isLoading = false)
         }
     }

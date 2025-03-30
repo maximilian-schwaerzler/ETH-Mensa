@@ -20,7 +20,6 @@ hiltNavigationCompose = "1.2.0"
 datastorePreferences = "1.1.4"
 coil = "3.1.0"
 retrofit = "2.11.0"
-networkResponseAdapter = "5.0.0"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -54,7 +53,6 @@ coil-compose = { group = "io.coil-kt.coil3", name = "coil-compose", version.ref 
 coil-network = { group = "io.coil-kt.coil3", name = "coil-network-okhttp", version.ref = "coil" }
 retrofit = { group = "com.squareup.retrofit2", name = "retrofit", version.ref = "retrofit" }
 retrofit-gson = { group = "com.squareup.retrofit2", name = "converter-gson", version.ref = "retrofit" }
-networkresponseadapter = { group = "com.github.haroldadmin", name = "NetworkResponseAdapter", version.ref = "networkResponseAdapter" }
 
 
 [plugins]

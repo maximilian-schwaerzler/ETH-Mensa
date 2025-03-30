@@ -16,9 +16,9 @@
     <string name="refresh_label">Refresh</string>
     <string name="back_label">Back</string>
     <string name="eth_zurich_logo_label">ETH Zurich Logo</string>
-    <string name="uzh_logo_label" translatable="false">UZH Logo</string>
+    <string name="uzh_logo_label">UZH Logo</string>
     <string name="no_offer_available_for_today_plural">No offer available for today</string>
-    <string name="updating_menu_language">Updating menus to %1$s</string>
+    <string name="updated_menu_language">Menus updated to %1$s</string>
     <string name="menu_language_label">Mensa Menu Language</string>
     <string name="app_language_label">App Language</string>
     <string name="change_app_language_in_settings_label">Change the app\'s UI language in the system settings</string>
@@ -28,4 +28,5 @@
     <string name="source_code_label">Source Code</string>
     <string name="open_github_repo_external_link_label">Open GitHub repository in browser</string>
     <string name="cookpit_client_id" translatable="false">ethz-wcms</string>
+    <string name="no_internet_connection_label">No internet connection. Please try again later.</string>
 </resources>

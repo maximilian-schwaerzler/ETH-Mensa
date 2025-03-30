@@ -14,8 +14,9 @@
     <string name="refresh_label">刷新</string>
     <string name="back_label">返回</string>
     <string name="eth_zurich_logo_label">苏黎世联邦理工标志</string>
+    <string name="uzh_logo_label">UZH 標誌</string>
     <string name="no_offer_available_for_today_plural">今天没有可用的菜单</string>
-    <string name="updating_menu_language">正在将菜单语言更改为 %1$s</string>
+    <string name="updated_menu_language">選單更新為 %1$s</string>
     <string name="menu_language_label">食堂菜单语言</string>
     <string name="app_language_label">应用语言</string>
     <string name="change_app_language_in_settings_label">请在系统设置中更改应用的界面语言</string>
@@ -23,4 +24,5 @@
     <string name="source_code_link_desc">该应用程序是开源的。您可以在 GitHub 上找到源代码和更新。</string>
     <string name="source_code_label">源代码</string>
     <string name="open_github_repo_external_link_label">在浏览器中打开 GitHub 仓库</string>
+    <string name="no_internet_connection_label">没有网络连接。请稍后再试。</string>
 </resources>

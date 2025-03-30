@@ -31,11 +31,14 @@ import androidx.compose.material3.ListItem
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.MenuAnchorType
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.SnackbarHost
+import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -52,6 +55,7 @@ import androidx.compose.ui.unit.dp
 import androidx.core.net.toUri
 import com.github.maximilianschwaerzler.ethuzhmensa.R
 import com.github.maximilianschwaerzler.ethuzhmensa.data.DataStoreManager.MenuLanguage
+import com.github.maximilianschwaerzler.ethuzhmensa.data.viewmodel.SettingsScreenUiState
 import com.github.maximilianschwaerzler.ethuzhmensa.ui.theme.ETHUZHMensaTheme
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -61,18 +65,31 @@ fun SettingsScreen(
     isLoading: Boolean,
     onMenuLanguageChange: (MenuLanguage) -> Unit,
     onNavigateUp: () -> Unit,
+    uiEvent: SettingsScreenUiState.UiEvent?,
     modifier: Modifier = Modifier,
 ) {
-    var menuLanguageDropdownExposed by remember {
+    var menuLanguageDropdownExpanded by remember {
         mutableStateOf(false)
     }
 
     val context = LocalContext.current
 
+    val snackbarHostState = remember { SnackbarHostState() }
+    LaunchedEffect(uiEvent) {
+        if (uiEvent != null) {
+            when (uiEvent) {
+                is SettingsScreenUiState.UiEvent.ShowSnackbar -> {
+                    snackbarHostState.showSnackbar(uiEvent.msg)
+                }
+            }
+        }
+    }
+
     Scaffold(
         modifier,
         containerColor = MaterialTheme.colorScheme.surface,
         contentColor = MaterialTheme.colorScheme.onSurface,
+        snackbarHost = { SnackbarHost(snackbarHostState) },
         topBar = {
             TopAppBar(
                 navigationIcon = {
@@ -109,8 +126,8 @@ fun SettingsScreen(
                     headlineContent = { Text(stringResource(R.string.menu_language_label)) },
                     trailingContent = {
                         ExposedDropdownMenuBox(
-                            menuLanguageDropdownExposed,
-                            onExpandedChange = { menuLanguageDropdownExposed = it },
+                            menuLanguageDropdownExpanded,
+                            onExpandedChange = { menuLanguageDropdownExpanded = it },
                             modifier = Modifier
                                 .width(200.dp)
                                 .wrapContentWidth()
@@ -123,28 +140,28 @@ fun SettingsScreen(
                                 singleLine = true,
                                 trailingIcon = {
                                     ExposedDropdownMenuDefaults.TrailingIcon(
-                                        menuLanguageDropdownExposed
+                                        menuLanguageDropdownExpanded
                                     )
                                 },
                                 colors = ExposedDropdownMenuDefaults.textFieldColors()
                             )
 
                             ExposedDropdownMenu(
-                                menuLanguageDropdownExposed,
-                                { menuLanguageDropdownExposed = false }
+                                menuLanguageDropdownExpanded,
+                                { menuLanguageDropdownExpanded = false }
                             ) {
-                                MenuLanguage.entries.forEach {
+                                MenuLanguage.entries.forEach { languageOption ->
                                     DropdownMenuItem(
                                         text = {
                                             Text(
-                                                it.getDisplayName(context),
+                                                languageOption.getDisplayName(context),
                                                 maxLines = 1,
                                                 overflow = TextOverflow.Ellipsis
                                             )
                                         },
                                         onClick = {
-                                            onMenuLanguageChange(it)
-                                            menuLanguageDropdownExposed = false
+                                            onMenuLanguageChange(languageOption)
+                                            menuLanguageDropdownExpanded = false
                                         },
                                         contentPadding = ExposedDropdownMenuDefaults.ItemContentPadding
                                     )
@@ -221,6 +238,6 @@ fun SettingsScreen(
 @Composable
 private fun SettingsScreenPreview() {
     ETHUZHMensaTheme {
-        SettingsScreen(MenuLanguage.GERMAN, false, {}, {})
+        SettingsScreen(MenuLanguage.GERMAN, false, {}, {}, null)
     }
 }

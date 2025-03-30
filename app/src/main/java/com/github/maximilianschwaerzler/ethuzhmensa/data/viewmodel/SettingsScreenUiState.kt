@@ -12,4 +12,9 @@ import com.github.maximilianschwaerzler.ethuzhmensa.data.DataStoreManager.MenuLa
 data class SettingsScreenUiState(
     val menuLanguage: MenuLanguage = MenuLanguage.GERMAN,
     val isLoading: Boolean = false,
-)
+    val event: UiEvent? = null,
+) {
+    sealed class UiEvent {
+        data class ShowSnackbar(val msg: String) : UiEvent()
+    }
+}

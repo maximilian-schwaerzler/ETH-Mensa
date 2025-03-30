@@ -55,7 +55,7 @@ class SettingsScreenViewModel @Inject constructor(
         viewModelScope.launch(Dispatchers.IO) {
             _uiState.value = _uiState.value.copy(isLoading = true)
             dataStoreManager.updateMenuLanguage(menuLanguage)
-            menuRepository.rebuildDatabase()
+            menuRepository.tryRebuildDatabase(menuLanguage)
             _uiState.value = _uiState.value.copy(isLoading = false)
         }
     }

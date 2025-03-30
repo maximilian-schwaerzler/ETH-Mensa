@@ -60,10 +60,18 @@ class MenuRepository @Inject constructor(
         return runCatching { getOfferForFacilityDate(facilityId, date) }.isSuccess
     }
 
+    /**
+     * Fetches all menus from the API and saves them to the database. Fails with an [IllegalStateException] if the underlying network request fails.
+     *
+     * @param date The date for which to fetch the menus. Defaults to today.
+     * @param force If true, forces a menu update even if the last update was within the same week.
+     * @param forceLanguage If not null, forces the use of this language for the menu update.
+     */
     @Throws(IllegalStateException::class)
     private suspend fun saveAllMenusToDB(
         date: LocalDate = LocalDate.now(),
-        force: Boolean = false
+        force: Boolean = false,
+        forceLanguage: MenuLanguage? = null
     ) {
         if (!force && !connMgr.isConnected()) {
             Log.w("MenuRepository", "No internet connection, skipping menu update")
@@ -181,10 +189,11 @@ class MenuRepository @Inject constructor(
     }
 
     /**
-     * Rebuilds the database by deleting all existing offers and fetching new ones from the API. For the language change
+     * Rebuilds the database by deleting all existing offers and fetching new ones from the API. Fails with an [IllegalStateException] if the underlying network request fails.
      */
-    suspend fun rebuildDatabase() {
+    @Throws(IllegalStateException::class)
+    suspend fun tryRebuildDatabase(language: MenuLanguage) {
         menuDao.deleteAllOffers()
-        saveAllMenusToDB(LocalDate.now(), true)
+        saveAllMenusToDB(LocalDate.now(), true, language)
     }
 }

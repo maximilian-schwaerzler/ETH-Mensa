@@ -17,6 +17,8 @@ import com.github.maximilianschwaerzler.ethuzhmensa.data.db.MenuDao
 import com.github.maximilianschwaerzler.ethuzhmensa.data.db.entities.Offer
 import com.github.maximilianschwaerzler.ethuzhmensa.data.db.entities.OfferWithPrices
 import com.github.maximilianschwaerzler.ethuzhmensa.data.mapJsonObjectToOffers
+import com.github.maximilianschwaerzler.ethuzhmensa.network.OfflineException
+import com.github.maximilianschwaerzler.ethuzhmensa.network.isConnected
 import com.github.maximilianschwaerzler.ethuzhmensa.network.services.CookpitMenuService
 import com.google.gson.JsonObject
 import dagger.hilt.android.qualifiers.ApplicationContext
@@ -39,6 +41,13 @@ class MenuRepository @Inject constructor(
     @ApplicationContext private val appContext: Context
 ) {
 
+    /**
+     * Fetches the menus for a given facility and date from the API.
+     *
+     * @param facilityId The ID of the facility to fetch menus for.
+     * @param date The date for which to fetch the menus. Defaults to today.
+     * @param language The language to use for the menu. Defaults to [DataStoreManager.MenuLanguage.ENGLISH].
+     */
     private suspend fun fetchOfferForFacility(
         facilityId: Int,
         date: LocalDate = LocalDate.now(),
@@ -69,6 +78,10 @@ class MenuRepository @Inject constructor(
         date: LocalDate = LocalDate.now(),
         overrideLanguage: MenuLanguage? = null
     ) {
+        if (!connMgr.isConnected()) {
+            throw OfflineException()
+            return
+        }
 
         val validFacilityIds =
             appContext.resources.getIntArray(R.array.id_mensas_with_customer_groups)

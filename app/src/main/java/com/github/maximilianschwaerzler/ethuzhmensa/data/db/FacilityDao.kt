@@ -31,6 +31,9 @@ interface FacilityDao {
     @Query("SELECT * FROM Facility WHERE location LIKE :location LIMIT 1")
     suspend fun findByLocation(location: String): Facility
 
+    @Query("SELECT * FROM Facility WHERE favorite = 1")
+    fun getFavouriteFacilities(): Flow<List<Facility>>
+
     @Upsert
     suspend fun insertAll(vararg facilities: Facility)
 

@@ -19,9 +19,10 @@ import com.github.maximilianschwaerzler.ethuzhmensa.data.db.entities.Offer.Menu
 
 @Database(
     entities = [Facility::class, Offer::class, Menu::class, Menu.MenuPrice::class],
-    version = 2,
+    version = 3,
     autoMigrations = [
-        AutoMigration(from = 1, to = 2, spec = MensaDatabase.Migration1to2::class)
+        AutoMigration(1, 2, spec = MensaDatabase.Migration1to2::class),
+        AutoMigration(2, 3)
     ]
 )
 @TypeConverters(Converters::class)

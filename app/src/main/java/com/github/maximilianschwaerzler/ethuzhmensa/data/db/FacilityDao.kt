@@ -23,6 +23,9 @@ interface FacilityDao {
     fun observeAll(): Flow<List<Facility>>
 
     @Query("SELECT * FROM Facility WHERE id = :facilityId")
+    fun observeFacilityById(facilityId: Int): Flow<Facility>
+
+    @Query("SELECT * FROM Facility WHERE id = :facilityId")
     suspend fun getFacilityById(facilityId: Int): Facility
 
     @Query("SELECT * FROM Facility WHERE id IN (:facilityIds)")
@@ -36,6 +39,9 @@ interface FacilityDao {
 
     @Upsert
     suspend fun insertAll(vararg facilities: Facility)
+
+    @Query("UPDATE Facility SET favorite = :isFavourite WHERE id = :facilityId")
+    suspend fun updateFavouriteStatus(facilityId: Int, isFavourite: Boolean)
 
     @Upsert
     suspend fun insert(facility: Facility)

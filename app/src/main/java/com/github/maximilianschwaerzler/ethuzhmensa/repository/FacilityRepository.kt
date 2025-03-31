@@ -18,8 +18,10 @@ import com.github.maximilianschwaerzler.ethuzhmensa.data.mapJsonObjectToFacility
 import com.github.maximilianschwaerzler.ethuzhmensa.network.isConnected
 import com.github.maximilianschwaerzler.ethuzhmensa.network.services.CookpitFacilityService
 import dagger.hilt.android.qualifiers.ApplicationContext
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.supervisorScope
+import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 class FacilityRepository @Inject constructor(
@@ -84,6 +86,8 @@ class FacilityRepository @Inject constructor(
         }
     }
 
+    fun observeFacilityById(facilityId: Int) = facilityDao.observeFacilityById(facilityId)
+
     @Throws(IllegalStateException::class)
     suspend fun getFacilityById(facilityId: Int): Facility {
         return try {
@@ -105,5 +109,9 @@ class FacilityRepository @Inject constructor(
                 throw e
             }
         }
+    }
+
+    suspend fun updateFavourite(id: Int, newFavourite: Boolean) = withContext(Dispatchers.IO) {
+        facilityDao.updateFavouriteStatus(id, newFavourite)
     }
 }

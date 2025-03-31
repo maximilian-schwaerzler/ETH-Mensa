@@ -17,6 +17,7 @@ import com.github.maximilianschwaerzler.ethuzhmensa.repository.MenuRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import java.time.LocalDate
 import javax.inject.Inject
@@ -26,16 +27,24 @@ class MensaDetailScreenViewModel @Inject constructor(
     private val facilityInfoRepo: FacilityRepository,
     private val menuRepository: MenuRepository,
 ) : ViewModel() {
+
     private val _menus = MutableStateFlow<OfferWithPrices?>(null)
     val menus = _menus.asStateFlow()
 
     private val _facility = MutableStateFlow<Facility?>(null)
     val facility = _facility.asStateFlow()
 
+    fun setFavourite(facilityId: Int, isFavourite: Boolean) {
+        viewModelScope.launch {
+            facilityInfoRepo.updateFavourite(facilityId, isFavourite)
+        }
+    }
+
     fun loadFacilityAndMenus(facilityId: Int, date: LocalDate) = try {
         viewModelScope.launch {
-            facilityInfoRepo.getFacilityById(facilityId).let {
-                _facility.value = it
+            launch {
+                facilityInfoRepo.observeFacilityById(facilityId)
+                    .collectLatest { _facility.emit(it) }
             }
 
             menuRepository.getOffer(facilityId, date).let { fetchedOffers ->

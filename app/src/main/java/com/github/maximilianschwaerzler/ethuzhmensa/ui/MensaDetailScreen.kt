@@ -26,6 +26,7 @@ import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.PreviewLightDark
@@ -44,6 +45,7 @@ fun MensaDetailScreen(
     facility: Facility?,
     offer: OfferWithPrices?,
     onNavigateUp: () -> Unit,
+    setFavourite: (Boolean) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     Scaffold(
@@ -68,6 +70,16 @@ fun MensaDetailScreen(
                         maxLines = 1,
                         overflow = TextOverflow.Ellipsis
                     )
+                },
+                actions = {
+                    if (facility != null) {
+                        IconButton(onClick = { setFavourite(!facility.favorite) }) {
+                            Icon(
+                                painter = painterResource(if (facility.favorite) R.drawable.star_filled else R.drawable.star_outlined),
+                                contentDescription = null
+                            )
+                        }
+                    }
                 },
                 colors = TopAppBarDefaults.topAppBarColors(
                     containerColor = MaterialTheme.colorScheme.surfaceContainer,
@@ -108,7 +120,8 @@ private fun MensaDetailScreenPreview() {
         MensaDetailScreen(
             facility = MockData.facilities.first(),
             offer = MockData.offers.first(),
-            onNavigateUp = { }
+            onNavigateUp = { },
+            setFavourite = { }
         )
     }
 }

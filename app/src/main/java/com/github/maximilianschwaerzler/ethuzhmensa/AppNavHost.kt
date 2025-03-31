@@ -101,7 +101,11 @@ fun AppNavHost(modifier: Modifier = Modifier) {
             MensaDetailScreen(
                 facility.value,
                 menus.value,
-                onNavigateUp = { navController.popBackStack() })
+                onNavigateUp = { navController.popBackStack() },
+                setFavourite = { isFavourite ->
+                    viewModel.setFavourite(mensaDetailScreenRoute.facilityId, isFavourite)
+                },
+            )
         }
     }
 }

@@ -14,7 +14,6 @@
     <string name="refresh_label">Neu laden</string>
     <string name="back_label">Zurück</string>
     <string name="eth_zurich_logo_label">ETH Zürich Logo</string>
-    <string name="uzh_logo_label">UZH Logo</string>
     <string name="no_offer_available_for_today_plural">Kein Angebot für heute</string>
     <string name="updated_menu_language">Menusprache wurde auf %1$s aktualisiert</string>
     <string name="menu_language_label">Mensa Menü Sprache</string>

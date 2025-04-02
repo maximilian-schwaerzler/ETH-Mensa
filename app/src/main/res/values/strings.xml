@@ -6,7 +6,7 @@
   -->
 
 <resources>
-    <string name="app_name" translatable="false">ETH/UZH Mensa</string>
+    <string name="app_name" translatable="false">ETH Mensa</string>
     <string name="db_name" translatable="false">mensas.db</string>
     <string name="language_german">German</string>
     <string name="language_english">English</string>
@@ -16,7 +16,6 @@
     <string name="refresh_label">Refresh</string>
     <string name="back_label">Back</string>
     <string name="eth_zurich_logo_label">ETH Zurich Logo</string>
-    <string name="uzh_logo_label">UZH Logo</string>
     <string name="no_offer_available_for_today_plural">No offer available for today</string>
     <string name="updated_menu_language">Menus updated to %1$s</string>
     <string name="menu_language_label">Mensa Menu Language</string>

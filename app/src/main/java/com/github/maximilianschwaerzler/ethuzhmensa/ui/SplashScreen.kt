@@ -36,7 +36,6 @@ import kotlinx.coroutines.delay
 @Composable
 fun SplashScreen(modifier: Modifier = Modifier, onFinishTimer: () -> Unit = {}) {
     val ethLogoPainter = painterResource(R.drawable.eth_logo)
-    val uzhLogoPainter = painterResource(R.drawable.uzh_logo)
     val timerDelay = integerResource(R.integer.config_splash_screen_delay).toLong()
     LaunchedEffect(true) {
         delay(timerDelay)
@@ -54,7 +53,7 @@ fun SplashScreen(modifier: Modifier = Modifier, onFinishTimer: () -> Unit = {}) 
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Center
         ) {
-            Text("ETH/UZH", style = MaterialTheme.typography.displayMedium)
+            Text("ETH", style = MaterialTheme.typography.displayMedium)
             Text(
                 "Mensa",
                 style = MaterialTheme.typography.displayLarge,
@@ -65,7 +64,6 @@ fun SplashScreen(modifier: Modifier = Modifier, onFinishTimer: () -> Unit = {}) 
                 ethLogoPainter,
                 stringResource(R.string.eth_zurich_logo_label), Modifier.width(350.dp)
             )
-            Image(uzhLogoPainter, stringResource(R.string.uzh_logo_label), Modifier.width(150.dp))
         }
     }
 }

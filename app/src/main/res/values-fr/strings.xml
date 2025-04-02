@@ -14,7 +14,6 @@
     <string name="refresh_label">Rafraîchir</string>
     <string name="back_label">Retour</string>
     <string name="eth_zurich_logo_label">Logo ETH Zurich</string>
-    <string name="uzh_logo_label">Logo UZH</string>
     <string name="no_offer_available_for_today_plural">Aucune offre disponible aujourd\'hui</string>
     <string name="updated_menu_language">Menus mis à jour à %1$s</string>
     <string name="menu_language_label">Langue du menu mensa</string>

@@ -14,7 +14,6 @@
     <string name="refresh_label">刷新</string>
     <string name="back_label">返回</string>
     <string name="eth_zurich_logo_label">苏黎世联邦理工标志</string>
-    <string name="uzh_logo_label">UZH 標誌</string>
     <string name="no_offer_available_for_today_plural">今天没有可用的菜单</string>
     <string name="updated_menu_language">選單更新為 %1$s</string>
     <string name="menu_language_label">食堂菜单语言</string>

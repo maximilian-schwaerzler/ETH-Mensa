@@ -164,8 +164,9 @@ class MenuRepository @Inject constructor(
 
         val lastMenuFetchDate = dataStoreManager.lastMenuFetchDate.first()
         val currentWeek = date.get(IsoFields.WEEK_OF_WEEK_BASED_YEAR)
+        val currentOffers = menuDao.getAllOffersForDate(date)
 
-        if (force || lastMenuFetchDate.get(IsoFields.WEEK_OF_WEEK_BASED_YEAR) != currentWeek) {
+        if (force || currentOffers.isEmpty() || lastMenuFetchDate.get(IsoFields.WEEK_OF_WEEK_BASED_YEAR) != currentWeek) {
             runCatching {
                 saveAllMenusToDB(overrideLanguage = language)
                 dataStoreManager.updateLastMenuFetchDate()

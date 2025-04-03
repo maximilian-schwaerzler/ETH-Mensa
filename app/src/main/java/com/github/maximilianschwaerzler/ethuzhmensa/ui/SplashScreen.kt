@@ -19,10 +19,8 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.integerResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -31,16 +29,10 @@ import androidx.compose.ui.tooling.preview.PreviewScreenSizes
 import androidx.compose.ui.unit.dp
 import com.github.maximilianschwaerzler.ethuzhmensa.R
 import com.github.maximilianschwaerzler.ethuzhmensa.ui.theme.ETHUZHMensaTheme
-import kotlinx.coroutines.delay
 
 @Composable
-fun SplashScreen(modifier: Modifier = Modifier, onFinishTimer: () -> Unit = {}) {
+fun SplashScreen(modifier: Modifier = Modifier) {
     val ethLogoPainter = painterResource(R.drawable.eth_logo)
-    val timerDelay = integerResource(R.integer.config_splash_screen_delay).toLong()
-    LaunchedEffect(true) {
-        delay(timerDelay)
-        onFinishTimer()
-    }
 
     Scaffold(
         modifier.fillMaxSize(),

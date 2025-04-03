@@ -56,7 +56,9 @@ class OverviewScreenViewModel @Inject constructor(
     }
         .onStart {
             _isInitialLoading.value = true
+            Log.d("OverviewScreenViewModel", "Initial loading start")
             refreshData().join()
+            Log.d("OverviewScreenViewModel", "Initial loading end")
             _isInitialLoading.value = false
         }
         .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5_000), OverviewScreenUiState())

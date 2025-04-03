@@ -11,7 +11,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import androidx.navigation.NavOptions
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
@@ -25,9 +24,6 @@ import com.github.maximilianschwaerzler.ethuzhmensa.ui.SettingsScreen
 import com.github.maximilianschwaerzler.ethuzhmensa.ui.SplashScreen
 import kotlinx.serialization.Serializable
 import java.time.LocalDate
-
-@Serializable
-object SplashScreen
 
 @Serializable
 object OverviewScreen
@@ -45,14 +41,6 @@ data class MensaDetailScreen(
 fun AppNavHost(modifier: Modifier = Modifier) {
     val navController = rememberNavController()
     NavHost(navController, OverviewScreen, modifier) {
-        composable<SplashScreen> {
-            SplashScreen {
-                navController.navigate(
-                    OverviewScreen,
-                    NavOptions.Builder().setPopUpTo(SplashScreen, true).build()
-                )
-            }
-        }
 
         composable<OverviewScreen> {
             val viewModel: OverviewScreenViewModel = hiltViewModel()
@@ -60,21 +48,21 @@ fun AppNavHost(modifier: Modifier = Modifier) {
 
             if (uiState.value.isInitialLoading) {
                 SplashScreen()
+            } else {
+                OverviewScreen(
+                    isLoading = uiState.value.isRefreshing,
+                    facilitiesWithOffers = uiState.value.facilitiesWithOffers,
+                    onRefresh = viewModel::onPullToRefresh,
+                    onSettingsNavigate = {
+                        navController.navigate(SettingsScreen)
+                    },
+                    onDetailScreenNavigate = { facilityId, date ->
+                        navController.navigate(
+                            MensaDetailScreen(facilityId, date.toEpochDay())
+                        )
+                    },
+                )
             }
-
-            OverviewScreen(
-                isLoading = uiState.value.isRefreshing,
-                facilitiesWithOffers = uiState.value.facilitiesWithOffers,
-                onRefresh = viewModel::onPullToRefresh,
-                onSettingsNavigate = {
-                    navController.navigate(SettingsScreen)
-                },
-                onDetailScreenNavigate = { facilityId, date ->
-                    navController.navigate(
-                        MensaDetailScreen(facilityId, date.toEpochDay())
-                    )
-                },
-            )
         }
 
         composable<SettingsScreen> {

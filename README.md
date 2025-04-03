@@ -1,4 +1,4 @@
-# ETH/UZH Mensa - Android
+# ETH Mensa - Android
 
 Look at all the menus offered at the university campus' for ETH Zurich. **All in one place!**
 

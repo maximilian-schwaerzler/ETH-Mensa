@@ -15,3 +15,5 @@
 local.properties
 /.kotlin
 /app/release
+/releaseKeyMensa.jks
+/releaseKeyMensa.secrets.txt

@@ -7,6 +7,7 @@
 
 package com.github.maximilianschwaerzler.ethuzhmensa
 
+import androidx.compose.animation.AnimatedContentTransitionScope.SlideDirection
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -76,7 +77,20 @@ fun AppNavHost(modifier: Modifier = Modifier) {
             )
         }
 
-        composable<MensaDetailScreen> {
+        composable<MensaDetailScreen>(
+            enterTransition = {
+                slideIntoContainer(
+                    SlideDirection.Left,
+//                    tween(300, easing = EaseOut)
+                )
+            },
+            popExitTransition = {
+                slideOutOfContainer(
+                    SlideDirection.Right,
+//                    tween(300, easing = EaseIn)
+                )
+            },
+        ) {
             val viewModel: MensaDetailScreenViewModel = hiltViewModel()
             val mensaDetailScreenRoute = it.toRoute<MensaDetailScreen>()
             viewModel.loadFacilityAndMenus(

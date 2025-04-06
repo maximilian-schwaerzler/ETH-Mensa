@@ -5,6 +5,15 @@
  * LICENSE file in the root directory of this source tree.
  */
 
+import java.util.Properties
+
+/*
+ * Copyright (c) 2025 Maximilian Schwärzler
+ *
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
+ */
+
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
@@ -13,6 +22,10 @@ plugins {
     alias(libs.plugins.hilt)
     kotlin("plugin.serialization") version "2.1.20-RC"
 }
+
+val keystorePropertiesFile = rootProject.file("keystore.properties")
+val keystoreProperties = Properties()
+keystoreProperties.load(keystorePropertiesFile.inputStream())
 
 android {
     namespace = "com.github.maximilianschwaerzler.ethuzhmensa"
@@ -28,15 +41,26 @@ android {
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
 
+    signingConfigs {
+        create("release") {
+            storeFile = rootProject.file(keystoreProperties["storeFile"] as String)
+            storePassword = keystoreProperties["storePassword"] as String
+            keyAlias = keystoreProperties["keyAlias"] as String
+            keyPassword = keystoreProperties["keyPassword"] as String
+        }
+    }
+
     buildTypes {
         release {
-            isMinifyEnabled = false
+            isMinifyEnabled = true
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
             )
+            signingConfig = signingConfigs.getByName("release")
         }
     }
+
     compileOptions {
         // Hilt actually needs Java 8. Lets try to use Java 11, if it doesn't work, we can always go back to Java 8
         sourceCompatibility = JavaVersion.VERSION_11

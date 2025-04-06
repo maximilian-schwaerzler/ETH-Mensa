@@ -7,13 +7,6 @@
 
 import java.util.Properties
 
-/*
- * Copyright (c) 2025 Maximilian Schwärzler
- *
- * This source code is licensed under the MIT license found in the
- * LICENSE file in the root directory of this source tree.
- */
-
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)

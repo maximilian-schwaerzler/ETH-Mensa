@@ -41,7 +41,6 @@ data class MensaDetailScreen(
 fun AppNavHost(modifier: Modifier = Modifier) {
     val navController = rememberNavController()
     NavHost(navController, OverviewScreen, modifier) {
-
         composable<OverviewScreen> {
             val viewModel: OverviewScreenViewModel = hiltViewModel()
             val uiState = viewModel.uiState.collectAsStateWithLifecycle()

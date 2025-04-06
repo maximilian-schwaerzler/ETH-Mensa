@@ -17,3 +17,4 @@ local.properties
 /app/release
 /releaseKeyMensa.jks
 /releaseKeyMensa.secrets.txt
+/keystore.properties

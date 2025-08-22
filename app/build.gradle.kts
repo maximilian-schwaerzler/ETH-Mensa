@@ -5,6 +5,7 @@
  * LICENSE file in the root directory of this source tree.
  */
 
+import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 import java.util.Properties
 
 plugins {
@@ -13,7 +14,7 @@ plugins {
     alias(libs.plugins.kotlin.compose)
     alias(libs.plugins.ksp)
     alias(libs.plugins.hilt)
-    kotlin("plugin.serialization") version "2.1.20-RC"
+    alias(libs.plugins.kotlin.serialization)
 }
 
 val keystorePropertiesFile = rootProject.file("keystore.properties")
@@ -22,12 +23,12 @@ keystoreProperties.load(keystorePropertiesFile.inputStream())
 
 android {
     namespace = "com.github.maximilianschwaerzler.ethuzhmensa"
-    compileSdk = 35
+    compileSdk = 36
 
     defaultConfig {
         applicationId = "com.github.maximilianschwaerzler.ethuzhmensa"
         minSdk = 29
-        targetSdk = 35
+        targetSdk = 36
         versionCode = 111
         versionName = "1.1.1"
 
@@ -59,9 +60,9 @@ android {
         sourceCompatibility = JavaVersion.VERSION_11
         targetCompatibility = JavaVersion.VERSION_11
     }
-    kotlinOptions {
-        jvmTarget = "11"
-    }
+//    kotlinOptions {
+//        jvmTarget = "11"
+//    }
     buildFeatures {
         compose = true
     }
@@ -72,6 +73,11 @@ android {
 
     androidResources {
         generateLocaleConfig = true
+    }
+    kotlin {
+        compilerOptions {
+            jvmTarget = JvmTarget.JVM_11
+        }
     }
 }
 

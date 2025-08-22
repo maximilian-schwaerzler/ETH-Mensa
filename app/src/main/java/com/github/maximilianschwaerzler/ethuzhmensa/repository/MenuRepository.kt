@@ -90,7 +90,6 @@ class MenuRepository @Inject constructor(
     ) {
         if (!connMgr.isConnected()) {
             throw OfflineException()
-            return
         }
 
         val validFacilityIds =

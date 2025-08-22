@@ -7,6 +7,9 @@
 
 package com.github.maximilianschwaerzler.ethuzhmensa.data.dto
 
+/**
+ * Data Transfer Object (DTO) representing a facility.
+ */
 data class FacilityDto(
     val facilityId: Int? = null,
     val facilityName: String? = null,

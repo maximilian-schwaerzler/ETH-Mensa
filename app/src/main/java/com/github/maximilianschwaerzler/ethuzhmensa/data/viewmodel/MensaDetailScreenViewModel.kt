@@ -22,6 +22,12 @@ import kotlinx.coroutines.launch
 import java.time.LocalDate
 import javax.inject.Inject
 
+/**
+ * ViewModel for managing the state and data of the Mensa detail screen.
+ *
+ * @property facilityInfoRepo Repository for accessing facility information.
+ * @property menuRepository Repository for accessing menu information.
+ */
 @HiltViewModel
 class MensaDetailScreenViewModel @Inject constructor(
     private val facilityInfoRepo: FacilityRepository,
@@ -34,12 +40,24 @@ class MensaDetailScreenViewModel @Inject constructor(
     private val _facility = MutableStateFlow<Facility?>(null)
     val facility = _facility.asStateFlow()
 
+    /**
+     * Sets the favourite status of a facility.
+     *
+     * @param facilityId The ID of the facility to update.
+     * @param isFavourite The new favourite status to set.
+     */
     fun setFavourite(facilityId: Int, isFavourite: Boolean) {
         viewModelScope.launch {
             facilityInfoRepo.updateFavourite(facilityId, isFavourite)
         }
     }
 
+    /**
+     * Loads the facility information and menus for a given facility ID and date.
+     *
+     * @param facilityId The ID of the facility to load.
+     * @param date The date for which to load the menus.
+     */
     fun loadFacilityAndMenus(facilityId: Int, date: LocalDate) = try {
         viewModelScope.launch {
             launch {

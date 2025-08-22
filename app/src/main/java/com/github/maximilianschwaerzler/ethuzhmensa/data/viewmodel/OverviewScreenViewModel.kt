@@ -27,6 +27,9 @@ import kotlinx.coroutines.supervisorScope
 import java.time.LocalDate
 import javax.inject.Inject
 
+/**
+ * ViewModel for the Overview screen, managing the state and data related to facilities and their offers.
+ */
 @HiltViewModel
 class OverviewScreenViewModel @Inject constructor(
     private val facilityInfoRepo: FacilityRepository,
@@ -63,6 +66,10 @@ class OverviewScreenViewModel @Inject constructor(
         }
         .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5_000), OverviewScreenUiState())
 
+    /**
+     * Handles the pull-to-refresh action by refreshing the data and updating the loading state.
+     * A delay is added to ensure the pull-to-refresh indicator is visible for a short duration.
+     */
     fun onPullToRefresh() = viewModelScope.launch(Dispatchers.IO) {
         _isLoading.value = true
         refreshData()
@@ -71,7 +78,11 @@ class OverviewScreenViewModel @Inject constructor(
         _isLoading.value = false
     }
 
-    fun refreshData() =
+    /**
+     * Refreshes the facility and offer data by fetching from the respective repositories.
+     * This function runs in the IO dispatcher and handles exceptions gracefully, logging any issues encountered.
+     */
+    private fun refreshData() =
         viewModelScope.launch(Dispatchers.IO) {
             try {
                 supervisorScope {

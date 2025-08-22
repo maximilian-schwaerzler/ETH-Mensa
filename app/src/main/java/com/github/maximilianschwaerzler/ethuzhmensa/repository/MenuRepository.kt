@@ -33,6 +33,9 @@ import java.time.temporal.IsoFields
 import java.time.temporal.TemporalAdjusters
 import javax.inject.Inject
 
+/**
+ * Repository for managing menu data, including fetching from the network and caching in the database.
+ */
 class MenuRepository @Inject constructor(
     private val menuService: CookpitMenuService,
     private val menuDao: MenuDao,
@@ -64,6 +67,13 @@ class MenuRepository @Inject constructor(
         )
     }
 
+    /**
+     * Checks if an offer exists for a given facility and date in the database.
+     *
+     * @param facilityId The ID of the facility.
+     * @param date The date to check for an existing offer.
+     * @return True if an offer exists, false otherwise.
+     */
     private suspend fun MenuDao.offerExists(facilityId: Int, date: LocalDate): Boolean {
         return runCatching { getOfferForFacilityDate(facilityId, date) }.isSuccess
     }
@@ -197,6 +207,12 @@ class MenuRepository @Inject constructor(
         }
     }
 
+    /**
+     * Retrieves all offers for a specific date from the local database. If the offers are not found or outdated, it attempts to update them from the network.
+     *
+     * @param date The date for which to retrieve offers.
+     * @return A list of offers with their prices for the specified date.
+     */
     suspend fun getOffersForDate(date: LocalDate): List<OfferWithPrices> {
         tryUpdatingMenus(date)
         return menuDao.getAllOffersForDate(date)

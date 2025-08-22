@@ -17,6 +17,11 @@ import com.github.maximilianschwaerzler.ethuzhmensa.data.db.entities.Facility
 import com.github.maximilianschwaerzler.ethuzhmensa.data.db.entities.Offer
 import com.github.maximilianschwaerzler.ethuzhmensa.data.db.entities.Offer.Menu
 
+/**
+ * The Room database for the Mensa application.
+ * It includes entities for facilities, offers, menus, and menu prices.
+ * The database version is 3, with auto migrations defined from version 1 to 2 and from 2 to 3.
+ */
 @Database(
     entities = [Facility::class, Offer::class, Menu::class, Menu.MenuPrice::class],
     version = 3,

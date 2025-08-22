@@ -22,6 +22,9 @@ import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
+/**
+ * ViewModel for the settings screen, managing UI state and interactions.
+ */
 @HiltViewModel
 class SettingsScreenViewModel @Inject constructor(
     private val dataStoreManager: DataStoreManager,
@@ -42,6 +45,12 @@ class SettingsScreenViewModel @Inject constructor(
         }
     }
 
+    /**
+     * Updates the menu language and attempts to rebuild the menu database.
+     * Shows a snackbar event based on the success or failure of the operation.
+     *
+     * @param menuLanguage The new menu language to set.
+     */
     fun updateMenuLanguage(menuLanguage: DataStoreManager.MenuLanguage) {
         viewModelScope.launch(Dispatchers.IO) {
             _uiState.value = _uiState.value.copy(isLoading = true)

@@ -10,6 +10,9 @@ package com.github.maximilianschwaerzler.ethuzhmensa.data.dto
 import com.github.maximilianschwaerzler.ethuzhmensa.data.utils.Price
 import java.time.LocalDate
 
+/**
+ * Data Transfer Object (DTO) representing an offer with its associated menus and prices.
+ */
 data class OfferDto(
     val facilityId: Int? = null,
     val date: LocalDate? = null,

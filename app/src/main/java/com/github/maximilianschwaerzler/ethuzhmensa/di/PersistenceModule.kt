@@ -26,6 +26,10 @@ import javax.inject.Singleton
 @Module
 @InstallIn(SingletonComponent::class)
 object PersistenceModule {
+
+    /**
+     * Provides the Room database instance.
+     */
     @Provides
     @Singleton
     fun provideDatabase(@ApplicationContext appContext: Context): MensaDatabase {
@@ -38,12 +42,18 @@ object PersistenceModule {
             .build()
     }
 
+    /**
+     * Provides the Facility DAO.
+     */
     @Provides
     @Singleton
     fun provideFacilityDao(db: MensaDatabase): FacilityDao {
         return db.facilityDao()
     }
 
+    /**
+     * Provides the Menu DAO.
+     */
     @Provides
     @Singleton
     fun provideMenuDao(db: MensaDatabase): MenuDao {

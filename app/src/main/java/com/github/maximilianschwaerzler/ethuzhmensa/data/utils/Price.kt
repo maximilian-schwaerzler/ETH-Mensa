@@ -24,11 +24,6 @@ value class Price(private val amount: BigDecimal) : Comparable<Price> {
     constructor(value: Double) : this(BigDecimal(value).setScale(2, RoundingMode.HALF_UP))
     constructor(value: Int) : this(BigDecimal(value).setScale(2, RoundingMode.UNNECESSARY))
 
-//    operator fun plus(other: Price): Price = Price(amount + other.amount)
-//    operator fun minus(other: Price): Price = Price(amount - other.amount)
-//    operator fun times(multiplier: BigDecimal): Price = Price(amount.multiply(multiplier).setScale(2, RoundingMode.HALF_UP))
-//    operator fun div(divisor: BigDecimal): Price = Price(amount.divide(divisor, 2, RoundingMode.HALF_UP))
-
     override fun compareTo(other: Price): Int = amount.compareTo(other.amount)
     override fun toString(): String = amount.toString()
 

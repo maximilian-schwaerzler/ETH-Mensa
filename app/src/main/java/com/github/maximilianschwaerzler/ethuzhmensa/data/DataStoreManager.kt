@@ -21,12 +21,18 @@ import javax.inject.Inject
 
 private val Context.dataStore by preferencesDataStore("com.github.maximilianschwaerzler.ethuzhmensa.app_preferences")
 
+/**
+ * Manager for handling DataStore operations such as reading and writing preferences.
+ */
 class DataStoreManager @Inject constructor(@ApplicationContext appContext: Context) {
     private val appDataStore = appContext.dataStore
     val lastMenuFetchDateKey = longPreferencesKey("last_menu_fetch_date")
     val lastFacilityFetchDateKey = longPreferencesKey("last_facility_fetch_date")
     val menuLanguageKey = stringPreferencesKey("menu_language")
 
+    /**
+     * Enum representing the supported menu languages.
+     */
     enum class MenuLanguage(val langCode: String) {
         GERMAN("de"), ENGLISH("en");
 
@@ -46,6 +52,10 @@ class DataStoreManager @Inject constructor(@ApplicationContext appContext: Conte
         }
     }
 
+    /**
+     * Updates the preferred menu language in the DataStore.
+     * @param menuLanguage The new menu language to be set.
+     */
     suspend fun updateMenuLanguage(menuLanguage: MenuLanguage) {
         appDataStore.edit { settings ->
             settings[menuLanguageKey] = menuLanguage.langCode
@@ -58,6 +68,10 @@ class DataStoreManager @Inject constructor(@ApplicationContext appContext: Conte
         } ?: MenuLanguage.ENGLISH
     }
 
+    /**
+     * Updates the last menu fetch date in the DataStore.
+     * @param date The date to be set as the last fetch date. Defaults to the current date.
+     */
     suspend fun updateLastMenuFetchDate(date: LocalDate = LocalDate.now()) {
         appDataStore.edit { settings ->
             settings[lastMenuFetchDateKey] = date.toEpochDay()
@@ -71,6 +85,10 @@ class DataStoreManager @Inject constructor(@ApplicationContext appContext: Conte
     }
 
 
+    /**
+     * Updates the last facility fetch date in the DataStore.
+     * @param date The date to be set as the last fetch date. Defaults to the current date.
+     */
     suspend fun updateLastFacilityFetchDate(date: LocalDate = LocalDate.now()) {
         appDataStore.edit { settings ->
             settings[lastFacilityFetchDateKey] = date.toEpochDay()

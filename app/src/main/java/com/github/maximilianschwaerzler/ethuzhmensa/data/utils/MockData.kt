@@ -13,6 +13,9 @@ import com.github.maximilianschwaerzler.ethuzhmensa.data.db.entities.Offer
 import com.github.maximilianschwaerzler.ethuzhmensa.data.db.entities.OfferWithPrices
 import java.time.LocalDate
 
+/**
+ * Mock data for testing and development purposes.
+ */
 object MockData {
     val offers = listOf(
         OfferWithPrices(

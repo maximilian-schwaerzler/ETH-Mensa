@@ -15,6 +15,13 @@ import com.github.maximilianschwaerzler.ethuzhmensa.data.utils.Price
 import com.google.gson.JsonObject
 import java.time.LocalDate
 
+/**
+ * Maps a [JsonObject] to a list of [OfferDto] objects.
+ *
+ * @param jsonObject The JSON object containing the data to be mapped.
+ * @param clientId The client ID used for constructing image URLs.
+ * @return A list of [OfferDto] objects or null if the input JSON object is empty.
+ */
 fun mapJsonObjectToOffers(jsonObject: JsonObject, clientId: String): List<OfferDto>? {
     if (jsonObject.isEmpty) {
         return null

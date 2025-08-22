@@ -38,6 +38,9 @@ data class MensaDetailScreen(
     val date: Long
 )
 
+/**
+ * The navigation host for the app, defining all navigation routes and their corresponding composables.
+ */
 @Composable
 fun AppNavHost(modifier: Modifier = Modifier) {
     val navController = rememberNavController()
@@ -90,9 +93,9 @@ fun AppNavHost(modifier: Modifier = Modifier) {
 //                    tween(300, easing = EaseIn)
                 )
             },
-        ) {
+        ) { backStackEntry ->
             val viewModel: MensaDetailScreenViewModel = hiltViewModel()
-            val mensaDetailScreenRoute = it.toRoute<MensaDetailScreen>()
+            val mensaDetailScreenRoute = backStackEntry.toRoute<MensaDetailScreen>()
             viewModel.loadFacilityAndMenus(
                 mensaDetailScreenRoute.facilityId,
                 mensaDetailScreenRoute.date.let { LocalDate.ofEpochDay(it) }

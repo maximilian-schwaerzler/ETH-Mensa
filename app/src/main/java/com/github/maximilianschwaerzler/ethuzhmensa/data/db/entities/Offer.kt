@@ -14,12 +14,18 @@ import androidx.room.PrimaryKey
 import com.github.maximilianschwaerzler.ethuzhmensa.data.utils.Price
 import java.time.LocalDate
 
+/**
+ * Data class representing an offer entity in the database.
+ */
 @Entity
 data class Offer(
     @PrimaryKey(autoGenerate = true) val id: Long,
     val facilityId: Int,
     val date: LocalDate
 ) {
+    /**
+     * Data class representing a menu entity in the database.
+     */
     @Entity(
         foreignKeys = [
             ForeignKey(
@@ -39,6 +45,9 @@ data class Offer(
         val mealDescription: String,
         val imageUrl: String? = null
     ) {
+        /**
+         * Data class representing a menu price entity in the database.
+         */
         @Entity(
             foreignKeys = [
                 ForeignKey(

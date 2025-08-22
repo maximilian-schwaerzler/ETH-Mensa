@@ -11,6 +11,9 @@ import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 
+/**
+ * Data class representing a facility entity in the database.
+ */
 @Entity
 data class Facility(
     @PrimaryKey val id: Int,

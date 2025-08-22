@@ -24,14 +24,24 @@ import retrofit2.converter.gson.GsonConverterFactory
 import javax.inject.Qualifier
 import javax.inject.Singleton
 
+/**
+ * Qualifier annotation for the Cookpit Retrofit client.
+ */
 @MustBeDocumented
 @Retention(AnnotationRetention.RUNTIME)
 @Qualifier
 annotation class CookpitRetrofitClient
 
+/**
+ * Hilt module for providing network-related dependencies.
+ */
 @Module
 @InstallIn(SingletonComponent::class)
 object NetworkModule {
+
+    /**
+     * Provides a Retrofit client configured for the Cookpit API.
+     */
     @CookpitRetrofitClient
     @Provides
     @Singleton
@@ -51,18 +61,27 @@ object NetworkModule {
             .build()
     }
 
+    /**
+     * Provides the CookpitMenuService using the Cookpit Retrofit client.
+     */
     @Provides
     @Singleton
     fun provideCookpitMenuService(@CookpitRetrofitClient client: Retrofit): CookpitMenuService {
         return client.create(CookpitMenuService::class.java)
     }
 
+    /**
+     * Provides the CookpitFacilityService using the Cookpit Retrofit client.
+     */
     @Provides
     @Singleton
     fun provideCookpitFacilityService(@CookpitRetrofitClient client: Retrofit): CookpitFacilityService {
         return client.create(CookpitFacilityService::class.java)
     }
 
+    /**
+     * Provides the ConnectivityManager from the application context.
+     */
     @Provides
     @Singleton
     fun provideConnectivityManager(@ApplicationContext context: Context): ConnectivityManager =

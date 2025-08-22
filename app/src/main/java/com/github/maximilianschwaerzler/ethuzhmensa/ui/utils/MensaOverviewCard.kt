@@ -32,6 +32,14 @@ import com.github.maximilianschwaerzler.ethuzhmensa.data.utils.pricesToString
 import com.github.maximilianschwaerzler.ethuzhmensa.ui.theme.ETHUZHMensaTheme
 import java.time.LocalDate
 
+/**
+ * A card displaying an overview of a mensa facility, including its name, location, and today's offer.
+ *
+ * @param facility The facility to display.
+ * @param offer The offer for today, or null if no offer is available.
+ * @param onClick A callback invoked when the card is clicked, providing the facility ID and date.
+ * @param modifier Optional [Modifier] for this card.
+ */
 @Composable
 fun MensaOverviewCard(
     facility: Facility,

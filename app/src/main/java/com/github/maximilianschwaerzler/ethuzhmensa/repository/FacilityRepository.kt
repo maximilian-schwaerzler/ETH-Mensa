@@ -24,6 +24,9 @@ import kotlinx.coroutines.supervisorScope
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
+/**
+ * Repository for managing facility data, including fetching from the network and caching in the database.
+ */
 class FacilityRepository @Inject constructor(
     private val facilityService: CookpitFacilityService,
     private val facilityDao: FacilityDao,
@@ -31,6 +34,14 @@ class FacilityRepository @Inject constructor(
     private val connMgr: ConnectivityManager,
     @ApplicationContext private val appContext: Context
 ) {
+
+    /**
+     * Updates the facility information in the local database by fetching data from the network.
+     * This function checks for internet connectivity before attempting to fetch data.
+     * If there is no internet connection, it logs a warning and throws an IllegalStateException.
+     *
+     * @throws IllegalStateException if there is no internet connection
+     */
     @Throws(IllegalStateException::class)
     suspend fun updateFacilityInfoDB() {
         if (!connMgr.isConnected()) {
@@ -62,6 +73,13 @@ class FacilityRepository @Inject constructor(
         dataStoreManager.updateLastFacilityFetchDate()
     }
 
+    /**
+     * Retrieves all facilities from the local database. If a facility is not found, it attempts to
+     * update the database from the network.
+     *
+     * @return A list of all facilities.
+     * @throws IllegalStateException if a facility cannot be found after attempting to update from the network.
+     */
     @Throws(IllegalStateException::class)
     suspend fun getAllFacilities(): List<Facility> {
         val array = appContext.resources.getIntArray(R.array.id_mensas_with_customer_groups)
@@ -86,8 +104,19 @@ class FacilityRepository @Inject constructor(
         }
     }
 
+    /**
+     * Observes a facility by its ID from the local database.
+     */
     fun observeFacilityById(facilityId: Int) = facilityDao.observeFacilityById(facilityId)
 
+    /**
+     * Retrieves a facility by its ID from the local database. If the facility is not found, it attempts to
+     * update the database from the network.
+     *
+     * @param facilityId The ID of the facility to retrieve.
+     * @return The facility with the specified ID.
+     * @throws IllegalStateException if the facility cannot be found after attempting to update from the network.
+     */
     @Throws(IllegalStateException::class)
     suspend fun getFacilityById(facilityId: Int): Facility {
         return try {
@@ -111,6 +140,12 @@ class FacilityRepository @Inject constructor(
         }
     }
 
+    /**
+     * Updates the favourite status of a facility in the local database.
+     *
+     * @param id The ID of the facility to update.
+     * @param newFavourite The new favourite status to set.
+     */
     suspend fun updateFavourite(id: Int, newFavourite: Boolean) = withContext(Dispatchers.IO) {
         facilityDao.updateFavouriteStatus(id, newFavourite)
     }

@@ -13,6 +13,9 @@ import java.math.BigDecimal
 import java.math.RoundingMode
 import java.time.LocalDate
 
+/**
+ * Converters for Room database to handle custom data types.
+ */
 class Converters {
     @TypeConverter
     fun fromLocalDateTimestamp(value: Long?): LocalDate? {

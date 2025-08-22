@@ -10,6 +10,12 @@ package com.github.maximilianschwaerzler.ethuzhmensa.data
 import com.github.maximilianschwaerzler.ethuzhmensa.data.dto.FacilityDto
 import com.google.gson.JsonObject
 
+/**
+ * Maps a [JsonObject] to a [FacilityDto].
+ *
+ * @param jsonObject The JSON object representing the facility.
+ * @return The mapped [FacilityDto].
+ */
 fun mapJsonObjectToFacility(jsonObject: JsonObject): FacilityDto {
     val facilityId = jsonObject.get("facility-id").asJsonPrimitive.asInt
     val facilityName = jsonObject.get("facility-name").asJsonPrimitive.asString

@@ -10,5 +10,8 @@ package com.github.maximilianschwaerzler.ethuzhmensa
 import android.app.Application
 import dagger.hilt.android.HiltAndroidApp
 
+/**
+ * The application class for initializing Hilt dependency injection.
+ */
 @HiltAndroidApp
 class MensaApplication : Application()

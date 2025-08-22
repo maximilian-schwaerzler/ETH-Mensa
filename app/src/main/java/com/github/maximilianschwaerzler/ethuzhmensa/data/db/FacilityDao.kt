@@ -14,6 +14,9 @@ import androidx.room.Upsert
 import com.github.maximilianschwaerzler.ethuzhmensa.data.db.entities.Facility
 import kotlinx.coroutines.flow.Flow
 
+/**
+ * Data Access Object (DAO) for the Facility entity.
+ */
 @Dao
 interface FacilityDao {
     @Query("SELECT * FROM Facility")

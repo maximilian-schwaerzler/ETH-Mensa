@@ -13,6 +13,9 @@ import retrofit2.http.GET
 import retrofit2.http.Path
 import retrofit2.http.Query
 
+/**
+ * Service interface for fetching facility details from the Cookpit API.
+ */
 interface CookpitFacilityService {
     @GET("/cookpit-pub-services/v1/facilities/{id}")
     suspend fun fetchFacility(

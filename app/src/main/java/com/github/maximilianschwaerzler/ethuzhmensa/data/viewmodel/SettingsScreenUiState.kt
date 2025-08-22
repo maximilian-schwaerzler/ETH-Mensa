@@ -9,11 +9,17 @@ package com.github.maximilianschwaerzler.ethuzhmensa.data.viewmodel
 
 import com.github.maximilianschwaerzler.ethuzhmensa.data.DataStoreManager.MenuLanguage
 
+/**
+ * Data class representing the UI state of the settings screen.
+ */
 data class SettingsScreenUiState(
     val menuLanguage: MenuLanguage = MenuLanguage.ENGLISH,
     val isLoading: Boolean = false,
     val event: UiEvent? = null,
 ) {
+    /**
+     * Sealed class representing different types of UI events.
+     */
     sealed class UiEvent {
         data class ShowSnackbar(val msg: String) : UiEvent()
     }

@@ -33,6 +33,13 @@ import com.github.maximilianschwaerzler.ethuzhmensa.data.utils.MockData
 import com.github.maximilianschwaerzler.ethuzhmensa.data.utils.pricesToString
 import com.github.maximilianschwaerzler.ethuzhmensa.ui.theme.ETHUZHMensaTheme
 
+/**
+ * A detailed item view for a menu, displaying its name, description, prices, and optionally an image.
+ *
+ * @param menu The menu to display.
+ * @param showImage Whether to show the menu image if available. Default is true.
+ * @param modifier Optional [Modifier] for this item.
+ */
 @Composable
 fun MenuDetailItem(
     modifier: Modifier = Modifier,

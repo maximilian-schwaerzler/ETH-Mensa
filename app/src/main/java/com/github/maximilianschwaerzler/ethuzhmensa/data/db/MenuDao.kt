@@ -16,6 +16,9 @@ import com.github.maximilianschwaerzler.ethuzhmensa.data.db.entities.OfferWithPr
 import kotlinx.coroutines.flow.Flow
 import java.time.LocalDate
 
+/**
+ * Data Access Object (DAO) for managing menu-related database operations.
+ */
 @Dao
 interface MenuDao {
     @Transaction

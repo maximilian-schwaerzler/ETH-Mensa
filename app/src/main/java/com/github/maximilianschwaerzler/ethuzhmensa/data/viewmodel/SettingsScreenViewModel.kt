@@ -29,7 +29,7 @@ import javax.inject.Inject
 class SettingsScreenViewModel @Inject constructor(
     private val dataStoreManager: DataStoreManager,
     private val menuRepository: MenuRepository,
-    @ApplicationContext private val appContext: Context
+    @param:ApplicationContext private val appContext: Context
 ) : ViewModel() {
 
     private val _uiState = MutableStateFlow(SettingsScreenUiState())

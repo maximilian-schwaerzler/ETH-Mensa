@@ -60,12 +60,11 @@ android {
         sourceCompatibility = JavaVersion.VERSION_11
         targetCompatibility = JavaVersion.VERSION_11
     }
-//    kotlinOptions {
-//        jvmTarget = "11"
-//    }
+
     buildFeatures {
         compose = true
     }
+
     ksp {
         arg("room.generateKotlin", "true")
         arg("room.schemaLocation", "$projectDir/schemas")
@@ -74,6 +73,11 @@ android {
     androidResources {
         generateLocaleConfig = true
     }
+
+    composeOptions {
+        kotlinCompilerExtensionVersion = "1.5.15"
+    }
+
     kotlin {
         compilerOptions {
             jvmTarget = JvmTarget.JVM_11
@@ -104,6 +108,8 @@ dependencies {
     // JSON Support
     implementation(libs.kotlinx.serialization.json)
     implementation(libs.gson)
+    implementation(libs.androidx.glance.appwidget)
+    implementation(libs.androidx.glance.material3)
 
     // Testing
     testImplementation(libs.junit)

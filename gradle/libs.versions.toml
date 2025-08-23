@@ -12,7 +12,7 @@ navVersion = "2.9.3"
 kotlinxSerializationJson = "1.9.0"
 gson = "2.13.1"
 window = "1.4.0"
-ksp = "2.1.10-1.0.31"
+ksp = "2.2.10-2.0.2"
 room = "2.7.2"
 hilt = "2.57.1"
 lifecycleViewmodelCompose = "2.9.2"
@@ -20,6 +20,7 @@ hiltNavigationCompose = "1.2.0"
 datastorePreferences = "1.1.7"
 coil = "3.3.0"
 retrofit = "3.0.0"
+composeGlance = "1.1.1"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -53,6 +54,8 @@ coil-compose = { group = "io.coil-kt.coil3", name = "coil-compose", version.ref 
 coil-network = { group = "io.coil-kt.coil3", name = "coil-network-okhttp", version.ref = "coil" }
 retrofit = { group = "com.squareup.retrofit2", name = "retrofit", version.ref = "retrofit" }
 retrofit-gson = { group = "com.squareup.retrofit2", name = "converter-gson", version.ref = "retrofit" }
+androidx-glance-appwidget = { group = "androidx.glance", name = "glance-appwidget", version.ref = "composeGlance" }
+androidx-glance-material3 = { group = "androidx.glance", name = "glance-material3", version.ref = "composeGlance" }
 
 
 [plugins]

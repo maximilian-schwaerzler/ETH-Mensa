@@ -10,9 +10,12 @@ package com.github.maximilianschwaerzler.ethuzhmensa.ui
 import android.content.Intent
 import android.provider.Settings
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
@@ -49,8 +52,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
-import androidx.compose.ui.tooling.preview.PreviewLightDark
-import androidx.compose.ui.tooling.preview.PreviewScreenSizes
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.core.net.toUri
 import com.github.maximilianschwaerzler.ethuzhmensa.R
@@ -223,6 +225,20 @@ fun SettingsScreen(
                         )
                     }
                 )
+                HorizontalDivider()
+                Row(
+                    Modifier
+                        .weight(1f)
+                        .fillMaxWidth()
+                        .padding(bottom = 16.dp),
+                    horizontalArrangement = Arrangement.Center,
+                    verticalAlignment = Alignment.Bottom
+                ) {
+                    Text(
+                        "Copyright © 2025 Maximilian Schwärzler",
+                        style = MaterialTheme.typography.bodyMedium
+                    )
+                }
             } else {
                 Box(Modifier.fillMaxSize(), Alignment.Center) {
                     CircularProgressIndicator()
@@ -232,9 +248,9 @@ fun SettingsScreen(
     }
 }
 
-@PreviewScreenSizes
-@PreviewLightDark
-//@Preview
+//@PreviewScreenSizes
+//@PreviewLightDark
+@Preview
 @Composable
 private fun SettingsScreenPreview() {
     ETHUZHMensaTheme {

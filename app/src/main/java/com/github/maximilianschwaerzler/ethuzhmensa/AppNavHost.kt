@@ -7,7 +7,8 @@
 
 package com.github.maximilianschwaerzler.ethuzhmensa
 
-import androidx.compose.animation.AnimatedContentTransitionScope.SlideDirection
+import androidx.compose.animation.slideInHorizontally
+import androidx.compose.animation.slideOutHorizontally
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -82,15 +83,13 @@ fun AppNavHost(modifier: Modifier = Modifier) {
 
         composable<MensaDetailScreen>(
             enterTransition = {
-                slideIntoContainer(
-                    SlideDirection.Left,
-//                    tween(300, easing = EaseOut)
+                slideInHorizontally(
+                    initialOffsetX = { fullWidth -> fullWidth },
                 )
             },
             popExitTransition = {
-                slideOutOfContainer(
-                    SlideDirection.Right,
-//                    tween(300, easing = EaseIn)
+                slideOutHorizontally(
+                    targetOffsetX = { fullWidth -> fullWidth },
                 )
             },
         ) { backStackEntry ->

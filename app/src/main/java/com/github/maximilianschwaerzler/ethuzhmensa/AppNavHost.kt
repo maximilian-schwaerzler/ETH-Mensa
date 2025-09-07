@@ -9,8 +9,25 @@ package com.github.maximilianschwaerzler.ethuzhmensa
 
 import androidx.compose.animation.slideInHorizontally
 import androidx.compose.animation.slideOutHorizontally
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.consumeWindowInsets
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.padding
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Text
+import androidx.compose.material3.TopAppBar
+import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.compose.NavHost
@@ -24,6 +41,8 @@ import com.github.maximilianschwaerzler.ethuzhmensa.ui.MensaDetailScreen
 import com.github.maximilianschwaerzler.ethuzhmensa.ui.OverviewScreen
 import com.github.maximilianschwaerzler.ethuzhmensa.ui.SettingsScreen
 import com.github.maximilianschwaerzler.ethuzhmensa.ui.SplashScreen
+import com.mikepenz.aboutlibraries.ui.compose.android.rememberLibraries
+import com.mikepenz.aboutlibraries.ui.compose.m3.LibrariesContainer
 import kotlinx.serialization.Serializable
 import java.time.LocalDate
 
@@ -39,9 +58,13 @@ data class MensaDetailScreen(
     val date: Long
 )
 
+@Serializable
+object ThirdPartyNotices
+
 /**
  * The navigation host for the app, defining all navigation routes and their corresponding composables.
  */
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun AppNavHost(modifier: Modifier = Modifier) {
     val navController = rememberNavController()
@@ -77,6 +100,7 @@ fun AppNavHost(modifier: Modifier = Modifier) {
                 isLoading = uiState.value.isLoading,
                 onMenuLanguageChange = viewModel::updateMenuLanguage,
                 onNavigateUp = navController::popBackStack,
+                onNavigateToThirdPartyNotices = { navController.navigate(ThirdPartyNotices) },
                 uiEvent = uiState.value.event
             )
         }
@@ -109,6 +133,47 @@ fun AppNavHost(modifier: Modifier = Modifier) {
                     viewModel.setFavourite(mensaDetailScreenRoute.facilityId, isFavourite)
                 },
             )
+        }
+
+        composable<ThirdPartyNotices> {
+            val libraries by rememberLibraries(R.raw.aboutlibraries)
+
+            Scaffold(
+                containerColor = MaterialTheme.colorScheme.surface,
+                contentColor = MaterialTheme.colorScheme.onSurface,
+                topBar = {
+                    TopAppBar(
+                        navigationIcon = {
+                            IconButton(onClick = { navController.navigateUp() }) {
+                                Icon(
+                                    Icons.AutoMirrored.Filled.ArrowBack,
+                                    contentDescription = stringResource(R.string.back_label)
+                                )
+                            }
+                        },
+                        title = {
+                            Text(
+                                stringResource(R.string.third_party_notices_label),
+                                maxLines = 1,
+                                overflow = TextOverflow.Ellipsis
+                            )
+                        },
+                        colors = TopAppBarDefaults.topAppBarColors(
+                            containerColor = MaterialTheme.colorScheme.surfaceContainer,
+                            titleContentColor = MaterialTheme.colorScheme.onSurface,
+                        )
+                    )
+                }
+            ) { innerPadding ->
+                Box(
+                    Modifier
+                        .padding(innerPadding)
+                        .consumeWindowInsets(innerPadding)
+                ) {
+                    LibrariesContainer(libraries, Modifier.fillMaxSize())
+                }
+            }
+
         }
     }
 }

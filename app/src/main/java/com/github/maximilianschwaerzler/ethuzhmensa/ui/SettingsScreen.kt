@@ -67,6 +67,7 @@ fun SettingsScreen(
     isLoading: Boolean,
     onMenuLanguageChange: (MenuLanguage) -> Unit,
     onNavigateUp: () -> Unit,
+    onNavigateToThirdPartyNotices: () -> Unit,
     uiEvent: SettingsScreenUiState.UiEvent?,
     modifier: Modifier = Modifier,
 ) {
@@ -177,6 +178,7 @@ fun SettingsScreen(
                 val sourceCodeIcon = painterResource(R.drawable.code_icon)
                 val languageIcon = painterResource(R.drawable.language_icon)
                 val githubLogo = painterResource(R.drawable.github_logo)
+                val contractIcon = painterResource(R.drawable.contract_24)
                 ListItem(
                     headlineContent = { Text(stringResource(R.string.app_language_label)) },
                     Modifier.clickable {
@@ -226,6 +228,17 @@ fun SettingsScreen(
                     }
                 )
                 HorizontalDivider()
+                ListItem(
+                    headlineContent = { Text(stringResource(R.string.third_party_notices_label)) },
+                    Modifier.clickable {
+                        onNavigateToThirdPartyNotices()
+                    },
+                    leadingContent = {
+                        Icon(contractIcon, contentDescription = null)
+                    }
+                )
+                HorizontalDivider()
+
                 Row(
                     Modifier
                         .weight(1f)
@@ -254,6 +267,13 @@ fun SettingsScreen(
 @Composable
 private fun SettingsScreenPreview() {
     ETHUZHMensaTheme {
-        SettingsScreen(MenuLanguage.ENGLISH, false, {}, {}, null)
+        SettingsScreen(
+            menuLanguage = MenuLanguage.ENGLISH,
+            isLoading = false,
+            onMenuLanguageChange = {},
+            onNavigateUp = {},
+            onNavigateToThirdPartyNotices = {},
+            uiEvent = null
+        )
     }
 }

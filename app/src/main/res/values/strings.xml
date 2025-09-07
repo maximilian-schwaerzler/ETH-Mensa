@@ -28,4 +28,5 @@
     <string name="open_github_repo_external_link_label">Open GitHub repository in browser</string>
     <string name="cookpit_client_id" translatable="false">ethz-wcms</string>
     <string name="no_internet_connection_label">No internet connection. Please try again later.</string>
+    <string name="third_party_notices_label" translatable="false">Third Party Notices</string>
 </resources>

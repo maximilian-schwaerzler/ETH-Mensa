@@ -38,7 +38,7 @@ object PersistenceModule {
                 appContext, MensaDatabase::class.java,
                 appContext.getString(R.string.db_name)
             )
-            .fallbackToDestructiveMigration()
+            .fallbackToDestructiveMigration(true)
             .build()
     }
 

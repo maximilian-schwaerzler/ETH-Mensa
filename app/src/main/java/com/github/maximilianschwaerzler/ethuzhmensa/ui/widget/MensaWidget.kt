@@ -131,7 +131,7 @@ fun MensaWidgetCard(
                 }
             } else {
                 Text(
-                    LocalContext.current.getString(R.string.no_offer_available_for_today_plural),
+                    LocalContext.current.getString(R.string.no_offer_available_for_today_singular),
                     style = WidgetTheme.bodyMedium
                 )
             }

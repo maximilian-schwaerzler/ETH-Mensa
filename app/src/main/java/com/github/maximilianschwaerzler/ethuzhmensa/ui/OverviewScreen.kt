@@ -40,8 +40,7 @@ import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
-import androidx.compose.ui.tooling.preview.PreviewLightDark
-import androidx.compose.ui.tooling.preview.PreviewScreenSizes
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.github.maximilianschwaerzler.ethuzhmensa.R
 import com.github.maximilianschwaerzler.ethuzhmensa.data.db.entities.Facility
@@ -138,7 +137,7 @@ fun NoOffersInfoPanel(modifier: Modifier = Modifier, onRefresh: () -> Unit) {
             )
             Spacer(Modifier.height(32.dp))
             Text(
-                stringResource(R.string.no_offers_available_today_singular),
+                stringResource(R.string.no_offers_available_today_plural),
                 style = MaterialTheme.typography.headlineSmall,
                 textAlign = TextAlign.Center
             )
@@ -153,8 +152,9 @@ fun NoOffersInfoPanel(modifier: Modifier = Modifier, onRefresh: () -> Unit) {
     }
 }
 
-@PreviewScreenSizes
-@PreviewLightDark
+//@PreviewScreenSizes
+//@PreviewLightDark
+@Preview
 @Composable
 private fun OverviewScreenPreview() {
     ETHUZHMensaTheme {
@@ -168,8 +168,9 @@ private fun OverviewScreenPreview() {
     }
 }
 
-@PreviewScreenSizes
-@PreviewLightDark
+//@PreviewScreenSizes
+//@PreviewLightDark
+@Preview
 @Composable
 private fun OverviewScreenPreviewNoMenus() {
     ETHUZHMensaTheme {

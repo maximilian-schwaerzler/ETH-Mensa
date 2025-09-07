@@ -12,11 +12,11 @@
     <string name="language_english">English</string>
     <string name="settings_label">Settings</string>
     <string name="loading_label">Loading…</string>
-    <string name="no_offers_available_today_singular">No offers available for today</string>
+    <string name="no_offers_available_today_plural">No offers available for today</string>
     <string name="refresh_label">Refresh</string>
     <string name="back_label">Back</string>
     <string name="eth_zurich_logo_label">ETH Zurich Logo</string>
-    <string name="no_offer_available_for_today_plural">No offer available for today</string>
+    <string name="no_offer_available_for_today_singular">No offer available for today</string>
     <string name="updated_menu_language">Menus updated to %1$s</string>
     <string name="menu_language_label">Mensa Menu Language</string>
     <string name="app_language_label">App Language</string>
